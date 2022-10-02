@@ -12,18 +12,6 @@ module AdrestiaBundler
       File.binwrite(file, resp.body)
     end
 
-    def self.mk_dir(path)
-      FileUtils.mkdir_p(path)
-    end
-
-    def self.rm_files(path)
-      FileUtils.rm_rf(path, secure: true)
-    end
-
-    def self.mv(src, dst)
-      FileUtils.mv(src, dst, force: true)
-    end
-
     def self.is_win?
       RUBY_PLATFORM =~ /cygwin|mswin|mingw|bccwin|wince|emx/
     end
@@ -87,7 +75,7 @@ module AdrestiaBundler
       end
     end
 
-    def self.get_config_files(env)
+    def self.get_config_urls(env)
       unless AdrestiaBundler::ENVS.include?(env)
         raise AdrestiaBundler::EnvNotSupportedError.new(env)
       else
