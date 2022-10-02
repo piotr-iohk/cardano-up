@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require "adrestia_bundler"
+
+puts AdrestiaBundler::init
