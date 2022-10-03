@@ -1,8 +1,10 @@
 module AdrestiaBundler
   module Utils
-    def self.cmd(cmd)
+    def self.cmd(cmd, display_result = false)
       cmd.gsub(/\s+/, ' ')
       res = `#{cmd}`
+      puts cmd if display_result
+      puts res if display_result
       res.gsub("\n", '')
     end
 
@@ -81,7 +83,7 @@ module AdrestiaBundler
       else
         base_url = get_configs_base_url(env)
         configs = []
-        ['alonzo-genesis.json', 'byron-genesis.json', 'config.json', 'topology.json'].each do |file|
+        AdrestiaBundler::CONFIG_FILES.each do |file|
           configs << "#{base_url}#{file}"
         end
       end

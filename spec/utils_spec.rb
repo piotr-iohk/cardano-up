@@ -52,7 +52,7 @@ RSpec.describe AdrestiaBundler::Utils do
   it "I can get_config_urls" do
     AdrestiaBundler::ENVS.each do |env|
       configs = AdrestiaBundler::Utils.get_config_urls(env)
-      expect(configs.size).to eq 4
+      expect(configs.size).to eq 5
     end
   end
 end

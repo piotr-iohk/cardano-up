@@ -8,8 +8,9 @@ require 'zip'
 
 require "adrestia_bundler/version"
 require "adrestia_bundler/utils"
-require "adrestia_bundler/install"
 require "adrestia_bundler/tar"
+require "adrestia_bundler/install"
+require "adrestia_bundler/start"
 
 module AdrestiaBundler
   CONFIGS_BASE_URL = 'https://book.world.dev.cardano.org/environments'
@@ -17,7 +18,10 @@ module AdrestiaBundler
   HYDRA_BASE_URL = 'https://hydra.iohk.io/job/Cardano/cardano-wallet'
   ENVS = ['mainnet', 'preview', 'preprod', 'shelley-qa',
           'staging', 'vasil-qa', 'vasil-dev', 'mixed', 'testnet']
-
+  CONFIG_FILES = ['alonzo-genesis.json', 'byron-genesis.json', 'shelley-genesis.json',
+                  'config.json', 'topology.json']
+  MAINNET_TOKEN_SERVER = 'https://tokens.cardano.org'
+  TESTNET_TOKEN_SERVER = 'https://metadata.cardano-testnet.iohkdev.io'
   # It is recommended to use default value for {base_dir},
   # however it is possible to modify it with {base_dir=}.
   @@base_dir = File.join(Dir.home, '.adrestia-bundler')
