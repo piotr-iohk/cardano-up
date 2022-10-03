@@ -46,7 +46,7 @@ module AdrestiaBundler
           node_socket = File.join(state_dir, 'node.socket')
         end
 
-        network =  (env == 'mainnet') ? '--mainnet' : "--testnet #{config_dir}/byron-genesis.json"
+        network = (env == 'mainnet') ? '--mainnet' : "--testnet #{config_dir}/byron-genesis.json"
 
         if AdrestiaBundler::Utils.is_win?
           # Turn off p2p for Windows

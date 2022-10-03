@@ -97,5 +97,4 @@ module AdrestiaBundler
       super("Config not exists at '#{AdrestiaBundler::adrestia_bundler_config}'!")
     end
   end
-
 end

@@ -32,7 +32,7 @@ RSpec.describe AdrestiaBundler::Utils do
   end
 
   it "I need get_binary_url with proper param" do
-    expect{ AdrestiaBundler::Utils.get_binary_url('wrong') }.to raise_error ArgumentError,
+    expect { AdrestiaBundler::Utils.get_binary_url('wrong') }.to raise_error ArgumentError,
                                                                            /Not supported parameter value/
   end
 
@@ -44,9 +44,9 @@ RSpec.describe AdrestiaBundler::Utils do
   end
 
   it "I can't get_configs_base_url for config that is not supported" do
-      expect do
-        AdrestiaBundler::Utils.get_configs_base_url('env')
-      end.to raise_error AdrestiaBundler::EnvNotSupportedError, /not supported/
+    expect do
+      AdrestiaBundler::Utils.get_configs_base_url('env')
+    end.to raise_error AdrestiaBundler::EnvNotSupportedError, /not supported/
   end
 
   it "I can get_config_urls" do

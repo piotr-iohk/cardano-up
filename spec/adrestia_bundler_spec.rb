@@ -26,14 +26,14 @@ RSpec.describe AdrestiaBundler do
       config = AdrestiaBundler.configure('/bins', '/state', '/logs', '/configs')
       expect(AdrestiaBundler.configured?).to eq true
       config_got = AdrestiaBundler.get_config
-      expect(config).to eq({'bin_dir' => '/bins', 'state_dir' => '/state',
-                           'log_dir' => '/logs', 'config_dir' => '/configs'})
+      expect(config).to eq({ 'bin_dir' => '/bins', 'state_dir' => '/state',
+                           'log_dir' => '/logs', 'config_dir' => '/configs' })
       expect(config).to eq config_got
     end
 
     it "raise error when not configured" do
       expect(AdrestiaBundler.configured?).to eq false
-      expect{ AdrestiaBundler.get_config }.to raise_error AdrestiaBundler::ConfigNotSetError,
+      expect { AdrestiaBundler.get_config }.to raise_error AdrestiaBundler::ConfigNotSetError,
                                                            /Config not exists/
     end
   end

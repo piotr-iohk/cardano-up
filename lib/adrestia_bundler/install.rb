@@ -50,7 +50,7 @@ module AdrestiaBundler
         FileUtils.rm_rf(file_path)
         FileUtils.rm_rf(cw_dir)
         executables = Dir[File.join(destination, '/cardano-*')] << File.join(destination, '/bech32')
-        executables.each {|e| FileUtils.chmod('u+x', e)}
+        executables.each { |e| FileUtils.chmod('u+x', e) }
         executables
       end
     end
