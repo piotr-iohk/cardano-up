@@ -33,9 +33,10 @@ Gem::Specification.new do |spec|
   spec.executables   = ['adrestia-bundle']
   spec.require_paths = ["lib", "bin"]
 
-  spec.add_runtime_dependency 'httparty', '~> 0.18.0'
+  spec.add_runtime_dependency 'httparty', '0.20.0'
+  spec.add_runtime_dependency 'rubyzip', '2.3.2'
 
   spec.add_development_dependency 'rake', '~> 12.3'
-  spec.add_development_dependency 'rspec', '~> 3.7'
+  spec.add_development_dependency 'rspec', '~> 3.11'
   spec.add_development_dependency 'rubocop', '~> 1.11'
 end
