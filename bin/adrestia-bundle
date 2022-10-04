@@ -1,4 +1,147 @@
 #!/usr/bin/env ruby
-require "adrestia_bundler"
+# require 'adrestia_bundler'
+require_relative '../lib/adrestia_bundler'
+require 'docopt'
+require 'pp'
 
-puts AdrestiaBundler::init
+doc = <<DOCOPT
+Adrestia Bundler.
+ - Get cardano-wallet bundle containing cardano-node, cardano-cli, cardano-wallet, cardano-addresses and bech32 to your OS.
+ - Get configs for all possible Cardano environments
+ - Start cardano-node + cardano-wallet easily
+
+Usage:
+  adrestia-bundle install [<version>]
+  adrestia-bundle get-configs <env>
+  adrestia-bundle start <env> [<version>] [--port <port>]
+  adrestia-bundle stop <env>
+  adrestia-bundle config [--set-default] [--installdir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
+  adrestia-bundle -v | --version
+  adrestia-bundle -h | --help
+
+Options:
+  install                 Install cardano-wallet bundle.
+  get-configs             Get configs for particular Cardano env.
+  start                   Start wallet and node.
+  stop                    Stop wallet and node.
+  <version>               latest | release tag | master | pr num [default: 'latest']
+  <env>                   mainnet | preview | preprod etc.
+  --port <port>           Specify wallet port. [default: 8090]
+
+  config                  See or set config at $HOME/.adrestia-bundler.json.
+  --set-default           Overwrite config with default values.
+  --installdir <path>     Set install dir.
+  --configdir <path>      Set config dir.
+  --logdir <path>         Set log dir.
+  --statedir <path>       Set state dir.
+
+  -v --version            Check adrestia-bundle version and versions of
+                          installed binaries if available.
+  -h --help               This help.
+
+Examples:
+  Install latest release of cardano-wallet bundle:
+    $ adrestia-bundle install latest
+
+  Get configs for 'preprod' environment:
+    $ adrestia-bundle get-configs preprod
+
+  Start node and wallet on 'preprod':
+    $ adrestia-bundle start preprod latest --port 8899
+
+DOCOPT
+
+def pretty_json(c)
+  puts JSON.pretty_generate(c)
+end
+
+begin
+  AdrestiaBundler.configure_default unless AdrestiaBundler.configured?
+  o = Docopt::docopt(doc)
+  # pretty_json(o)
+
+  # VERSION
+  if o['--version'] == true
+    puts "Adrestia Bundler: #{AdrestiaBundler::VERSION}"
+    puts
+    begin
+      pretty_json AdrestiaBundler::Install.return_versions
+    rescue StandardError => e
+      STDERR.puts "NOT INSTALLED? Run adrestia-bundle install."
+      STDERR.puts e
+    end
+    exit 1
+  end
+
+  # CONFIG
+  if o['config'] == true
+    c = AdrestiaBundler.get_config
+    if o['--set-default'] == true
+      c = AdrestiaBundler.configure_default
+      puts "Configs set to default!"
+    end
+    if o['--installdir']
+      installdir = o['--installdir']
+      c = AdrestiaBundler.configure(installdir, nil, nil, nil)
+      puts "Installdir updated!"
+    end
+    if o['--statedir']
+      statedir = o['--statedir']
+      c = AdrestiaBundler.configure(nil, statedir, nil, nil)
+      puts "Statedir updated!"
+    end
+    if o['--logdir']
+      logdir = o['--logdir']
+      c = AdrestiaBundler.configure(nil, nil, logdir, nil)
+      puts "Logdir updated!"
+    end
+    if o['--configdir']
+      configdir = o['--configdir']
+      c = AdrestiaBundler.configure(nil, nil, nil, configdir)
+      puts "Configdir updated!"
+    end
+
+    puts "Your configs are at #{AdrestiaBundler.adrestia_bundler_config}:"
+    puts
+    pretty_json(c)
+    exit
+  end
+
+  # INSTALL
+  if o['install'] == true
+    release = o['<version>']
+    release = 'latest' if release.nil?
+    begin
+      versions = AdrestiaBundler::Install.install_bins(release)
+    rescue AdrestiaBundler::VersionNotSupportedError => err3
+      STDERR.puts(err3.message)
+      exit 1
+    end
+    puts "Installed '#{release}' version of cardano-wallet bundle."
+    puts "Install dir: #{AdrestiaBundler.get_config['bin_dir']}"
+    puts
+    pretty_json(versions)
+    exit
+  end
+
+  # INSTALL CONFIGS
+  if o['get-configs'] == true
+    env = o['<env>']
+    begin
+      configs = AdrestiaBundler::Install.install_configs(env)
+    rescue AdrestiaBundler::EnvNotSupportedError => err2
+      STDERR.puts(err2.message)
+      exit 1
+    end
+    puts "Downloaded configs for '#{env}' environment."
+    puts "Config dir: #{File.join(AdrestiaBundler.get_config['config_dir'], env)}"
+    puts
+    pretty_json(configs)
+    exit
+  end
+
+
+
+rescue Docopt::Exit => e
+  puts e.message
+end

@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'Get latest Cardano Adrestia tools bundle on your system in no time!'
   spec.description   = 'Adrestia Bundler lets you get all essential Cardano Adrestia
-                          tools on your system. Fire `adrestia-bundle install` and get latest: cardano-node,
-                          cardano-cli, cardano-wallet, cardano-addresses and bech32 with all essential configs.
-                          Then just fire `adrestia-bundle mainnet start` to start node and wallet servers.'
+                        tools on your system: cardano-node, cardano-cli, cardano-wallet,
+                        cardano-addresses and bech32. Then easily start/stop cardano-node and
+                        cardano-wallet with lean configuration.'
   spec.homepage      = 'https://github.com/piotr-iohk/adrestia-bundler'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'httparty', '0.20.0'
   spec.add_runtime_dependency 'rubyzip', '2.3.2'
+  spec.add_runtime_dependency 'docopt', '0.6.1'
 
   spec.add_development_dependency 'rake', '~> 12.3'
   spec.add_development_dependency 'rspec', '~> 3.11'
