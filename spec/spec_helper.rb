@@ -13,3 +13,17 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+TIMEOUT = 60
+
+def eventually(label, &block)
+  current_time = Time.now
+  timeout_treshold = current_time + TIMEOUT
+  while (block.call == false) && (current_time <= timeout_treshold) do
+    sleep 5
+    current_time = Time.now
+  end
+  if (current_time > timeout_treshold)
+    fail "Action '#{label}' did not resolve within timeout: #{TIMEOUT}s"
+  end
+end
