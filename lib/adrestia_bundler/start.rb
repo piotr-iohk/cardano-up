@@ -26,7 +26,7 @@ module AdrestiaBundler
       configs = AdrestiaBundler.get_config
 
       env = opt[:env]
-      raise AdrestiaBundler::EnvNotSupportedError unless AdrestiaBundler::ENVS.include? env
+      raise AdrestiaBundler::EnvNotSupportedError.new(env) unless AdrestiaBundler::ENVS.include? env
       wallet_port = opt[:wallet_port]
       raise AdrestiaBundler::WalletPortError if (wallet_port.nil? || wallet_port.empty?)
       token_metadata_server = (env == 'mainnet') ? AdrestiaBundler::MAINNET_TOKEN_SERVER : AdrestiaBundler::TESTNET_TOKEN_SERVER
@@ -115,7 +115,7 @@ module AdrestiaBundler
           cmd: node_cmd,
           log: "#{log_dir}/node.log",
           db_dir: node_db_dir,
-          node_socket: node_socket,
+          socket_path: node_socket,
           protocol_magic: get_protocol_magic(config_dir),
           network: env
         },
@@ -124,32 +124,29 @@ module AdrestiaBundler
           log: "#{log_dir}/wallet.log",
           db_dir: wallet_db_dir,
           cmd: wallet_cmd,
-          port: wallet_port.to_i
+          port: wallet_port.to_i,
+          host: "http://localhost:#{wallet_port}/v2"
         }
       }
     end
 
     # @raises AdrestiaBundler::EnvNotSupportedError
     def self.stop_node_and_wallet(env)
-      begin
-        raise AdrestiaBundler::EnvNotSupportedError unless AdrestiaBundler::ENVS.include? env
-        if AdrestiaBundler::Utils.is_win?
-          AdrestiaBundler::Utils.cmd "nssm stop cardano-wallet-#{env}"
-          AdrestiaBundler::Utils.cmd "nssm stop cardano-node-#{env}"
+      raise AdrestiaBundler::EnvNotSupportedError.new(env) unless AdrestiaBundler::ENVS.include? env
+      if AdrestiaBundler::Utils.is_win?
+        AdrestiaBundler::Utils.cmd "nssm stop cardano-wallet-#{env}"
+        AdrestiaBundler::Utils.cmd "nssm stop cardano-node-#{env}"
 
-          AdrestiaBundler::Utils.cmd "nssm remove cardano-wallet-#{env} confirm"
-          AdrestiaBundler::Utils.cmd "nssm remove cardano-node-#{env} confirm"
-        else
-          AdrestiaBundler::Utils.cmd "screen -XS WALLET_#{env} quit"
-          # AdrestiaBundler::Utils.cmd "screen -XS NODE_#{env} quit"
-          puts "⚠️ NOTE! It seems that screen is not able to kill cardano-node properly. ⚠️"
-          puts "Run: "
-          puts "  $ screen -r NODE_#{env}"
-          puts "And hit: Ctrl + C"
-        end
-      rescue AdrestiaBundler::EnvNotSupportedError => err2
-        STDERR.puts(err2.message)
-        exit 1
+        AdrestiaBundler::Utils.cmd "nssm remove cardano-wallet-#{env} confirm"
+        AdrestiaBundler::Utils.cmd "nssm remove cardano-node-#{env} confirm"
+      else
+        AdrestiaBundler::Utils.cmd "screen -XS WALLET_#{env} quit"
+        AdrestiaBundler::Utils.cmd "screen -S NODE_#{env} -X at '0' stuff '^C'"
+        AdrestiaBundler::Utils.cmd "screen -XS NODE_#{env} quit"
+        # puts "⚠️ NOTE! It seems that screen is not able to kill cardano-node properly. ⚠️"
+        # puts "Run: "
+        # puts "  $ screen -r NODE_#{env}"
+        # puts "And hit: Ctrl + C"
       end
     end
 
