@@ -13,8 +13,10 @@ module AdrestiaBundler
         end
       rescue AdrestiaBundler::ConfigNotSetError => err
         STDERR.puts(err.message)
+        exit 1
       rescue AdrestiaBundler::EnvNotSupportedError => err2
         STDERR.puts(err2.message)
+        exit 1
       end
     end
 
@@ -34,8 +36,10 @@ module AdrestiaBundler
 
       rescue AdrestiaBundler::ConfigNotSetError => err
         STDERR.puts(err.message)
+        exit 1
       rescue ArgumentError => err3
         STDERR.puts(err3.message)
+        exit 1
       end
     end
 

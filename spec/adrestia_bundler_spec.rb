@@ -5,7 +5,9 @@ RSpec.describe AdrestiaBundler do
 
   describe "Configuration" do
     before(:all) do
-      AdrestiaBundler.base_dir = Dir.tmpdir
+      AdrestiaBundler.base_dir = Dir.mktmpdir
+      AdrestiaBundler.adrestia_bundler_config = File.join(AdrestiaBundler.base_dir,
+                                                          'adrestia-bundler-test.json')
     end
 
     after(:each) do

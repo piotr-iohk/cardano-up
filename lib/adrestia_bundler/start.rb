@@ -107,26 +107,34 @@ module AdrestiaBundler
           AdrestiaBundler::Utils.cmd "screen -dmS #{node_service} -L -Logfile #{log_dir}/node.log #{node_cmd}"
           AdrestiaBundler::Utils.cmd "screen -dmS #{wallet_service} -L -Logfile #{log_dir}/wallet.log #{wallet_cmd}"
         end
+
         {
           node: {
             service: node_service,
             cmd: node_cmd,
             log: "#{log_dir}/node.log",
-            db_dir: node_db_dir
+            db_dir: node_db_dir,
+            node_socket: node_socket,
+            protocol_magic: get_protocol_magic(config_dir),
+            network: env
           },
           wallet: {
             service: wallet_service,
             log: "#{log_dir}/wallet.log",
             db_dir: wallet_db_dir,
-            cmd: wallet_cmd
+            cmd: wallet_cmd,
+            port: wallet_port.to_i
           }
         }
       rescue AdrestiaBundler::ConfigNotSetError => err
         STDERR.puts(err.message)
+        exit 1
       rescue AdrestiaBundler::EnvNotSupportedError => err2
         STDERR.puts(err2.message)
+        exit 1
       rescue ArgumentError => err3
         STDERR.puts(err3.message)
+        exit 1
       end
     end
 
@@ -149,7 +157,18 @@ module AdrestiaBundler
         end
       rescue AdrestiaBundler::EnvNotSupportedError => err2
         STDERR.puts(err2.message)
+        exit 1
       end
     end
+
+    ##
+    # Get protocol magic from config's byron-genesis.json
+    def get_protocol_magic(config)
+      byron_genesis = JSON.parse(File.read(File.join(config, "byron-genesis.json")))
+      byron_genesis['protocolConsts']['protocolMagic'].to_i
+    end
+    module_function :get_protocol_magic
+    private_class_method :get_protocol_magic
+
   end
 end

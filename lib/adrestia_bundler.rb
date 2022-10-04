@@ -28,7 +28,7 @@ module AdrestiaBundler
 
   # It is recommended to use default value for {adrestia_bundler_config},
   # however it is possible to modify it with {adrestia_bundler_config=}.
-  @@adrestia_bundler_config = File.join(@@base_dir, 'config.json')
+  @@adrestia_bundler_config = File.join(Dir.home, '.adrestia-bundler.json')
 
   def self.base_dir
     @@base_dir
@@ -63,13 +63,21 @@ module AdrestiaBundler
 
   # Set custom config for AdrestiaBundler
   def self.configure(bin_dir, state_dir, logs_dir, config_dir)
-    config = { 'bin_dir' => bin_dir,
-               'state_dir' => state_dir,
-               'log_dir' => logs_dir,
-               'config_dir' => config_dir
-              }
     FileUtils.mkdir_p(@@base_dir)
-    File.write(@@adrestia_bundler_config, JSON.pretty_generate(config))
+    if configured?
+      c = AdrestiaBundler.get_config
+    else
+      c = { 'bin_dir' => File.join(@@base_dir, 'bins'),
+             'state_dir' => File.join(@@base_dir, 'state'),
+             'log_dir' => File.join(@@base_dir, 'state'),
+             'config_dir' => File.join(@@base_dir, 'configs')
+            }
+    end
+    c['bin_dir'] = bin_dir if bin_dir
+    c['state_dir'] = state_dir if state_dir
+    c['log_dir'] = logs_dir if logs_dir
+    c['config_dir'] = config_dir if config_dir
+    File.write(@@adrestia_bundler_config, JSON.pretty_generate(c))
     JSON.parse(File.read(@@adrestia_bundler_config))
   end
 
