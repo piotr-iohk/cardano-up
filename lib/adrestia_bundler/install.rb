@@ -2,45 +2,30 @@ module AdrestiaBundler
   module Install
     # Get all necessary config files for particular environment.
     # @param env [String] - one of {ENVS}
+    # @raises AdrestiaBundler::EnvNotSupportedError
     def self.install_configs(env)
       AdrestiaBundler.configure_default unless AdrestiaBundler.configured?
-      begin
-        configs = AdrestiaBundler.get_config
-        config_urls = AdrestiaBundler::Utils.get_config_urls(env)
-        config_dir_env = FileUtils.mkdir_p(File.join(configs['config_dir'], env))
-        config_urls.each do |url|
-          AdrestiaBundler::Utils.wget(url, File.join(config_dir_env, File.basename(url)))
-        end
-      rescue AdrestiaBundler::ConfigNotSetError => err
-        STDERR.puts(err.message)
-        exit 1
-      rescue AdrestiaBundler::EnvNotSupportedError => err2
-        STDERR.puts(err2.message)
-        exit 1
+      configs = AdrestiaBundler.get_config
+      config_urls = AdrestiaBundler::Utils.get_config_urls(env)
+      config_dir_env = FileUtils.mkdir_p(File.join(configs['config_dir'], env))
+      config_urls.each do |url|
+        AdrestiaBundler::Utils.wget(url, File.join(config_dir_env, File.basename(url)))
       end
     end
 
     # Get cardano-wallet bundle binaries to your computer.
     # @param release [String] - 'latest' | /^v20.{2}-.{2}-.{2}/ | 'master' | '3341'
+    # @raises AdrestiaBundler::VersionNotSupportedError
     def self.install_bins(release)
       AdrestiaBundler.configure_default unless AdrestiaBundler.configured?
-      begin
-        configs = AdrestiaBundler.get_config
-        url = AdrestiaBundler::Utils.get_binary_url(release)
-        bin_dir_env = FileUtils.mkdir_p(configs['bin_dir']).first
-        file_to_unpack = File.join(bin_dir_env, 'binary-dist')
-        AdrestiaBundler::Utils.wget(url, file_to_unpack)
+      configs = AdrestiaBundler.get_config
+      url = AdrestiaBundler::Utils.get_binary_url(release)
+      bin_dir_env = FileUtils.mkdir_p(configs['bin_dir']).first
+      file_to_unpack = File.join(bin_dir_env, 'binary-dist')
+      AdrestiaBundler::Utils.wget(url, file_to_unpack)
 
-        unpack_binary(file_to_unpack, bin_dir_env)
-        return_versions(bin_dir_env)
-
-      rescue AdrestiaBundler::ConfigNotSetError => err
-        STDERR.puts(err.message)
-        exit 1
-      rescue ArgumentError => err3
-        STDERR.puts(err3.message)
-        exit 1
-      end
+      unpack_binary(file_to_unpack, bin_dir_env)
+      return_versions(bin_dir_env)
     end
 
     def unpack_binary(file_path, destination)
@@ -61,7 +46,9 @@ module AdrestiaBundler
     module_function :unpack_binary
     private_class_method :unpack_binary
 
-    def return_versions(bin_dir = nil)
+    # Return versions of installed components
+    # @raises AdrestiaBundler::ConfigNotSetError
+    def self.return_versions(bin_dir = nil)
       bindir = bin_dir.nil? ? AdrestiaBundler.get_config['bin_dir'] : bin_dir
       exe = AdrestiaBundler::Utils.is_win? ? '.exe' : ''
       cn = AdrestiaBundler::Utils.cmd "#{bindir}/cardano-node#{exe} version"
@@ -76,7 +63,5 @@ module AdrestiaBundler
         'bech32' => b32
       }
     end
-    module_function :return_versions
-    private_class_method :return_versions
   end
 end

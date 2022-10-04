@@ -34,9 +34,10 @@ module AdrestiaBundler
     ##
     # Latest binary url for latest release or particular tag, from master or pr num.
     # @param release [String] - 'latest' | /^v20.{2}-.{2}-.{2}/ | 'master' | '3341'
+    # @raises AdrestiaBundler::VersionNotSupportedError
     def self.get_binary_url(release = 'latest')
       unless (release == 'master' || release == 'latest' || release =~ /^v20.{2}-.{2}-.{2}/ || release =~ /^\d+$/)
-        raise ArgumentError, "Not supported parameter value: #{release}. Supported are: 'latest', 'master', tag (e.g. 'v2022-08-16') or pr number ('3045')"
+        raise AdrestiaBundler::VersionNotSupportedError, release
       end
       url = ''
       if (release == 'latest' || release =~ /^v20.{2}-.{2}-.{2}/)
@@ -69,6 +70,7 @@ module AdrestiaBundler
 
     ##
     # Latest Cardano configs
+    # @raises AdrestiaBundler::EnvNotSupportedError
     def self.get_configs_base_url(env)
       unless AdrestiaBundler::ENVS.include?(env)
         raise AdrestiaBundler::EnvNotSupportedError.new(env)
@@ -77,6 +79,7 @@ module AdrestiaBundler
       end
     end
 
+    # @raises AdrestiaBundler::EnvNotSupportedError
     def self.get_config_urls(env)
       unless AdrestiaBundler::ENVS.include?(env)
         raise AdrestiaBundler::EnvNotSupportedError.new(env)
