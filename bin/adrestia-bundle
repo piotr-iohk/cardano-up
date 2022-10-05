@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
-# require 'adrestia_bundler'
-require_relative '../lib/adrestia_bundler'
+require 'adrestia_bundler'
+# require_relative '../lib/adrestia_bundler'
 require 'docopt'
-require 'pp'
 
 doc = <<DOCOPT
 Adrestia Bundler.
@@ -11,20 +10,21 @@ Adrestia Bundler.
  - Start cardano-node + cardano-wallet easily
 
 Usage:
-  adrestia-bundle install [<version>]
+  adrestia-bundle install [--release <version>]
   adrestia-bundle get-configs <env>
-  adrestia-bundle start <env> [<version>] [--port <port>]
-  adrestia-bundle stop <env>
+  adrestia-bundle start <env> (node|wallet|node-wallet) [--port <port>]
+  adrestia-bundle stop <env> (node|wallet|node-wallet)
+  adrestia-bundle status
   adrestia-bundle config [--set-default] [--installdir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
   adrestia-bundle -v | --version
   adrestia-bundle -h | --help
 
 Options:
   install                 Install cardano-wallet bundle.
+  --release <version>     latest | release tag | master | pr num [default: latest]
   get-configs             Get configs for particular Cardano env.
   start                   Start wallet and node.
   stop                    Stop wallet and node.
-  <version>               latest | release tag | master | pr num [default: 'latest']
   <env>                   mainnet | preview | preprod etc.
   --port <port>           Specify wallet port. [default: 8090]
 
@@ -41,13 +41,20 @@ Options:
 
 Examples:
   Install latest release of cardano-wallet bundle:
-    $ adrestia-bundle install latest
+    $ adrestia-bundle install --release latest
 
   Get configs for 'preprod' environment:
     $ adrestia-bundle get-configs preprod
 
   Start node and wallet on 'preprod':
-    $ adrestia-bundle start preprod latest --port 8899
+    $ adrestia-bundle start preprod node
+    $ adrestia-bundle start preprod wallet
+
+  Check status:
+    $ adrestia-bundle status
+
+  Stop node and wallet on 'preprod':
+    $ adrestia-bundle stop preprod node-wallet
 
 DOCOPT
 
@@ -62,8 +69,8 @@ begin
 
   # VERSION
   if o['--version'] == true
-    puts "Adrestia Bundler: #{AdrestiaBundler::VERSION}"
-    puts
+    STDERR.puts "Adrestia Bundler: #{AdrestiaBundler::VERSION}"
+    STDERR.puts
     begin
       pretty_json AdrestiaBundler::Install.return_versions
     rescue StandardError => e
@@ -78,48 +85,48 @@ begin
     c = AdrestiaBundler.get_config
     if o['--set-default'] == true
       c = AdrestiaBundler.configure_default
-      puts "Configs set to default!"
+      STDERR.puts "Configs set to default!"
     end
     if o['--installdir']
       installdir = o['--installdir']
       c = AdrestiaBundler.configure(installdir, nil, nil, nil)
-      puts "Installdir updated!"
+      STDERR.puts "Installdir updated!"
     end
     if o['--statedir']
       statedir = o['--statedir']
       c = AdrestiaBundler.configure(nil, statedir, nil, nil)
-      puts "Statedir updated!"
+      STDERR.puts "Statedir updated!"
     end
     if o['--logdir']
       logdir = o['--logdir']
       c = AdrestiaBundler.configure(nil, nil, logdir, nil)
-      puts "Logdir updated!"
+      STDERR.puts "Logdir updated!"
     end
     if o['--configdir']
       configdir = o['--configdir']
       c = AdrestiaBundler.configure(nil, nil, nil, configdir)
-      puts "Configdir updated!"
+      STDERR.puts "Configdir updated!"
     end
 
-    puts "Your configs are at #{AdrestiaBundler.adrestia_bundler_config}:"
-    puts
+    STDERR.puts "Your config file is #{AdrestiaBundler.adrestia_bundler_config}:"
+    STDERR.puts
     pretty_json(c)
     exit
   end
 
   # INSTALL
   if o['install'] == true
-    release = o['<version>']
-    release = 'latest' if release.nil?
+    release = o['--release']
     begin
+      STDERR.puts "Installing..."
       versions = AdrestiaBundler::Install.install_bins(release)
     rescue AdrestiaBundler::VersionNotSupportedError => err3
       STDERR.puts(err3.message)
       exit 1
     end
-    puts "Installed '#{release}' version of cardano-wallet bundle."
-    puts "Install dir: #{AdrestiaBundler.get_config['bin_dir']}"
-    puts
+    STDERR.puts "Installed '#{release}' release of cardano-wallet bundle."
+    STDERR.puts "Install dir: #{AdrestiaBundler.get_config['bin_dir']}"
+    STDERR.puts
     pretty_json(versions)
     exit
   end
@@ -133,14 +140,67 @@ begin
       STDERR.puts(err2.message)
       exit 1
     end
-    puts "Downloaded configs for '#{env}' environment."
-    puts "Config dir: #{File.join(AdrestiaBundler.get_config['config_dir'], env)}"
+    STDERR.puts "Downloaded configs for '#{env}' environment."
+    STDERR.puts "Config dir: #{File.join(AdrestiaBundler.get_config['config_dir'], env)}"
     puts
     pretty_json(configs)
     exit
   end
 
+  # START
+  if o['start'] == true
+    env = o['<env>']
+    release = o['--release']
+    port = o['--port']
 
+    begin
+      c = AdrestiaBundler::Start.prepare_configuration({env: env, wallet_port: port})
+    rescue AdrestiaBundler::EnvNotSupportedError => err2
+      STDERR.puts(err2.message)
+      exit 1
+    end
+    begin
+      if o['node']
+        pretty_json AdrestiaBundler::Start.start_node(c)
+        STDERR.puts
+        STDERR.puts "Congratulations! You've just started cardano-node."
+      elsif o['wallet']
+        pretty_json AdrestiaBundler::Start.start_wallet(c)
+        STDERR.puts
+        STDERR.puts "Congratulations! You've just started cardano-wallet."
+      elsif o['both']
+        pretty_json AdrestiaBundler::Start.start_node_and_wallet(c)
+        STDERR.puts
+        STDERR.puts "Congratulations! You've just started cardano-node and cardano-wallet."
+      end
+    rescue StandardError => e
+      STDERR.puts "Either you miss configs or binaries... To fix that try running:"
+      STDERR.puts " $ adrestia-bundle get-configs #{env}"
+      STDERR.puts " $ adrestia-bundle install"
+      STDERR.puts e
+      exit 1
+    end
+  end
+
+  # STOP
+  if o['stop'] == true
+    env = o['<env>']
+
+    begin
+      if o['node']
+        AdrestiaBundler::Start.stop_node(env)
+      elsif o['wallet']
+        AdrestiaBundler::Start.stop_wallet(env)
+      elsif o['both']
+        AdrestiaBundler::Start.stop_node_and_wallet(env)
+      end
+      STDERR.puts "Stopped."
+    rescue AdrestiaBundler::EnvNotSupportedError => err2
+      STDERR.puts(err2.message)
+      exit 1
+
+    end
+  end
 
 rescue Docopt::Exit => e
   puts e.message

@@ -74,6 +74,9 @@ module AdrestiaBundler
       node_socket = configuration[:node_socket]
       network = configuration[:network]
 
+      exe = AdrestiaBundler::Utils.is_win? ? '.exe' : ''
+      version = AdrestiaBundler::Utils.cmd "#{bin_dir}/cardano-node#{exe} version"
+
       if AdrestiaBundler::Utils.is_win?
         # Turn off p2p for Windows
         # TODO: remove after https://github.com/input-output-hk/ouroboros-network/issues/3968 released
@@ -119,6 +122,7 @@ module AdrestiaBundler
       {
         node: {
           service: node_service,
+          version: version,
           cmd: node_cmd,
           log: "#{log_dir}/node.log",
           db_dir: node_db_dir,
@@ -141,6 +145,9 @@ module AdrestiaBundler
       wallet_db_dir = configuration[:wallet_db_dir]
       node_socket = configuration[:node_socket]
       network = configuration[:network]
+
+      exe = AdrestiaBundler::Utils.is_win? ? '.exe' : ''
+      version = AdrestiaBundler::Utils.cmd "#{bin_dir}/cardano-wallet#{exe} version"
 
       if AdrestiaBundler::Utils.is_win?
 
@@ -168,6 +175,7 @@ module AdrestiaBundler
       {
         wallet: {
           service: wallet_service,
+          version: version,
           log: "#{log_dir}/wallet.log",
           db_dir: wallet_db_dir,
           cmd: wallet_cmd,
