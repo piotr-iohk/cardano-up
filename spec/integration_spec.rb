@@ -55,7 +55,7 @@ RSpec.describe "Integration", :e2e, :integration do
   it "I can start_node_and_wallet and then stop_node_and_wallet" do
     bin_dir = AdrestiaBundler.get_config['bin_dir']
     # Start node and wallet
-    config = AdrestiaBundler::Start.prepare_configuration({env: @env, wallet_port: @port})
+    config = AdrestiaBundler::Start.prepare_configuration({ env: @env, wallet_port: @port })
     started = AdrestiaBundler::Start.start_node_and_wallet(config)
 
     assert_node_up(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
@@ -70,7 +70,7 @@ RSpec.describe "Integration", :e2e, :integration do
   it "I can start_node_and_wallet and then stop_node and stop_wallet" do
     bin_dir = AdrestiaBundler.get_config['bin_dir']
     # Start node and wallet
-    config = AdrestiaBundler::Start.prepare_configuration({env: @env, wallet_port: @port})
+    config = AdrestiaBundler::Start.prepare_configuration({ env: @env, wallet_port: @port })
     started = AdrestiaBundler::Start.start_node_and_wallet(config)
 
     assert_node_up(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
@@ -87,7 +87,7 @@ RSpec.describe "Integration", :e2e, :integration do
   it "I can start_node_and_wallet and then stop_wallet and stop_node" do
     bin_dir = AdrestiaBundler.get_config['bin_dir']
     # Start node and wallet
-    config = AdrestiaBundler::Start.prepare_configuration({env: @env, wallet_port: @port})
+    config = AdrestiaBundler::Start.prepare_configuration({ env: @env, wallet_port: @port })
     started = AdrestiaBundler::Start.start_node_and_wallet(config)
 
     assert_node_up(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
@@ -104,7 +104,7 @@ RSpec.describe "Integration", :e2e, :integration do
   it "I can start_node and then stop_node" do
     bin_dir = AdrestiaBundler.get_config['bin_dir']
     # Start node
-    config = AdrestiaBundler::Start.prepare_configuration({env: @env, wallet_port: @port})
+    config = AdrestiaBundler::Start.prepare_configuration({ env: @env, wallet_port: @port })
     started = AdrestiaBundler::Start.start_node(config)
     assert_node_up(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
 
@@ -116,7 +116,7 @@ RSpec.describe "Integration", :e2e, :integration do
   it "I can start_wallet and start_node then stop_node and stop_wallet" do
     bin_dir = AdrestiaBundler.get_config['bin_dir']
     # Start start_wallet start_node
-    config = AdrestiaBundler::Start.prepare_configuration({env: @env, wallet_port: @port})
+    config = AdrestiaBundler::Start.prepare_configuration({ env: @env, wallet_port: @port })
     w = AdrestiaBundler::Start.start_wallet(config)
     n = AdrestiaBundler::Start.start_node(config)
     assert_node_up(bin_dir, n[:node][:socket_path], n[:node][:protocol_magic])
@@ -132,7 +132,7 @@ RSpec.describe "Integration", :e2e, :integration do
   it "I can start_wallet and start_node then stop_wallet and stop_node" do
     bin_dir = AdrestiaBundler.get_config['bin_dir']
     # Start start_wallet start_node
-    config = AdrestiaBundler::Start.prepare_configuration({env: @env, wallet_port: @port})
+    config = AdrestiaBundler::Start.prepare_configuration({ env: @env, wallet_port: @port })
     w = AdrestiaBundler::Start.start_wallet(config)
     n = AdrestiaBundler::Start.start_node(config)
     assert_node_up(bin_dir, n[:node][:socket_path], n[:node][:protocol_magic])

@@ -154,7 +154,7 @@ begin
     port = o['--port']
 
     begin
-      c = AdrestiaBundler::Start.prepare_configuration({env: env, wallet_port: port})
+      c = AdrestiaBundler::Start.prepare_configuration({ env: env, wallet_port: port })
     rescue AdrestiaBundler::EnvNotSupportedError => err2
       STDERR.puts(err2.message)
       exit 1

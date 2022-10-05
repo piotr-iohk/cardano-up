@@ -17,7 +17,6 @@ module AdrestiaBundler
   # Nssm can be installed via choco package manager:
   #  choco install nssm
   module Start
-
     # Prepare configuration for wallet and node to be started
     # @param env [Hash] provide env and wallet_port, e.g. { env: 'mainnet', wallet_port: '8090' }
     # @raises AdrestiaBundler::EnvNotSupportedError
