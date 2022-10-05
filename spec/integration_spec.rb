@@ -34,13 +34,11 @@ RSpec.describe "Integration", :e2e, :integration do
 
     # Stop node and wallet
     AdrestiaBundler::Start.stop_node_and_wallet(env)
-    # Wallet is down
-    res_wal = AdrestiaBundler::Utils.cmd wal_cmd
-    expect(res_wal).not_to include('network_info')
-
-    # Node is down
-    res_cli = AdrestiaBundler::Utils.cmd cli_cmd
-    expect(res_cli).not_to include('block')
+    eventually 'Wallet and node are down' do
+      res_cli = AdrestiaBundler::Utils.cmd cli_cmd
+      res_wal = AdrestiaBundler::Utils.cmd wal_cmd
+      (!res_wal.include?('network_info') && !res_cli.include?('block'))
+    end
   end
 
 end
