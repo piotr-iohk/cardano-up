@@ -1,7 +1,7 @@
 require_relative 'lib/adrestia_bundler/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "adrestia_bundler"
+  spec.name          = "cardano-up"
   spec.version       = AdrestiaBundler::VERSION
   spec.authors       = ["Piotr Stachyra"]
   spec.email         = ["piotr.stachyra@gmail.com"]
@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   # spec.test_files    = Dir["spec/**/*"]
   spec.bindir        = "bin"
   # spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.executables   = ['adrestia-bundle']
+  spec.executables   = ['cardano-up']
   spec.require_paths = ["lib", "bin"]
 
   spec.add_runtime_dependency 'httparty', '0.20.0'

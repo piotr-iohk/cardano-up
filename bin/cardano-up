@@ -4,57 +4,55 @@ require 'adrestia_bundler'
 require 'docopt'
 
 doc = <<DOCOPT
-Adrestia Bundler.
- - Get cardano-wallet bundle containing cardano-node, cardano-cli, cardano-wallet, cardano-addresses and bech32 to your OS.
- - Get configs for all possible Cardano environments
- - Start cardano-node + cardano-wallet easily
+Cardano Up!
+Lightweight manager for cardano configs and binaries.
 
 Usage:
-  adrestia-bundle install [--release <version>]
-  adrestia-bundle get-configs <env>
-  adrestia-bundle start <env> (node|wallet|node-wallet) [--port <port>]
-  adrestia-bundle stop <env> (node|wallet|node-wallet)
-  adrestia-bundle status
-  adrestia-bundle config [--set-default] [--installdir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
-  adrestia-bundle -v | --version
-  adrestia-bundle -h | --help
+  cardano-up install [<release>]
+  cardano-up get-configs <env>
+  cardano-up start <env> (node|wallet|node-wallet) [--port <port>]
+  cardano-up stop <env> (node|wallet|node-wallet)
+  cardano-up status
+  cardano-up config [--set-default] [--installdir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
+  cardano-up -v | --version
+  cardano-up -h | --help
 
 Options:
   install                 Install cardano-wallet bundle.
-  --release <version>     latest | release tag | master | pr num [default: latest]
+  <release>               latest | release tag | master | pr num [default: latest]
   get-configs             Get configs for particular Cardano env.
   start                   Start wallet and node.
   stop                    Stop wallet and node.
   <env>                   mainnet | preview | preprod etc.
   --port <port>           Specify wallet port. [default: 8090]
 
-  config                  See or set config at $HOME/.adrestia-bundler.json.
+  config                  See or set config at $HOME/.cardano-up.json.
   --set-default           Overwrite config with default values.
   --installdir <path>     Set install dir.
   --configdir <path>      Set config dir.
   --logdir <path>         Set log dir.
   --statedir <path>       Set state dir.
 
-  -v --version            Check adrestia-bundle version and versions of
+  -v --version            Check cardano-up version and versions of
                           installed binaries if available.
   -h --help               This help.
 
 Examples:
   Install latest release of cardano-wallet bundle:
-    $ adrestia-bundle install --release latest
+    $ cardano-up install latest
 
   Get configs for 'preprod' environment:
-    $ adrestia-bundle get-configs preprod
+    $ cardano-up get-configs preprod
 
   Start node and wallet on 'preprod':
-    $ adrestia-bundle start preprod node
-    $ adrestia-bundle start preprod wallet
+    $ cardano-up start preprod node
+    $ cardano-up start preprod wallet
 
   Check status:
-    $ adrestia-bundle status
+    $ cardano-up status
 
   Stop node and wallet on 'preprod':
-    $ adrestia-bundle stop preprod node-wallet
+    $ cardano-up stop preprod node-wallet
 
 DOCOPT
 
@@ -74,7 +72,7 @@ begin
     begin
       pretty_json AdrestiaBundler::Install.return_versions
     rescue StandardError => e
-      STDERR.puts "NOT INSTALLED? Run adrestia-bundle install."
+      STDERR.puts "NOT INSTALLED? Run cardano-up install."
       STDERR.puts e
     end
     exit 1
@@ -116,7 +114,7 @@ begin
 
   # INSTALL
   if o['install'] == true
-    release = o['--release']
+    release = o['<release>']
     begin
       STDERR.puts "Installing..."
       versions = AdrestiaBundler::Install.install_bins(release)
@@ -168,15 +166,15 @@ begin
         pretty_json AdrestiaBundler::Start.start_wallet(c)
         STDERR.puts
         STDERR.puts "Congratulations! You've just started cardano-wallet."
-      elsif o['both']
+      elsif o['node-wallet']
         pretty_json AdrestiaBundler::Start.start_node_and_wallet(c)
         STDERR.puts
         STDERR.puts "Congratulations! You've just started cardano-node and cardano-wallet."
       end
     rescue StandardError => e
       STDERR.puts "Either you miss configs or binaries... To fix that try running:"
-      STDERR.puts " $ adrestia-bundle get-configs #{env}"
-      STDERR.puts " $ adrestia-bundle install"
+      STDERR.puts " $ cardano-up get-configs #{env}"
+      STDERR.puts " $ cardano-up install"
       STDERR.puts e
       exit 1
     end
@@ -191,7 +189,7 @@ begin
         AdrestiaBundler::Start.stop_node(env)
       elsif o['wallet']
         AdrestiaBundler::Start.stop_wallet(env)
-      elsif o['both']
+      elsif o['node-wallet']
         AdrestiaBundler::Start.stop_node_and_wallet(env)
       end
       STDERR.puts "Stopped."
