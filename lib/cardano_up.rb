@@ -6,11 +6,11 @@ require 'rubygems/package'
 require 'zlib'
 require 'zip'
 
-require "adrestia_bundler/version"
-require "adrestia_bundler/utils"
-require "adrestia_bundler/tar"
-require "adrestia_bundler/install"
-require "adrestia_bundler/start"
+require "cardano_up/version"
+require "cardano_up/utils"
+require "cardano_up/tar"
+require "cardano_up/install"
+require "cardano_up/start"
 
 module AdrestiaBundler
   CONFIGS_BASE_URL = 'https://book.world.dev.cardano.org/environments'

@@ -1,5 +1,5 @@
 require 'bundler/setup'
-require 'adrestia_bundler'
+require 'cardano_up'
 require 'tmpdir'
 
 RSpec.configure do |config|

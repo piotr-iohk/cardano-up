@@ -1,7 +1,7 @@
-require_relative 'lib/adrestia_bundler/version'
+require_relative 'lib/cardano_up/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "cardano-up"
+  spec.name          = "cardano_up"
   spec.version       = AdrestiaBundler::VERSION
   spec.authors       = ["Piotr Stachyra"]
   spec.email         = ["piotr.stachyra@gmail.com"]
