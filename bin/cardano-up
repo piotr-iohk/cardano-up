@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
-require 'adrestia_bundler'
-# require_relative '../lib/adrestia_bundler'
+require 'cardano_up'
 require 'docopt'
 
 doc = <<DOCOPT

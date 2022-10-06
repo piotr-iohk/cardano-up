@@ -1,4 +1,4 @@
-module AdrestiaBundler
+module CardanoUp
   module Tar
     # unzip file to destination directory
     def self.unzip(file, destination)

@@ -1,3 +1,3 @@
-module AdrestiaBundler
+module CardanoUp
   VERSION = "0.1.0"
 end

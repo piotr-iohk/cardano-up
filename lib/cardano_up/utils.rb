@@ -1,4 +1,4 @@
-module AdrestiaBundler
+module CardanoUp
   module Utils
     def self.cmd(cmd, display_result = false)
       cmd.gsub(/\s+/, ' ')
@@ -27,17 +27,17 @@ module AdrestiaBundler
     end
 
     def self.get_latest_tag
-      HTTParty.get("#{AdrestiaBundler::BINS_BASE_URL}/releases/latest",
+      HTTParty.get("#{CardanoUp::BINS_BASE_URL}/releases/latest",
                    headers: { 'Accept' => 'application/json' })['tag_name']
     end
 
     ##
     # Latest binary url for latest release or particular tag, from master or pr num.
     # @param release [String] - 'latest' | /^v20.{2}-.{2}-.{2}/ | 'master' | '3341'
-    # @raises AdrestiaBundler::VersionNotSupportedError
+    # @raises CardanoUp::VersionNotSupportedError
     def self.get_binary_url(release = 'latest')
       unless (release == 'master' || release == 'latest' || release =~ /^v20.{2}-.{2}-.{2}/ || release =~ /^\d+$/)
-        raise AdrestiaBundler::VersionNotSupportedError, release
+        raise CardanoUp::VersionNotSupportedError, release
       end
       url = ''
       if (release == 'latest' || release =~ /^v20.{2}-.{2}-.{2}/)
@@ -49,7 +49,7 @@ module AdrestiaBundler
         elsif is_win?
           file = "cardano-wallet-#{tag}-win64.zip"
         end
-        url = "#{AdrestiaBundler::BINS_BASE_URL}/releases/download/#{tag}/#{file}"
+        url = "#{CardanoUp::BINS_BASE_URL}/releases/download/#{tag}/#{file}"
       else
         if is_linux?
           os = "linux.musl.cardano-wallet-linux64"
@@ -60,9 +60,9 @@ module AdrestiaBundler
         end
 
         if (release == 'master')
-          url = "#{AdrestiaBundler::HYDRA_BASE_URL}/#{os}/latest/download-by-type/file/binary-dist"
+          url = "#{CardanoUp::HYDRA_BASE_URL}/#{os}/latest/download-by-type/file/binary-dist"
         else
-          url = "#{AdrestiaBundler::HYDRA_BASE_URL}-pr-#{release}/#{os}/latest/download-by-type/file/binary-dist"
+          url = "#{CardanoUp::HYDRA_BASE_URL}-pr-#{release}/#{os}/latest/download-by-type/file/binary-dist"
         end
       end
       url
@@ -70,23 +70,23 @@ module AdrestiaBundler
 
     ##
     # Latest Cardano configs
-    # @raises AdrestiaBundler::EnvNotSupportedError
+    # @raises CardanoUp::EnvNotSupportedError
     def self.get_configs_base_url(env)
-      unless AdrestiaBundler::ENVS.include?(env)
-        raise AdrestiaBundler::EnvNotSupportedError.new(env)
+      unless CardanoUp::ENVS.include?(env)
+        raise CardanoUp::EnvNotSupportedError.new(env)
       else
-        "#{AdrestiaBundler::CONFIGS_BASE_URL}/#{env}/"
+        "#{CardanoUp::CONFIGS_BASE_URL}/#{env}/"
       end
     end
 
-    # @raises AdrestiaBundler::EnvNotSupportedError
+    # @raises CardanoUp::EnvNotSupportedError
     def self.get_config_urls(env)
-      unless AdrestiaBundler::ENVS.include?(env)
-        raise AdrestiaBundler::EnvNotSupportedError.new(env)
+      unless CardanoUp::ENVS.include?(env)
+        raise CardanoUp::EnvNotSupportedError.new(env)
       else
         base_url = get_configs_base_url(env)
         configs = []
-        AdrestiaBundler::CONFIG_FILES.each do |file|
+        CardanoUp::CONFIG_FILES.each do |file|
           configs << "#{base_url}#{file}"
         end
       end

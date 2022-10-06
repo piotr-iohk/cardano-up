@@ -1,4 +1,4 @@
-module AdrestiaBundler
+module CardanoUp
   ##
   # Start cardano-node and cardano-wallet on your system.
   #
@@ -19,17 +19,17 @@ module AdrestiaBundler
   module Start
     # Prepare configuration for wallet and node to be started
     # @param env [Hash] provide env and wallet_port, e.g. { env: 'mainnet', wallet_port: '8090' }
-    # @raises AdrestiaBundler::EnvNotSupportedError
-    # @raises AdrestiaBundler::WalletPortError
+    # @raises CardanoUp::EnvNotSupportedError
+    # @raises CardanoUp::WalletPortError
     def self.prepare_configuration(opt = { env: 'mainnet', wallet_port: '8090' })
       env = opt[:env]
-      raise AdrestiaBundler::EnvNotSupportedError.new(env) unless AdrestiaBundler::ENVS.include? env
+      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include? env
       wallet_port = opt[:wallet_port]
-      raise AdrestiaBundler::WalletPortError if (wallet_port.nil? || wallet_port.empty?)
-      token_metadata_server = (env == 'mainnet') ? AdrestiaBundler::MAINNET_TOKEN_SERVER : AdrestiaBundler::TESTNET_TOKEN_SERVER
+      raise CardanoUp::WalletPortError if (wallet_port.nil? || wallet_port.empty?)
+      token_metadata_server = (env == 'mainnet') ? CardanoUp::MAINNET_TOKEN_SERVER : CardanoUp::TESTNET_TOKEN_SERVER
 
-      AdrestiaBundler.configure_default unless AdrestiaBundler.configured?
-      configs = AdrestiaBundler.get_config
+      CardanoUp.configure_default unless CardanoUp.configured?
+      configs = CardanoUp.get_config
       bin_dir = configs['bin_dir']
       config_dir = File.join(configs['config_dir'], env)
       log_dir = File.join(configs['log_dir'], env)
@@ -40,7 +40,7 @@ module AdrestiaBundler
         FileUtils.mkdir_p(dir)
       end
 
-      if AdrestiaBundler::Utils.is_win?
+      if CardanoUp::Utils.is_win?
         node_socket = "\\\\.\\pipe\\cardano-node-#{env}"
       else
         node_socket = File.join(state_dir, 'node.socket')
@@ -73,10 +73,10 @@ module AdrestiaBundler
       node_socket = configuration[:node_socket]
       network = configuration[:network]
 
-      exe = AdrestiaBundler::Utils.is_win? ? '.exe' : ''
-      version = AdrestiaBundler::Utils.cmd "#{bin_dir}/cardano-node#{exe} version"
+      exe = CardanoUp::Utils.is_win? ? '.exe' : ''
+      version = CardanoUp::Utils.cmd "#{bin_dir}/cardano-node#{exe} version"
 
-      if AdrestiaBundler::Utils.is_win?
+      if CardanoUp::Utils.is_win?
         # Turn off p2p for Windows
         # TODO: remove after https://github.com/input-output-hk/ouroboros-network/issues/3968 released
         config_win = JSON.parse(File.read("#{config_dir}/config.json"))
@@ -108,14 +108,14 @@ module AdrestiaBundler
         log_stderr_node = "nssm set #{node_service} AppStderr #{log_dir}/node.log"
         start_node = "nssm start #{node_service}"
 
-        AdrestiaBundler::Utils.cmd install_node
-        AdrestiaBundler::Utils.cmd log_stdout_node
-        AdrestiaBundler::Utils.cmd log_stderr_node
-        AdrestiaBundler::Utils.cmd start_node
+        CardanoUp::Utils.cmd install_node
+        CardanoUp::Utils.cmd log_stdout_node
+        CardanoUp::Utils.cmd log_stderr_node
+        CardanoUp::Utils.cmd start_node
       else
         node_cmd = "#{bin_dir}/cardano-node run --config #{config_dir}/config.json --topology #{config_dir}/topology.json --database-path #{node_db_dir} --socket-path #{node_socket}"
         node_service = "NODE_#{env}"
-        AdrestiaBundler::Utils.cmd "screen -dmS #{node_service} -L -Logfile #{log_dir}/node.log #{node_cmd}"
+        CardanoUp::Utils.cmd "screen -dmS #{node_service} -L -Logfile #{log_dir}/node.log #{node_cmd}"
       end
 
       {
@@ -145,10 +145,10 @@ module AdrestiaBundler
       node_socket = configuration[:node_socket]
       network = configuration[:network]
 
-      exe = AdrestiaBundler::Utils.is_win? ? '.exe' : ''
-      version = AdrestiaBundler::Utils.cmd "#{bin_dir}/cardano-wallet#{exe} version"
+      exe = CardanoUp::Utils.is_win? ? '.exe' : ''
+      version = CardanoUp::Utils.cmd "#{bin_dir}/cardano-wallet#{exe} version"
 
-      if AdrestiaBundler::Utils.is_win?
+      if CardanoUp::Utils.is_win?
 
         # create cardano-wallet.bat file
         wallet_cmd = "#{bin_dir}/cardano-wallet.exe serve --port #{wallet_port} --node-socket #{node_socket} #{network} --database #{wallet_db_dir} --token-metadata-server #{token_metadata_server}"
@@ -161,14 +161,14 @@ module AdrestiaBundler
         log_stderr_wallet = "nssm set #{wallet_service} AppStderr #{log_dir}/wallet.log"
         start_wallet = "nssm start #{wallet_service}"
 
-        AdrestiaBundler::Utils.cmd install_wallet
-        AdrestiaBundler::Utils.cmd log_stdout_wallet
-        AdrestiaBundler::Utils.cmd log_stderr_wallet
-        AdrestiaBundler::Utils.cmd start_wallet
+        CardanoUp::Utils.cmd install_wallet
+        CardanoUp::Utils.cmd log_stdout_wallet
+        CardanoUp::Utils.cmd log_stderr_wallet
+        CardanoUp::Utils.cmd start_wallet
       else
         wallet_cmd = "#{bin_dir}/cardano-wallet serve --port #{wallet_port} --node-socket #{node_socket} #{network} --database #{wallet_db_dir} --token-metadata-server #{token_metadata_server}"
         wallet_service = "WALLET_#{env}"
-        AdrestiaBundler::Utils.cmd "screen -dmS #{wallet_service} -L -Logfile #{log_dir}/wallet.log #{wallet_cmd}"
+        CardanoUp::Utils.cmd "screen -dmS #{wallet_service} -L -Logfile #{log_dir}/wallet.log #{wallet_cmd}"
       end
 
       {
@@ -191,15 +191,15 @@ module AdrestiaBundler
       cn.merge(cw)
     end
 
-    # @raises AdrestiaBundler::EnvNotSupportedError
+    # @raises CardanoUp::EnvNotSupportedError
     def self.stop_node(env)
-      raise AdrestiaBundler::EnvNotSupportedError.new(env) unless AdrestiaBundler::ENVS.include? env
-      if AdrestiaBundler::Utils.is_win?
-        AdrestiaBundler::Utils.cmd "nssm stop cardano-node-#{env}"
-        AdrestiaBundler::Utils.cmd "nssm remove cardano-node-#{env} confirm"
+      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include? env
+      if CardanoUp::Utils.is_win?
+        CardanoUp::Utils.cmd "nssm stop cardano-node-#{env}"
+        CardanoUp::Utils.cmd "nssm remove cardano-node-#{env} confirm"
       else
-        AdrestiaBundler::Utils.cmd "screen -S NODE_#{env} -X at '0' stuff '^C'"
-        AdrestiaBundler::Utils.cmd "screen -XS NODE_#{env} quit"
+        CardanoUp::Utils.cmd "screen -S NODE_#{env} -X at '0' stuff '^C'"
+        CardanoUp::Utils.cmd "screen -XS NODE_#{env} quit"
         # puts "⚠️ NOTE! It seems that screen is not able to kill cardano-node properly. ⚠️"
         # puts "Run: "
         # puts "  $ screen -r NODE_#{env}"
@@ -207,18 +207,18 @@ module AdrestiaBundler
       end
     end
 
-    # @raises AdrestiaBundler::EnvNotSupportedError
+    # @raises CardanoUp::EnvNotSupportedError
     def self.stop_wallet(env)
-      raise AdrestiaBundler::EnvNotSupportedError.new(env) unless AdrestiaBundler::ENVS.include? env
-      if AdrestiaBundler::Utils.is_win?
-        AdrestiaBundler::Utils.cmd "nssm stop cardano-wallet-#{env}"
-        AdrestiaBundler::Utils.cmd "nssm remove cardano-wallet-#{env} confirm"
+      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include? env
+      if CardanoUp::Utils.is_win?
+        CardanoUp::Utils.cmd "nssm stop cardano-wallet-#{env}"
+        CardanoUp::Utils.cmd "nssm remove cardano-wallet-#{env} confirm"
       else
-        AdrestiaBundler::Utils.cmd "screen -XS WALLET_#{env} quit"
+        CardanoUp::Utils.cmd "screen -XS WALLET_#{env} quit"
       end
     end
 
-    # @raises AdrestiaBundler::EnvNotSupportedError
+    # @raises CardanoUp::EnvNotSupportedError
     def self.stop_node_and_wallet(env)
       stop_wallet(env)
       stop_node(env)

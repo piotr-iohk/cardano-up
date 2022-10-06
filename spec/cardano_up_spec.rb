@@ -1,41 +1,41 @@
-RSpec.describe AdrestiaBundler do
+RSpec.describe CardanoUp do
   it "has a version number" do
-    expect(AdrestiaBundler::VERSION).not_to be nil
+    expect(CardanoUp::VERSION).not_to be nil
   end
 
   describe "Configuration" do
     before(:all) do
-      AdrestiaBundler.base_dir = Dir.mktmpdir
-      AdrestiaBundler.adrestia_bundler_config = File.join(AdrestiaBundler.base_dir,
+      CardanoUp.base_dir = Dir.mktmpdir
+      CardanoUp.adrestia_bundler_config = File.join(CardanoUp.base_dir,
                                                           'adrestia-bundler-test.json')
     end
 
     after(:each) do
-      AdrestiaBundler.remove_configuration
+      CardanoUp.remove_configuration
     end
 
     it "can configure default" do
-      expect(AdrestiaBundler.configured?).to eq false
-      config = AdrestiaBundler.configure_default
-      expect(AdrestiaBundler.configured?).to eq true
-      config_got = AdrestiaBundler.get_config
+      expect(CardanoUp.configured?).to eq false
+      config = CardanoUp.configure_default
+      expect(CardanoUp.configured?).to eq true
+      config_got = CardanoUp.get_config
       expect(config).to include('state_dir', 'log_dir', 'bin_dir', 'config_dir')
       expect(config).to eq config_got
     end
 
     it "can configure explicitly" do
-      expect(AdrestiaBundler.configured?).to eq false
-      config = AdrestiaBundler.configure('/bins', '/state', '/logs', '/configs')
-      expect(AdrestiaBundler.configured?).to eq true
-      config_got = AdrestiaBundler.get_config
+      expect(CardanoUp.configured?).to eq false
+      config = CardanoUp.configure('/bins', '/state', '/logs', '/configs')
+      expect(CardanoUp.configured?).to eq true
+      config_got = CardanoUp.get_config
       expect(config).to eq({ 'bin_dir' => '/bins', 'state_dir' => '/state',
                            'log_dir' => '/logs', 'config_dir' => '/configs' })
       expect(config).to eq config_got
     end
 
     it "raise error when not configured" do
-      expect(AdrestiaBundler.configured?).to eq false
-      expect { AdrestiaBundler.get_config }.to raise_error AdrestiaBundler::ConfigNotSetError,
+      expect(CardanoUp.configured?).to eq false
+      expect { CardanoUp.get_config }.to raise_error CardanoUp::ConfigNotSetError,
                                                            /Config not exists/
     end
   end

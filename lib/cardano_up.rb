@@ -12,7 +12,7 @@ require "cardano_up/tar"
 require "cardano_up/install"
 require "cardano_up/start"
 
-module AdrestiaBundler
+module CardanoUp
   CONFIGS_BASE_URL = 'https://book.world.dev.cardano.org/environments'
   BINS_BASE_URL = 'https://github.com/input-output-hk/cardano-wallet'
   HYDRA_BASE_URL = 'https://hydra.iohk.io/job/Cardano/cardano-wallet'
@@ -48,12 +48,12 @@ module AdrestiaBundler
     @@adrestia_bundler_config = value
   end
 
-  # Check if AdrestiaBundler config exists
+  # Check if CardanoUp config exists
   def self.configured?
     File.exists?(@@adrestia_bundler_config)
   end
 
-  # Set default config for AdrestiaBundler
+  # Set default config for CardanoUp
   def self.configure_default
     configure(File.join(@@base_dir, 'bins'),
               File.join(@@base_dir, 'state'),
@@ -61,11 +61,11 @@ module AdrestiaBundler
               File.join(@@base_dir, 'configs'))
   end
 
-  # Set custom config for AdrestiaBundler
+  # Set custom config for CardanoUp
   def self.configure(bin_dir, state_dir, logs_dir, config_dir)
     FileUtils.mkdir_p(@@base_dir)
     if configured?
-      c = AdrestiaBundler.get_config
+      c = CardanoUp.get_config
     else
       c = { 'bin_dir' => File.join(@@base_dir, 'bins'),
              'state_dir' => File.join(@@base_dir, 'state'),
@@ -83,7 +83,7 @@ module AdrestiaBundler
 
   # Get config values
   def self.get_config
-    raise AdrestiaBundler::ConfigNotSetError unless configured?
+    raise CardanoUp::ConfigNotSetError unless configured?
     JSON.parse(File.read(@@adrestia_bundler_config))
   end
 
@@ -102,7 +102,7 @@ module AdrestiaBundler
 
   class ConfigNotSetError < StandardError
     def initialize
-      super("Config not exists at '#{AdrestiaBundler::adrestia_bundler_config}'!")
+      super("Config not exists at '#{CardanoUp::adrestia_bundler_config}'!")
     end
   end
 

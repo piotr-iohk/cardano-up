@@ -1,44 +1,44 @@
-RSpec.describe AdrestiaBundler::Start do
+RSpec.describe CardanoUp::Start do
 
   before(:all) do
-    AdrestiaBundler.base_dir = Dir.mktmpdir
-    AdrestiaBundler.adrestia_bundler_config = File.join(AdrestiaBundler.base_dir,
+    CardanoUp.base_dir = Dir.mktmpdir
+    CardanoUp.adrestia_bundler_config = File.join(CardanoUp.base_dir,
                                                         'adrestia-bundler-test.json')
-    AdrestiaBundler.configure_default
+    CardanoUp.configure_default
   end
 
   after(:all) do
-    AdrestiaBundler.remove_configuration
+    CardanoUp.remove_configuration
   end
 
   it "raise on prepare_configuration when no port" do
     expect do
-      AdrestiaBundler::Start.prepare_configuration({ env: 'mainnet' })
-    end.to raise_error AdrestiaBundler::WalletPortError, /Wallet port is not set/
+      CardanoUp::Start.prepare_configuration({ env: 'mainnet' })
+    end.to raise_error CardanoUp::WalletPortError, /Wallet port is not set/
   end
 
   it "raise on prepare_configuration when env not set" do
     expect do
-      AdrestiaBundler::Start.prepare_configuration({ wallet_port: '8090' })
-    end.to raise_error AdrestiaBundler::EnvNotSupportedError, /not supported/
+      CardanoUp::Start.prepare_configuration({ wallet_port: '8090' })
+    end.to raise_error CardanoUp::EnvNotSupportedError, /not supported/
   end
 
   it "raise on stop_node when wrong env" do
     expect do
-      AdrestiaBundler::Start.stop_node('env')
-    end.to raise_error AdrestiaBundler::EnvNotSupportedError, /not supported/
+      CardanoUp::Start.stop_node('env')
+    end.to raise_error CardanoUp::EnvNotSupportedError, /not supported/
   end
 
   it "raise on stop_wallet when wrong env" do
     expect do
-      AdrestiaBundler::Start.stop_wallet('env')
-    end.to raise_error AdrestiaBundler::EnvNotSupportedError, /not supported/
+      CardanoUp::Start.stop_wallet('env')
+    end.to raise_error CardanoUp::EnvNotSupportedError, /not supported/
   end
 
   it "raise on stop_node_and_wallet when wrong env" do
     expect do
-      AdrestiaBundler::Start.stop_node_and_wallet('env')
-    end.to raise_error AdrestiaBundler::EnvNotSupportedError, /not supported/
+      CardanoUp::Start.stop_node_and_wallet('env')
+    end.to raise_error CardanoUp::EnvNotSupportedError, /not supported/
   end
 
 end
