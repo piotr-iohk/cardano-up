@@ -87,7 +87,7 @@ module CardanoUp
         topology = %({
               "Producers": [
                 {
-                  "addr": "#{network}-node.world.dev.cardano.org",
+                  "addr": "#{env}-node.world.dev.cardano.org",
                   "port": 30002,
                   "valency": 2
                 }
