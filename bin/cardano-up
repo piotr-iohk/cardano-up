@@ -60,16 +60,16 @@ def pretty_json(c)
 end
 
 begin
-  AdrestiaBundler.configure_default unless AdrestiaBundler.configured?
+  CardanoUp.configure_default unless CardanoUp.configured?
   o = Docopt::docopt(doc)
   # pretty_json(o)
 
   # VERSION
   if o['--version'] == true
-    STDERR.puts "Adrestia Bundler: #{AdrestiaBundler::VERSION}"
+    STDERR.puts "Adrestia Bundler: #{CardanoUp::VERSION}"
     STDERR.puts
     begin
-      pretty_json AdrestiaBundler::Install.return_versions
+      pretty_json CardanoUp::Install.return_versions
     rescue StandardError => e
       STDERR.puts "NOT INSTALLED? Run cardano-up install."
       STDERR.puts e
@@ -79,33 +79,33 @@ begin
 
   # CONFIG
   if o['config'] == true
-    c = AdrestiaBundler.get_config
+    c = CardanoUp.get_config
     if o['--set-default'] == true
-      c = AdrestiaBundler.configure_default
+      c = CardanoUp.configure_default
       STDERR.puts "Configs set to default!"
     end
     if o['--installdir']
       installdir = o['--installdir']
-      c = AdrestiaBundler.configure(installdir, nil, nil, nil)
+      c = CardanoUp.configure(installdir, nil, nil, nil)
       STDERR.puts "Installdir updated!"
     end
     if o['--statedir']
       statedir = o['--statedir']
-      c = AdrestiaBundler.configure(nil, statedir, nil, nil)
+      c = CardanoUp.configure(nil, statedir, nil, nil)
       STDERR.puts "Statedir updated!"
     end
     if o['--logdir']
       logdir = o['--logdir']
-      c = AdrestiaBundler.configure(nil, nil, logdir, nil)
+      c = CardanoUp.configure(nil, nil, logdir, nil)
       STDERR.puts "Logdir updated!"
     end
     if o['--configdir']
       configdir = o['--configdir']
-      c = AdrestiaBundler.configure(nil, nil, nil, configdir)
+      c = CardanoUp.configure(nil, nil, nil, configdir)
       STDERR.puts "Configdir updated!"
     end
 
-    STDERR.puts "Your config file is #{AdrestiaBundler.adrestia_bundler_config}:"
+    STDERR.puts "Your config file is #{CardanoUp.adrestia_bundler_config}:"
     STDERR.puts
     pretty_json(c)
     exit
@@ -116,13 +116,13 @@ begin
     release = o['<release>']
     begin
       STDERR.puts "Installing..."
-      versions = AdrestiaBundler::Install.install_bins(release)
-    rescue AdrestiaBundler::VersionNotSupportedError => err3
+      versions = CardanoUp::Install.install_bins(release)
+    rescue CardanoUp::VersionNotSupportedError => err3
       STDERR.puts(err3.message)
       exit 1
     end
     STDERR.puts "Installed '#{release}' release of cardano-wallet bundle."
-    STDERR.puts "Install dir: #{AdrestiaBundler.get_config['bin_dir']}"
+    STDERR.puts "Install dir: #{CardanoUp.get_config['bin_dir']}"
     STDERR.puts
     pretty_json(versions)
     exit
@@ -132,13 +132,13 @@ begin
   if o['get-configs'] == true
     env = o['<env>']
     begin
-      configs = AdrestiaBundler::Install.install_configs(env)
-    rescue AdrestiaBundler::EnvNotSupportedError => err2
+      configs = CardanoUp::Install.install_configs(env)
+    rescue CardanoUp::EnvNotSupportedError => err2
       STDERR.puts(err2.message)
       exit 1
     end
     STDERR.puts "Downloaded configs for '#{env}' environment."
-    STDERR.puts "Config dir: #{File.join(AdrestiaBundler.get_config['config_dir'], env)}"
+    STDERR.puts "Config dir: #{File.join(CardanoUp.get_config['config_dir'], env)}"
     puts
     pretty_json(configs)
     exit
@@ -151,22 +151,22 @@ begin
     port = o['--port']
 
     begin
-      c = AdrestiaBundler::Start.prepare_configuration({ env: env, wallet_port: port })
-    rescue AdrestiaBundler::EnvNotSupportedError => err2
+      c = CardanoUp::Start.prepare_configuration({ env: env, wallet_port: port })
+    rescue CardanoUp::EnvNotSupportedError => err2
       STDERR.puts(err2.message)
       exit 1
     end
     begin
       if o['node']
-        pretty_json AdrestiaBundler::Start.start_node(c)
+        pretty_json CardanoUp::Start.start_node(c)
         STDERR.puts
         STDERR.puts "Congratulations! You've just started cardano-node."
       elsif o['wallet']
-        pretty_json AdrestiaBundler::Start.start_wallet(c)
+        pretty_json CardanoUp::Start.start_wallet(c)
         STDERR.puts
         STDERR.puts "Congratulations! You've just started cardano-wallet."
       elsif o['node-wallet']
-        pretty_json AdrestiaBundler::Start.start_node_and_wallet(c)
+        pretty_json CardanoUp::Start.start_node_and_wallet(c)
         STDERR.puts
         STDERR.puts "Congratulations! You've just started cardano-node and cardano-wallet."
       end
@@ -185,14 +185,14 @@ begin
 
     begin
       if o['node']
-        AdrestiaBundler::Start.stop_node(env)
+        CardanoUp::Start.stop_node(env)
       elsif o['wallet']
-        AdrestiaBundler::Start.stop_wallet(env)
+        CardanoUp::Start.stop_wallet(env)
       elsif o['node-wallet']
-        AdrestiaBundler::Start.stop_node_and_wallet(env)
+        CardanoUp::Start.stop_node_and_wallet(env)
       end
       STDERR.puts "Stopped."
-    rescue AdrestiaBundler::EnvNotSupportedError => err2
+    rescue CardanoUp::EnvNotSupportedError => err2
       STDERR.puts(err2.message)
       exit 1
 
