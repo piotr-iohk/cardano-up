@@ -213,6 +213,7 @@ module CardanoUp
         CardanoUp::Utils.cmd "nssm stop cardano-wallet-#{env}"
         CardanoUp::Utils.cmd "nssm remove cardano-wallet-#{env} confirm"
       else
+        CardanoUp::Utils.cmd "screen -S WALLET_#{env} -X at '0' stuff '^C'"
         CardanoUp::Utils.cmd "screen -XS WALLET_#{env} quit"
       end
     end
