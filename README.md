@@ -18,42 +18,13 @@ This Ruby gem provides easy way for:
 
 ## Usage
 
-It only takes single command to start node and wallet on your system. Fancy `mainnet`?
+It only takes a single command to start node and wallet on your system. Say, on `mainnet`?
 
     $ cardano-up mainnet node-wallet up
 
-    Configs: installing configs for mainnet... Ok.
-    Binaries: installing latest release binaries... Ok.
+That's it! 🎉 
 
-    Starting...
-
-    {
-      "node": {
-        "service": "NODE_mainnet",
-        "version": "cardano-node 1.35.3 - linux-x86_64 - ghc-8.10git rev 950c4e222086fed5ca53564e642434ce9307b0b9",
-        "log": "/home/piotr/.cardano-up/logs/mainnet/node.log",
-        "db_dir": "/home/piotr/.cardano-up/state/mainnet/node-db",
-        "socket_path": "/home/piotr/.cardano-up/state/mainnet/node.socket",
-        "protocol_magic": 764824073,
-        "network": "mainnet",
-        "bin": "/home/piotr/.cardano-up/bins/cardano-node",
-        "cmd": "/home/piotr/.cardano-up/bins/cardano-node run --config /home/piotr/.cardano-up/configs/mainnet/config.json --topology /home/piotr/.cardano-up/configs/mainnet/topology.json --database-path /home/piotr/.cardano-up/state/mainnet/node-db --socket-path /home/piotr/.cardano-up/state/mainnet/node.socket"
-      },
-      "wallet": {
-        "service": "WALLET_mainnet",
-        "version": "v2022-10-06 (git revision: 2130fe0acf19fa218cef8de4ef325ae9078e356e)",
-        "log": "/home/piotr/.cardano-up/logs/mainnet/wallet.log",
-        "db_dir": "/home/piotr/.cardano-up/state/mainnet/wallet-db",
-        "port": 8090,
-        "host": "http://localhost:8090/v2",
-        "bin": "/home/piotr/.cardano-up/bins/cardano-wallet",
-        "cmd": "/home/piotr/.cardano-up/bins/cardano-wallet serve --port 8090 --node-socket /home/piotr/.cardano-up/state/mainnet/node.socket --mainnet --database /home/piotr/.cardano-up/state/mainnet/wallet-db --token-metadata-server https://tokens.cardano.org"
-      }
-    }
-
-    Congratulations! You've just started cardano-node and cardano-wallet!
-
-That's it! 🎉
+If any configs are missing cardano-up will download them. If any binaries are missing cardano-up will get ones from latest release.
 
 Call `$ cardano-up --help` to explore more options.
 
