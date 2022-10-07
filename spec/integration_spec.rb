@@ -1,9 +1,9 @@
 RSpec.describe "Integration", :e2e, :integration do
 
-  before(:all) do
+  before(:each) do
     CardanoUp.base_dir = Dir.mktmpdir
     CardanoUp.adrestia_bundler_config = File.join(CardanoUp.base_dir,
-                                                        'adrestia-bundler-test.json')
+                                                        '.cardano-test.json')
     CardanoUp.configure_default
 
     @env = 'preview'
@@ -14,7 +14,7 @@ RSpec.describe "Integration", :e2e, :integration do
     CardanoUp::Install.install_bins('latest')
   end
 
-  after(:all) do
+  after(:each) do
     CardanoUp.remove_configuration
   end
 
