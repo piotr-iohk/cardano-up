@@ -22,7 +22,7 @@ It only takes a single command to start node and wallet on your system. Say, on 
 
     $ cardano-up mainnet node-wallet up
 
-That's it! 🎉 
+That's it! 🎉
 
 If any configs are missing cardano-up will download them. If any binaries are missing cardano-up will get ones from latest release.
 
@@ -33,7 +33,7 @@ TODO
 
 ## How it works
 
-**Configurations** are downloaded from [Cardano Book](https://book.world.dev.cardano.org/environments.html).
+**Configurations** for the networks are downloaded from [Cardano Book](https://book.world.dev.cardano.org/environments.html).
 
 **Binaries** come from [cardano-wallet](https://github.com/input-output-hk/cardano-wallet) which actually provides `cardano-node`, `cardano-cli`, `cardano-wallet`, `cardano-addresses` and `bech32` tools in each of its release bundles. This ensures that all components are compatible and work smoothly together. You can get any public release of the cardano-wallet bundle as well as `master` version and even any of the PRs that are currently being worked on.
 
@@ -52,6 +52,8 @@ In case of Windows it will attempt to install cardano-node and cardano-wallet as
     $ choco install nssm
 
 > :warning: nssm requires administrator permissions to register Windows services, therefore you need to start your cmd as an administrator.
+
+By default cardano-up keeps all files at `$HOME/.cardano-up/` however this can be configured by editing `$HOME/.cardano-up/.cardano-up.json` directly or via `config` sub-command. One can check the contents of this internal config file by calling `$ cardano-up config`. 
 
 ## License
 
