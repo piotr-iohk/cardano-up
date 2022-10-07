@@ -1,7 +1,4 @@
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in adrestia_bundler.gemspec
+# Specify your gem's dependencies in cardano-up.gemspec
 gemspec
-
-gem "rake", "~> 12.0"
-gem "rspec", "~> 3.0"

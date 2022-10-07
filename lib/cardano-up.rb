@@ -1,19 +1,19 @@
+require 'rubygems'
+require 'rubygems/package'
 require 'httparty'
 require 'fileutils'
 require 'file-tail'
 require 'json'
-require 'rubygems'
-require 'rubygems/package'
 require 'zlib'
 require 'zip'
 
-require "cardano_up/version"
-require "cardano_up/err"
-require "cardano_up/utils"
-require "cardano_up/tar"
-require "cardano_up/install"
-require "cardano_up/start"
-require "cardano_up/tail"
+require "cardano-up/version"
+require "cardano-up/err"
+require "cardano-up/utils"
+require "cardano-up/tar"
+require "cardano-up/install"
+require "cardano-up/start"
+require "cardano-up/tail"
 
 module CardanoUp
   CONFIGS_BASE_URL = 'https://book.world.dev.cardano.org/environments'

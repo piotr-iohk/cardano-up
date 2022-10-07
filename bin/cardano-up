@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'cardano_up'
+require 'cardano-up'
 require 'docopt'
 
 doc = <<DOCOPT
@@ -17,16 +17,18 @@ Usage:
   #{File.basename(__FILE__)} -h | --help
 
 Options:
-  install                 Install cardano-wallet bundle.
+  install                 Install cardano-node, cardano-cli, cardano-wallet, cardano-addresses and bech32.
   <release>               latest | release tag | master | pr num [default: latest]
-  get-configs             Get configs for particular Cardano env.
+  get-configs             Get configs for particular Cardano environment.
   <env>                   mainnet | preview | preprod etc.
-  start                   Start particular service.
+  start                   Start particular service. If any configs are missing #{File.basename(__FILE__)}
+                          will download them. If any binaries are missing #{File.basename(__FILE__)} will get
+                          ones from latest release.
   stop                    Stop particular service.
   tail                    Follow logs for particular service.
   --port <port>           Specify wallet port. [default: 8090]
 
-  config                  See or set config at $HOME/.cardano-up.json.
+  config                  Internal config for #{File.basename(__FILE__)}
   --set-default           Overwrite config with default values.
   --bindir <path>         Set bin dir.
   --configdir <path>      Set config dir.

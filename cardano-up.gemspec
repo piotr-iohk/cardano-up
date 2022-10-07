@@ -1,12 +1,12 @@
-require_relative 'lib/cardano_up/version'
+require_relative 'lib/cardano-up/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "cardano_up"
+  spec.name          = "cardano-up"
   spec.version       = CardanoUp::VERSION
   spec.authors       = ["Piotr Stachyra"]
   spec.email         = ["piotr.stachyra@gmail.com"]
 
-  spec.summary       = 'Get Cardano tools on your system in no time!'
+  spec.summary       = 'Lightweight manager for Cardano binaries and configs.'
   spec.description   = 'Cardano Up lets you get all essential Cardano
                         tools on your system: cardano-node, cardano-cli, cardano-wallet,
                         cardano-addresses and bech32. Then easily manage configuration
@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'httparty', '0.20.0'
   spec.add_runtime_dependency 'rubyzip', '2.3.2'
   spec.add_runtime_dependency 'docopt', '0.6.1'
+  spec.add_runtime_dependency 'file-tail', '1.2.0'
 
   spec.add_development_dependency 'rake', '~> 12.3'
   spec.add_development_dependency 'rspec', '~> 3.11'
