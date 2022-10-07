@@ -92,7 +92,7 @@
 
 <h2 id="label-How+it+works">How it works</h2>
 
-<p><strong>Configurations</strong> are downloaded from <a href="https://book.world.dev.cardano.org/environments.html">Cardano Book</a>.</p>
+<p><strong>Configurations</strong> for the networks are downloaded from <a href="https://book.world.dev.cardano.org/environments.html">Cardano Book</a>.</p>
 
 <p><strong>Binaries</strong> come from <a href="https://github.com/input-output-hk/cardano-wallet">cardano-wallet</a> which actually provides <code>cardano-node</code>, <code>cardano-cli</code>, <code>cardano-wallet</code>, <code>cardano-addresses</code> and <code>bech32</code> tools in each of its release bundles. This ensures that all components are compatible and work smoothly together. You can get any public release of the cardano-wallet bundle as well as <code>master</code> version and even any of the PRs that are currently being worked on.</p>
 
@@ -117,13 +117,15 @@
 <p>:warning: nssm requires administrator permissions to register Windows services, therefore you need to start your cmd as an administrator.</p>
 </blockquote>
 
+<p>By default cardano-up keeps all files at <code>$HOME/.cardano-up/</code> however this can be configured by editing <code>$HOME/.cardano-up/.cardano-up.json</code> directly or via <code>config</code> sub-command. One can check the contents of this internal config file by calling <code>$ cardano-up config</code>.</p>
+
 <h2 id="label-License">License</h2>
 
 <p>The gem is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Fri Oct  7 22:37:35 2022 by
+  Generated on Fri Oct  7 22:52:15 2022 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.28 (ruby-3.1.2).
 </div>
