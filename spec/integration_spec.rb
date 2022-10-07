@@ -23,6 +23,7 @@ RSpec.describe "Integration", :e2e, :integration do
     cli_cmd = "#{bin_dir}/cardano-cli query tip --testnet-magic #{protocol_magic}"
     eventually 'Node is up' do
       res_cli = CardanoUp::Utils.cmd cli_cmd
+      puts res_cli
       res_cli.include?('block')
     end
   end
@@ -32,6 +33,7 @@ RSpec.describe "Integration", :e2e, :integration do
     cli_cmd = "#{bin_dir}/cardano-cli query tip --testnet-magic #{protocol_magic}"
     eventually 'Node is down' do
       res_cli = CardanoUp::Utils.cmd cli_cmd
+      puts res_cli
       !res_cli.include?('block')
     end
   end
@@ -40,6 +42,7 @@ RSpec.describe "Integration", :e2e, :integration do
     wal_cmd = "#{bin_dir}/cardano-wallet network information --port #{wallet_port}"
     eventually 'Wallet is up and connected' do
       res_wal = CardanoUp::Utils.cmd wal_cmd
+      puts res_wal
       res_wal.include?('network_info')
     end
   end
@@ -48,6 +51,7 @@ RSpec.describe "Integration", :e2e, :integration do
     wal_cmd = "#{bin_dir}/cardano-wallet network information --port #{wallet_port}"
     eventually 'Wallet is disconnected' do
       res_wal = CardanoUp::Utils.cmd wal_cmd
+      puts res_wal
       !res_wal.include?('network_info')
     end
   end
