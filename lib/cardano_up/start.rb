@@ -122,12 +122,13 @@ module CardanoUp
         node: {
           service: node_service,
           version: version,
-          cmd: node_cmd,
           log: "#{log_dir}/node.log",
           db_dir: node_db_dir,
           socket_path: node_socket,
           protocol_magic: get_protocol_magic(config_dir),
-          network: env
+          network: env,
+          bin: node_cmd.split.first,
+          cmd: node_cmd
         }
       }
     end
@@ -177,9 +178,10 @@ module CardanoUp
           version: version,
           log: "#{log_dir}/wallet.log",
           db_dir: wallet_db_dir,
-          cmd: wallet_cmd,
           port: wallet_port.to_i,
-          host: "http://localhost:#{wallet_port}/v2"
+          host: "http://localhost:#{wallet_port}/v2",
+          bin: wallet_cmd.split.first,
+          cmd: wallet_cmd
         }
       }
     end
@@ -200,10 +202,6 @@ module CardanoUp
       else
         CardanoUp::Utils.cmd "screen -S NODE_#{env} -X at '0' stuff '^C'"
         CardanoUp::Utils.cmd "screen -XS NODE_#{env} quit"
-        # puts "⚠️ NOTE! It seems that screen is not able to kill cardano-node properly. ⚠️"
-        # puts "Run: "
-        # puts "  $ screen -r NODE_#{env}"
-        # puts "And hit: Ctrl + C"
       end
     end
 

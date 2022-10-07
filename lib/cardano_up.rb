@@ -1,5 +1,6 @@
 require 'httparty'
 require 'fileutils'
+require 'file-tail'
 require 'json'
 require 'rubygems'
 require 'rubygems/package'
@@ -12,6 +13,7 @@ require "cardano_up/utils"
 require "cardano_up/tar"
 require "cardano_up/install"
 require "cardano_up/start"
+require "cardano_up/tail"
 
 module CardanoUp
   CONFIGS_BASE_URL = 'https://book.world.dev.cardano.org/environments'
@@ -25,11 +27,11 @@ module CardanoUp
   TESTNET_TOKEN_SERVER = 'https://metadata.cardano-testnet.iohkdev.io'
   # It is recommended to use default value for {base_dir},
   # however it is possible to modify it with {base_dir=}.
-  @@base_dir = File.join(Dir.home, '.adrestia-bundler')
+  @@base_dir = File.join(Dir.home, '.cardano-up')
 
   # It is recommended to use default value for {adrestia_bundler_config},
   # however it is possible to modify it with {adrestia_bundler_config=}.
-  @@adrestia_bundler_config = File.join(Dir.home, '.adrestia-bundler.json')
+  @@adrestia_bundler_config = File.join(@@base_dir, '.cardano-up.json')
 
   def self.base_dir
     @@base_dir

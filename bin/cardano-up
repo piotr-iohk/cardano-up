@@ -9,21 +9,21 @@ Lightweight manager for Cardano binaries and configs.
 Usage:
   #{File.basename(__FILE__)} install [<release>]
   #{File.basename(__FILE__)} get-configs <env>
-  #{File.basename(__FILE__)} start <env> (node|wallet|node-wallet) [--port <port>]
-  #{File.basename(__FILE__)} stop <env> (node|wallet|node-wallet)
-  #{File.basename(__FILE__)} status
+  #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) start [--port <port>]
+  #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) stop
+  #{File.basename(__FILE__)} <env> (node|wallet) tail
   #{File.basename(__FILE__)} config [--set-default] [--bindir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
   #{File.basename(__FILE__)} -v | --version
-  #{File.basename(__FILE__)} -e | --examples
   #{File.basename(__FILE__)} -h | --help
 
 Options:
   install                 Install cardano-wallet bundle.
   <release>               latest | release tag | master | pr num [default: latest]
   get-configs             Get configs for particular Cardano env.
-  start                   Start wallet and node.
-  stop                    Stop wallet and node.
   <env>                   mainnet | preview | preprod etc.
+  start                   Start particular service.
+  stop                    Stop particular service.
+  tail                    Follow logs for particular service.
   --port <port>           Specify wallet port. [default: 8090]
 
   config                  See or set config at $HOME/.cardano-up.json.
@@ -35,7 +35,6 @@ Options:
 
   -v --version            Check #{File.basename(__FILE__)} version and versions of
                           installed binaries if available.
-  -e --examples           Show some examples.
   -h --help               This help.
 DOCOPT
 
@@ -50,27 +49,6 @@ end
 begin
   CardanoUp.configure_default unless CardanoUp.configured?
   o = Docopt::docopt(doc)
-  # pretty_json(o)
-
-  # EXAMPLES
-  if o['--examples'] == true
-    STDERR.puts %(Examples:
-      Install latest release of cardano-wallet bundle:
-        $ #{File.basename(__FILE__)} install latest
-
-      Get configs for 'preprod' environment:
-        $ #{File.basename(__FILE__)} get-configs preprod
-
-      Start node and wallet on 'preprod':
-        $ #{File.basename(__FILE__)} start preprod node
-        $ #{File.basename(__FILE__)} start preprod wallet
-
-      Check status:
-        $ #{File.basename(__FILE__)} status
-
-      Stop node and wallet on 'preprod':
-        $ #{File.basename(__FILE__)} stop preprod node-wallet)
-  end
 
   # VERSION
   if o['--version'] == true
@@ -124,13 +102,13 @@ begin
   if o['install'] == true
     release = o['<release>']
     begin
-      STDERR.puts "Installing..."
+      STDERR.print "Installing '#{release}'... "
       versions = CardanoUp::Install.install_bins(release)
+      ok
     rescue CardanoUp::VersionNotSupportedError => err3
       STDERR.puts(err3.message)
       exit 1
     end
-    STDERR.puts "Installed '#{release}' release of cardano-wallet bundle."
     STDERR.puts "Install dir: #{CardanoUp.get_config['bin_dir']}"
     STDERR.puts
     pretty_json(versions)
@@ -159,7 +137,7 @@ begin
     port = o['--port']
 
     begin
-      STDERR.print "Configs check: "
+      STDERR.print "Configs: "
       if CardanoUp::Install.configs_exist?(env)
         ok
       else
@@ -168,7 +146,7 @@ begin
         ok
       end
 
-      STDERR.print "Binaries check: "
+      STDERR.print "Binaries: "
       begin
         CardanoUp::Install.return_versions
         ok
@@ -225,9 +203,33 @@ begin
     rescue CardanoUp::EnvNotSupportedError => err2
       STDERR.puts(err2.message)
       exit 1
-
     end
   end
+
+  # TAIL
+  if o['tail'] == true
+    env = o['<env>']
+    begin
+      log_dir = File.join(CardanoUp.get_config['log_dir'], env)
+      if o['node']
+        log_file = File.join(log_dir, 'node.log')
+        CardanoUp::Tail.tail(log_file)
+      elsif o['wallet']
+        log_file = File.join(log_dir, 'wallet.log')
+        CardanoUp::Tail.tail(log_file)
+      end
+    rescue CardanoUp::EnvNotSupportedError => err2
+      STDERR.puts(err2.message)
+      exit 1
+    rescue StandardError => err3
+      STDERR.puts "Log file does not seem to exist: #{log_file}"
+      STDERR.puts(err3.message)
+      exit 1
+    rescue Interrupt
+      exit
+    end
+  end
+
 
 rescue Docopt::Exit => e
   puts e.message
