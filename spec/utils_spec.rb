@@ -1,7 +1,7 @@
 RSpec.describe CardanoUp::Utils do
   it "I can cmd" do
     res = CardanoUp::Utils.cmd 'echo "I can echo"'
-    expect(res).to eq "I can echo"
+    expect(res).to include "I can echo"
   end
 
   it "I can wget" do
