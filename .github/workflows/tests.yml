@@ -21,6 +21,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         ruby-version: ['2.7', '3.0']
@@ -39,4 +40,4 @@ jobs:
       run: brew install screen
 
     - name: 🧪 Run tests
-      run: bundle exec rake spec 
+      run: bundle exec rake spec
