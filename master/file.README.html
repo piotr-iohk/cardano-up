@@ -75,43 +75,14 @@
 
 <h2 id="label-Usage">Usage</h2>
 
-<p>It only takes single command to start node and wallet on your system. Fancy <code>mainnet</code>?</p>
+<p>It only takes a single command to start node and wallet on your system. Say, on <code>mainnet</code>?</p>
 
 <pre class="code ruby"><code class="ruby">$ cardano-up mainnet node-wallet up
-
-Configs: installing configs for mainnet... Ok.
-Binaries: installing latest release binaries... Ok.
-
-Starting...
-
-{
-  &quot;node&quot;: {
-    &quot;service&quot;: &quot;NODE_mainnet&quot;,
-    &quot;version&quot;: &quot;cardano-node 1.35.3 - linux-x86_64 - ghc-8.10git rev 950c4e222086fed5ca53564e642434ce9307b0b9&quot;,
-    &quot;log&quot;: &quot;/home/piotr/.cardano-up/logs/mainnet/node.log&quot;,
-    &quot;db_dir&quot;: &quot;/home/piotr/.cardano-up/state/mainnet/node-db&quot;,
-    &quot;socket_path&quot;: &quot;/home/piotr/.cardano-up/state/mainnet/node.socket&quot;,
-    &quot;protocol_magic&quot;: 764824073,
-    &quot;network&quot;: &quot;mainnet&quot;,
-    &quot;bin&quot;: &quot;/home/piotr/.cardano-up/bins/cardano-node&quot;,
-    &quot;cmd&quot;: &quot;/home/piotr/.cardano-up/bins/cardano-node run --config /home/piotr/.cardano-up/configs/mainnet/config.json --topology /home/piotr/.cardano-up/configs/mainnet/topology.json --database-path /home/piotr/.cardano-up/state/mainnet/node-db --socket-path /home/piotr/.cardano-up/state/mainnet/node.socket&quot;
-  },
-  &quot;wallet&quot;: {
-    &quot;service&quot;: &quot;WALLET_mainnet&quot;,
-    &quot;version&quot;: &quot;v2022-10-06 (git revision: 2130fe0acf19fa218cef8de4ef325ae9078e356e)&quot;,
-    &quot;log&quot;: &quot;/home/piotr/.cardano-up/logs/mainnet/wallet.log&quot;,
-    &quot;db_dir&quot;: &quot;/home/piotr/.cardano-up/state/mainnet/wallet-db&quot;,
-    &quot;port&quot;: 8090,
-    &quot;host&quot;: &quot;http://localhost:8090/v2&quot;,
-    &quot;bin&quot;: &quot;/home/piotr/.cardano-up/bins/cardano-wallet&quot;,
-    &quot;cmd&quot;: &quot;/home/piotr/.cardano-up/bins/cardano-wallet serve --port 8090 --node-socket /home/piotr/.cardano-up/state/mainnet/node.socket --mainnet --database /home/piotr/.cardano-up/state/mainnet/wallet-db --token-metadata-server https://tokens.cardano.org&quot;
-  }
-}
-
-Congratulations! You&#39;ve just started cardano-node and cardano-wallet!
 </code></pre>
 
 <p>That’s it! 🎉</p>
+
+<p>If any configs are missing cardano-up will download them. If any binaries are missing cardano-up will get ones from latest release.</p>
 
 <p>Call <code>$ cardano-up --help</code> to explore more options.</p>
 
@@ -152,7 +123,7 @@ Congratulations! You&#39;ve just started cardano-node and cardano-wallet!
 </div></div>
 
       <div id="footer">
-  Generated on Fri Oct  7 22:22:56 2022 by
+  Generated on Fri Oct  7 22:30:25 2022 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.28 (ruby-3.1.2).
 </div>
