@@ -7,6 +7,8 @@ This Ruby gem provides easy way for:
  - getting configuration for any Cardano public environment.
  - starting, managing and monitoring cardano-node and cardano-wallet services.
 
+<img src="cardano-up.gif" />
+
 ## Installation
 
     $ gem install cardano-up
@@ -15,7 +17,7 @@ This Ruby gem provides easy way for:
 
 It only takes single command to start node and wallet on your system. Fancy `mainnet`?
 
-    $ cardano-up mainnet node-wallet start
+    $ cardano-up mainnet node-wallet up
 
     Configs: installing configs for mainnet... Ok.
     Binaries: installing latest release binaries... Ok.

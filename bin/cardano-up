@@ -9,8 +9,8 @@ Lightweight manager for Cardano binaries and configs.
 Usage:
   #{File.basename(__FILE__)} install [<release>]
   #{File.basename(__FILE__)} get-configs <env>
-  #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) start [--port <port>]
-  #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) stop
+  #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) up [--port <port>]
+  #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) down
   #{File.basename(__FILE__)} <env> (node|wallet) tail
   #{File.basename(__FILE__)} config [--set-default] [--bindir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
   #{File.basename(__FILE__)} -v | --version
@@ -21,10 +21,10 @@ Options:
   <release>               latest | release tag | master | pr num [default: latest]
   get-configs             Get configs for particular Cardano environment.
   <env>                   mainnet | preview | preprod etc.
-  start                   Start particular service. If any configs are missing #{File.basename(__FILE__)}
+  up                      Start particular service. If any configs are missing #{File.basename(__FILE__)}
                           will download them. If any binaries are missing #{File.basename(__FILE__)} will get
                           ones from latest release.
-  stop                    Stop particular service.
+  down                    Stop particular service.
   tail                    Follow logs for particular service.
   --port <port>           Specify wallet port. [default: 8090]
 
@@ -133,8 +133,8 @@ begin
     exit
   end
 
-  # START
-  if o['start'] == true
+  # UP
+  if o['up'] == true
     env = o['<env>']
     port = o['--port']
 
@@ -190,7 +190,7 @@ begin
   end
 
   # STOP
-  if o['stop'] == true
+  if o['down'] == true
     env = o['<env>']
 
     begin

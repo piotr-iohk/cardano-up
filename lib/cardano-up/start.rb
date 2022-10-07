@@ -121,12 +121,12 @@ module CardanoUp
       {
         node: {
           service: node_service,
+          network: env,
           version: version,
           log: "#{log_dir}/node.log",
           db_dir: node_db_dir,
           socket_path: node_socket,
           protocol_magic: get_protocol_magic(config_dir),
-          network: env,
           bin: node_cmd.split.first,
           cmd: node_cmd
         }
@@ -175,6 +175,7 @@ module CardanoUp
       {
         wallet: {
           service: wallet_service,
+          network: env,
           version: version,
           log: "#{log_dir}/wallet.log",
           db_dir: wallet_db_dir,
