@@ -13,14 +13,16 @@ RSpec.describe CardanoUp::Install do
 
   it "can get_configs for environment" do
     env = 'preview'
-    c_num = CardanoUp::CONFIG_FILES.size
-    c = CardanoUp.get_config
-    conf_dir = File.join(c['config_dir'], env)
-    expect(Dir["#{conf_dir}/*"].size).to eq 0
+    expect(CardanoUp::Install.configs_exist?(env)).to be false
+    CardanoUp::Install.install_configs(env)
+    expect(CardanoUp::Install.configs_exist?(env)).to be true
+  end
 
-    configs = CardanoUp::Install.install_configs(env)
-    expect(Dir["#{conf_dir}/*"].size).to eq c_num
-    expect(Dir["#{conf_dir}/*"].size).to eq configs.size
+  it "raise on configs_exist? when not supported environment" do
+    env = 'previeww'
+    expect do
+      CardanoUp::Install.configs_exist?(env)
+    end.to raise_error CardanoUp::EnvNotSupportedError, /not supported/
   end
 
   it "raise on get_configs when not supported environment" do

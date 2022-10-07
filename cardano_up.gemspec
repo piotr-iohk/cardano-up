@@ -6,11 +6,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Piotr Stachyra"]
   spec.email         = ["piotr.stachyra@gmail.com"]
 
-  spec.summary       = 'Get latest Cardano Adrestia tools bundle on your system in no time!'
-  spec.description   = 'Adrestia Bundler lets you get all essential Cardano Adrestia
+  spec.summary       = 'Get Cardano tools on your system in no time!'
+  spec.description   = 'Cardano Up lets you get all essential Cardano
                         tools on your system: cardano-node, cardano-cli, cardano-wallet,
-                        cardano-addresses and bech32. Then easily start/stop cardano-node and
-                        cardano-wallet with lean configuration.'
+                        cardano-addresses and bech32. Then easily manage configuration
+                        for different environments and launch node and wallet services.'
   spec.homepage      = 'https://github.com/piotr-iohk/adrestia-bundler'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")

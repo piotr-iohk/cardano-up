@@ -1,10 +1,33 @@
 module CardanoUp
   module Install
+    # Check all necessary config files for particular environment exist.
+    # @param env [String] - one of {ENVS}
+    # @raises CardanoUp::EnvNotSupportedError
+    def self.configs_exist?(env)
+      CardanoUp.configure_default unless CardanoUp.configured?
+      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include?(env)
+
+      configs = CardanoUp.get_config
+      config_dir_env = FileUtils.mkdir_p(File.join(configs['config_dir'], env))
+      config_files = CardanoUp::CONFIG_FILES
+      not_existing = []
+      config_files.each do |file|
+        conf_file_path = File.join(config_dir_env, file)
+        not_existing << conf_file_path if !File.exists?(conf_file_path)
+      end
+      if not_existing.empty?
+        true
+      else
+        false
+      end
+    end
+
     # Get all necessary config files for particular environment.
     # @param env [String] - one of {ENVS}
     # @raises CardanoUp::EnvNotSupportedError
     def self.install_configs(env)
       CardanoUp.configure_default unless CardanoUp.configured?
+      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include?(env)
       configs = CardanoUp.get_config
       config_urls = CardanoUp::Utils.get_config_urls(env)
       config_dir_env = FileUtils.mkdir_p(File.join(configs['config_dir'], env))

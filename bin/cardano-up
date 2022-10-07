@@ -43,6 +43,10 @@ def pretty_json(c)
   puts JSON.pretty_generate(c)
 end
 
+def ok
+  STDERR.puts "Ok."
+end
+
 begin
   CardanoUp.configure_default unless CardanoUp.configured?
   o = Docopt::docopt(doc)
@@ -144,7 +148,7 @@ begin
     end
     STDERR.puts "Downloaded configs for '#{env}' environment."
     STDERR.puts "Config dir: #{File.join(CardanoUp.get_config['config_dir'], env)}"
-    puts
+    STDERR.puts
     pretty_json(configs)
     exit
   end
@@ -152,10 +156,31 @@ begin
   # START
   if o['start'] == true
     env = o['<env>']
-    release = o['--release']
     port = o['--port']
 
     begin
+      STDERR.print "Configs check: "
+      if CardanoUp::Install.configs_exist?(env)
+        ok
+      else
+        STDERR.print "installing configs for #{env}... "
+        CardanoUp::Install.install_configs(env)
+        ok
+      end
+
+      STDERR.print "Binaries check: "
+      begin
+        CardanoUp::Install.return_versions
+        ok
+      rescue StandardError
+        STDERR.print "installing latest release binaries... "
+        CardanoUp::Install.install_bins('latest')
+        ok
+      end
+
+      STDERR.puts
+      STDERR.puts "Starting..."
+      STDERR.puts
       c = CardanoUp::Start.prepare_configuration({ env: env, wallet_port: port })
     rescue CardanoUp::EnvNotSupportedError => err2
       STDERR.puts(err2.message)
@@ -165,15 +190,15 @@ begin
       if o['node']
         pretty_json CardanoUp::Start.start_node(c)
         STDERR.puts
-        STDERR.puts "Congratulations! You've just started cardano-node."
+        STDERR.puts "Congratulations! You've just started cardano-node!"
       elsif o['wallet']
         pretty_json CardanoUp::Start.start_wallet(c)
         STDERR.puts
-        STDERR.puts "Congratulations! You've just started cardano-wallet."
+        STDERR.puts "Congratulations! You've just started cardano-wallet!"
       elsif o['node-wallet']
         pretty_json CardanoUp::Start.start_node_and_wallet(c)
         STDERR.puts
-        STDERR.puts "Congratulations! You've just started cardano-node and cardano-wallet."
+        STDERR.puts "Congratulations! You've just started cardano-node and cardano-wallet!"
       end
     rescue StandardError => e
       STDERR.puts "Either you miss configs or binaries... To fix that try running:"
