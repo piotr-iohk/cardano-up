@@ -1,5 +1,7 @@
 # Cardano Up!
 
+[![Tests](https://github.com/piotr-iohk/cardano-up/actions/workflows/tests.yml/badge.svg)](https://github.com/piotr-iohk/cardano-up/actions/workflows/tests.yml)
+
 ## Overview
 
 This Ruby gem provides easy way for:
