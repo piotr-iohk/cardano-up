@@ -2,7 +2,7 @@ module CardanoUp
   module Install
     # Check all necessary config files for particular environment exist.
     # @param env [String] - one of {ENVS}
-    # @raises CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::EnvNotSupportedError
     def self.configs_exist?(env)
       CardanoUp.configure_default unless CardanoUp.configured?
       raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include?(env)
@@ -24,7 +24,7 @@ module CardanoUp
 
     # Get all necessary config files for particular environment.
     # @param env [String] - one of {ENVS}
-    # @raises CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::EnvNotSupportedError
     def self.install_configs(env)
       CardanoUp.configure_default unless CardanoUp.configured?
       raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include?(env)
@@ -38,7 +38,7 @@ module CardanoUp
 
     # Get cardano-wallet bundle binaries to your computer.
     # @param release [String] - 'latest' | /^v20.{2}-.{2}-.{2}/ | 'master' | '3341'
-    # @raises CardanoUp::VersionNotSupportedError
+    # @raise CardanoUp::VersionNotSupportedError
     def self.install_bins(release)
       CardanoUp.configure_default unless CardanoUp.configured?
       configs = CardanoUp.get_config
@@ -70,7 +70,7 @@ module CardanoUp
     private_class_method :unpack_binary
 
     # Return versions of installed components
-    # @raises CardanoUp::ConfigNotSetError
+    # @raise CardanoUp::ConfigNotSetError
     def self.return_versions(bin_dir = nil)
       bindir = bin_dir.nil? ? CardanoUp.get_config['bin_dir'] : bin_dir
       exe = CardanoUp::Utils.is_win? ? '.exe' : ''

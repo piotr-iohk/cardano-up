@@ -19,8 +19,8 @@ module CardanoUp
   module Start
     # Prepare configuration for wallet and node to be started
     # @param env [Hash] provide env and wallet_port, e.g. { env: 'mainnet', wallet_port: '8090' }
-    # @raises CardanoUp::EnvNotSupportedError
-    # @raises CardanoUp::WalletPortError
+    # @raise CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::WalletPortError
     def self.prepare_configuration(opt = { env: 'mainnet', wallet_port: '8090' })
       env = opt[:env]
       raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include? env
@@ -194,7 +194,7 @@ module CardanoUp
       cn.merge(cw)
     end
 
-    # @raises CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::EnvNotSupportedError
     def self.stop_node(env)
       raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include? env
       if CardanoUp::Utils.is_win?
@@ -206,7 +206,7 @@ module CardanoUp
       end
     end
 
-    # @raises CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::EnvNotSupportedError
     def self.stop_wallet(env)
       raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include? env
       if CardanoUp::Utils.is_win?
@@ -217,7 +217,7 @@ module CardanoUp
       end
     end
 
-    # @raises CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::EnvNotSupportedError
     def self.stop_node_and_wallet(env)
       stop_wallet(env)
       stop_node(env)

@@ -34,7 +34,7 @@ module CardanoUp
     ##
     # Latest binary url for latest release or particular tag, from master or pr num.
     # @param release [String] - 'latest' | /^v20.{2}-.{2}-.{2}/ | 'master' | '3341'
-    # @raises CardanoUp::VersionNotSupportedError
+    # @raise CardanoUp::VersionNotSupportedError
     def self.get_binary_url(release = 'latest')
       unless (release == 'master' || release == 'latest' || release =~ /^v20.{2}-.{2}-.{2}/ || release =~ /^\d+$/)
         raise CardanoUp::VersionNotSupportedError, release
@@ -70,7 +70,7 @@ module CardanoUp
 
     ##
     # Latest Cardano configs
-    # @raises CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::EnvNotSupportedError
     def self.get_configs_base_url(env)
       unless CardanoUp::ENVS.include?(env)
         raise CardanoUp::EnvNotSupportedError.new(env)
@@ -79,7 +79,7 @@ module CardanoUp
       end
     end
 
-    # @raises CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::EnvNotSupportedError
     def self.get_config_urls(env)
       unless CardanoUp::ENVS.include?(env)
         raise CardanoUp::EnvNotSupportedError.new(env)
