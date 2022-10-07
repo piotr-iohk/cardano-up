@@ -1,6 +1,7 @@
 # Cardano Up!
 
 [![Tests](https://github.com/piotr-iohk/cardano-up/actions/workflows/tests.yml/badge.svg)](https://github.com/piotr-iohk/cardano-up/actions/workflows/tests.yml)
+[![Docs](https://github.com/piotr-iohk/cardano-up/actions/workflows/docs.yml/badge.svg)](https://github.com/piotr-iohk/cardano-up/actions/workflows/docs.yml)
 
 ## Overview
 
