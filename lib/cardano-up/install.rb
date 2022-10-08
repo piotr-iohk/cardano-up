@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CardanoUp
   module Install
     # Check all necessary config files for particular environment exist.
@@ -5,7 +7,7 @@ module CardanoUp
     # @raise CardanoUp::EnvNotSupportedError
     def self.configs_exist?(env)
       CardanoUp.configure_default unless CardanoUp.configured?
-      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include?(env)
+      raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include?(env)
 
       configs = CardanoUp.get_config
       config_dir_env = FileUtils.mkdir_p(File.join(configs['config_dir'], env))
@@ -13,7 +15,7 @@ module CardanoUp
       not_existing = []
       config_files.each do |file|
         conf_file_path = File.join(config_dir_env, file)
-        not_existing << conf_file_path if !File.exists?(conf_file_path)
+        not_existing << conf_file_path unless File.exist?(conf_file_path)
       end
       if not_existing.empty?
         true
@@ -27,7 +29,8 @@ module CardanoUp
     # @raise CardanoUp::EnvNotSupportedError
     def self.install_configs(env)
       CardanoUp.configure_default unless CardanoUp.configured?
-      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include?(env)
+      raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include?(env)
+
       configs = CardanoUp.get_config
       config_urls = CardanoUp::Utils.get_config_urls(env)
       config_dir_env = FileUtils.mkdir_p(File.join(configs['config_dir'], env))
@@ -83,8 +86,7 @@ module CardanoUp
         'cardano-cli' => cli,
         'cardano-wallet' => cw,
         'cardano-address' => ca,
-        'bech32' => b32
-      }
+        'bech32' => b32 }
     end
   end
 end

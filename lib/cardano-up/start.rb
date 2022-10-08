@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CardanoUp
   ##
   # Start cardano-node and cardano-wallet on your system.
@@ -23,10 +25,12 @@ module CardanoUp
     # @raise CardanoUp::WalletPortError
     def self.prepare_configuration(opt = { env: 'mainnet', wallet_port: '8090' })
       env = opt[:env]
-      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include? env
+      raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
+
       wallet_port = opt[:wallet_port]
-      raise CardanoUp::WalletPortError if (wallet_port.nil? || wallet_port.empty?)
-      token_metadata_server = (env == 'mainnet') ? CardanoUp::MAINNET_TOKEN_SERVER : CardanoUp::TESTNET_TOKEN_SERVER
+      raise CardanoUp::WalletPortError if wallet_port.nil? || wallet_port.empty?
+
+      token_metadata_server = env == 'mainnet' ? CardanoUp::MAINNET_TOKEN_SERVER : CardanoUp::TESTNET_TOKEN_SERVER
 
       CardanoUp.configure_default unless CardanoUp.configured?
       configs = CardanoUp.get_config
@@ -40,12 +44,12 @@ module CardanoUp
         FileUtils.mkdir_p(dir)
       end
 
-      if CardanoUp::Utils.is_win?
-        node_socket = "\\\\.\\pipe\\cardano-node-#{env}"
-      else
-        node_socket = File.join(state_dir, 'node.socket')
-      end
-      network = (env == 'mainnet') ? '--mainnet' : "--testnet #{config_dir}/byron-genesis.json"
+      node_socket = if CardanoUp::Utils.is_win?
+                      "\\\\.\\pipe\\cardano-node-#{env}"
+                    else
+                      File.join(state_dir, 'node.socket')
+                    end
+      network = env == 'mainnet' ? '--mainnet' : "--testnet #{config_dir}/byron-genesis.json"
 
       {
         env: env,
@@ -58,7 +62,7 @@ module CardanoUp
         wallet_db_dir: wallet_db_dir,
         node_db_dir: node_db_dir,
         node_socket: node_socket,
-        network: network,
+        network: network
       }
     end
 
@@ -80,8 +84,8 @@ module CardanoUp
         # Turn off p2p for Windows
         # TODO: remove after https://github.com/input-output-hk/ouroboros-network/issues/3968 released
         config_win = JSON.parse(File.read("#{config_dir}/config.json"))
-        config_win["EnableP2P"] = false
-        File.open("#{config_dir}/config.json", "w") do |f|
+        config_win['EnableP2P'] = false
+        File.open("#{config_dir}/config.json", 'w') do |f|
           f.write(JSON.pretty_generate(config_win))
         end
         topology = %({
@@ -93,13 +97,13 @@ module CardanoUp
                 }
               ]
             })
-        File.open("#{config_dir}/topology.json", "w") do |f|
+        File.open("#{config_dir}/topology.json", 'w') do |f|
           f.write(topology)
         end
 
         # create cardano-node.bat file
         node_cmd = "#{bin_dir}/cardano-node.exe run --config #{config_dir}/config.json --topology #{config_dir}/topology.json --database-path #{node_db_dir} --socket-path #{node_socket}"
-        File.open("#{bin_dir}/cardano-node.bat", "w") do |f|
+        File.open("#{bin_dir}/cardano-node.bat", 'w') do |f|
           f.write(node_cmd)
         end
         node_service = "cardano-node-#{env}"
@@ -153,7 +157,7 @@ module CardanoUp
 
         # create cardano-wallet.bat file
         wallet_cmd = "#{bin_dir}/cardano-wallet.exe serve --port #{wallet_port} --node-socket #{node_socket} #{network} --database #{wallet_db_dir} --token-metadata-server #{token_metadata_server}"
-        File.open("#{bin_dir}/cardano-wallet.bat", "w") do |f|
+        File.open("#{bin_dir}/cardano-wallet.bat", 'w') do |f|
           f.write(wallet_cmd)
         end
         wallet_service = "cardano-wallet-#{env}"
@@ -196,7 +200,8 @@ module CardanoUp
 
     # @raise CardanoUp::EnvNotSupportedError
     def self.stop_node(env)
-      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include? env
+      raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
+
       if CardanoUp::Utils.is_win?
         CardanoUp::Utils.cmd "nssm stop cardano-node-#{env}"
         CardanoUp::Utils.cmd "nssm remove cardano-node-#{env} confirm"
@@ -208,7 +213,8 @@ module CardanoUp
 
     # @raise CardanoUp::EnvNotSupportedError
     def self.stop_wallet(env)
-      raise CardanoUp::EnvNotSupportedError.new(env) unless CardanoUp::ENVS.include? env
+      raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
+
       if CardanoUp::Utils.is_win?
         CardanoUp::Utils.cmd "nssm stop cardano-wallet-#{env}"
         CardanoUp::Utils.cmd "nssm remove cardano-wallet-#{env} confirm"
@@ -227,7 +233,7 @@ module CardanoUp
     ##
     # Get protocol magic from config's byron-genesis.json
     def get_protocol_magic(config)
-      byron_genesis = JSON.parse(File.read(File.join(config, "byron-genesis.json")))
+      byron_genesis = JSON.parse(File.read(File.join(config, 'byron-genesis.json')))
       byron_genesis['protocolConsts']['protocolMagic'].to_i
     end
     module_function :get_protocol_magic

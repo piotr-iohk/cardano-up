@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rubygems'
 require 'rubygems/package'
 require 'httparty'
@@ -7,22 +9,22 @@ require 'json'
 require 'zlib'
 require 'zip'
 
-require "cardano-up/version"
-require "cardano-up/err"
-require "cardano-up/utils"
-require "cardano-up/tar"
-require "cardano-up/install"
-require "cardano-up/start"
-require "cardano-up/tail"
+require 'cardano-up/version'
+require 'cardano-up/err'
+require 'cardano-up/utils'
+require 'cardano-up/tar'
+require 'cardano-up/install'
+require 'cardano-up/start'
+require 'cardano-up/tail'
 
 module CardanoUp
   CONFIGS_BASE_URL = 'https://book.world.dev.cardano.org/environments'
   BINS_BASE_URL = 'https://github.com/input-output-hk/cardano-wallet'
   HYDRA_BASE_URL = 'https://hydra.iohk.io/job/Cardano/cardano-wallet'
-  ENVS = ['mainnet', 'preview', 'preprod', 'shelley-qa',
-          'staging', 'vasil-qa', 'vasil-dev', 'mixed', 'testnet']
+  ENVS = %w[mainnet preview preprod shelley-qa
+            staging vasil-qa vasil-dev mixed testnet].freeze
   CONFIG_FILES = ['alonzo-genesis.json', 'byron-genesis.json', 'shelley-genesis.json',
-                  'config.json', 'topology.json']
+                  'config.json', 'topology.json'].freeze
   MAINNET_TOKEN_SERVER = 'https://tokens.cardano.org'
   TESTNET_TOKEN_SERVER = 'https://metadata.cardano-testnet.iohkdev.io'
   # It is recommended to use default value for {base_dir},
@@ -53,7 +55,7 @@ module CardanoUp
 
   # Check if CardanoUp config exists
   def self.configured?
-    File.exists?(@@adrestia_bundler_config)
+    File.exist?(@@adrestia_bundler_config)
   end
 
   # Set default config for CardanoUp
@@ -67,15 +69,14 @@ module CardanoUp
   # Set custom config for CardanoUp
   def self.configure(bin_dir, state_dir, logs_dir, config_dir)
     FileUtils.mkdir_p(@@base_dir)
-    if configured?
-      c = CardanoUp.get_config
-    else
-      c = { 'bin_dir' => File.join(@@base_dir, 'bins'),
-             'state_dir' => File.join(@@base_dir, 'state'),
-             'log_dir' => File.join(@@base_dir, 'state'),
-             'config_dir' => File.join(@@base_dir, 'configs')
-            }
-    end
+    c = if configured?
+          CardanoUp.get_config
+        else
+          { 'bin_dir' => File.join(@@base_dir, 'bins'),
+            'state_dir' => File.join(@@base_dir, 'state'),
+            'log_dir' => File.join(@@base_dir, 'state'),
+            'config_dir' => File.join(@@base_dir, 'configs') }
+        end
     c['bin_dir'] = bin_dir if bin_dir
     c['state_dir'] = state_dir if state_dir
     c['log_dir'] = logs_dir if logs_dir
@@ -87,6 +88,7 @@ module CardanoUp
   # Get config values
   def self.get_config
     raise CardanoUp::ConfigNotSetError unless configured?
+
     JSON.parse(File.read(@@adrestia_bundler_config))
   end
 

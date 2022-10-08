@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CardanoUp
   module Tar
     # unzip file to destination directory
@@ -32,7 +34,7 @@ module CardanoUp
           else
             destination_directory = File.dirname(destination_file)
             FileUtils.mkdir_p destination_directory unless File.directory?(destination_directory)
-            File.open destination_file, "wb" do |f|
+            File.open destination_file, 'wb' do |f|
               f.print tarfile.read
             end
           end

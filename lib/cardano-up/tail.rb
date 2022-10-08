@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CardanoUp
   module Tail
     def self.tail(file_path)
@@ -5,7 +7,7 @@ module CardanoUp
         log.extend(File::Tail)
         log.interval
         log.backward(10)
-        log.tail { |line| STDERR.puts line }
+        log.tail { |line| warn line }
       end
     end
   end

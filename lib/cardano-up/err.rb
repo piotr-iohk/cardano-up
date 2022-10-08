@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CardanoUp
   class EnvNotSupportedError < StandardError
     def initialize(env)
@@ -7,13 +9,13 @@ module CardanoUp
 
   class ConfigNotSetError < StandardError
     def initialize
-      super("Config not exists at '#{CardanoUp::adrestia_bundler_config}'!")
+      super("Config not exists at '#{CardanoUp.adrestia_bundler_config}'!")
     end
   end
 
   class WalletPortError < StandardError
     def initialize
-      super("Wallet port is not set!")
+      super('Wallet port is not set!')
     end
   end
 

@@ -1,9 +1,10 @@
-RSpec.describe "Integration", :e2e, :integration do
+# frozen_string_literal: true
 
+RSpec.describe 'Integration', :e2e, :integration do
   before(:each) do
     CardanoUp.base_dir = Dir.mktmpdir
     CardanoUp.adrestia_bundler_config = File.join(CardanoUp.base_dir,
-                                                        '.cardano-test.json')
+                                                  '.cardano-test.json')
     CardanoUp.configure_default
 
     @env = 'preview'
@@ -56,7 +57,7 @@ RSpec.describe "Integration", :e2e, :integration do
     end
   end
 
-  it "I can start_node_and_wallet and then stop_node_and_wallet" do
+  it 'I can start_node_and_wallet and then stop_node_and_wallet' do
     bin_dir = CardanoUp.get_config['bin_dir']
     # Start node and wallet
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -71,7 +72,7 @@ RSpec.describe "Integration", :e2e, :integration do
     assert_wallet_disconnected(bin_dir, started[:wallet][:port])
   end
 
-  it "I can start_node_and_wallet and then stop_node and stop_wallet" do
+  it 'I can start_node_and_wallet and then stop_node and stop_wallet' do
     bin_dir = CardanoUp.get_config['bin_dir']
     # Start node and wallet
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -88,7 +89,7 @@ RSpec.describe "Integration", :e2e, :integration do
     assert_wallet_disconnected(bin_dir, started[:wallet][:port])
   end
 
-  it "I can start_node_and_wallet and then stop_wallet and stop_node" do
+  it 'I can start_node_and_wallet and then stop_wallet and stop_node' do
     bin_dir = CardanoUp.get_config['bin_dir']
     # Start node and wallet
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -105,7 +106,7 @@ RSpec.describe "Integration", :e2e, :integration do
     assert_node_down(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
   end
 
-  it "I can start_node and then stop_node" do
+  it 'I can start_node and then stop_node' do
     bin_dir = CardanoUp.get_config['bin_dir']
     # Start node
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -117,7 +118,7 @@ RSpec.describe "Integration", :e2e, :integration do
     assert_node_down(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
   end
 
-  it "I can start_wallet and start_node then stop_node and stop_wallet" do
+  it 'I can start_wallet and start_node then stop_node and stop_wallet' do
     bin_dir = CardanoUp.get_config['bin_dir']
     # Start start_wallet start_node
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -133,7 +134,7 @@ RSpec.describe "Integration", :e2e, :integration do
     assert_wallet_disconnected(bin_dir, w[:wallet][:port])
   end
 
-  it "I can start_wallet and start_node then stop_wallet and stop_node" do
+  it 'I can start_wallet and start_node then stop_wallet and stop_node' do
     bin_dir = CardanoUp.get_config['bin_dir']
     # Start start_wallet start_node
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -148,5 +149,4 @@ RSpec.describe "Integration", :e2e, :integration do
     assert_node_down(bin_dir, n[:node][:socket_path], n[:node][:protocol_magic])
     assert_wallet_disconnected(bin_dir, w[:wallet][:port])
   end
-
 end

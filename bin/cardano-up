@@ -1,43 +1,45 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'cardano-up'
 require 'docopt'
 
-doc = <<DOCOPT
-Cardano Up!
-Lightweight manager for Cardano binaries and configs.
+doc = <<~DOCOPT
+  Cardano Up!
+  Lightweight manager for Cardano binaries and configs.
 
-Usage:
-  #{File.basename(__FILE__)} install [<release>]
-  #{File.basename(__FILE__)} get-configs <env>
-  #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) up [--port <port>]
-  #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) down
-  #{File.basename(__FILE__)} <env> (node|wallet) tail
-  #{File.basename(__FILE__)} config [--set-default] [--bindir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
-  #{File.basename(__FILE__)} -v | --version
-  #{File.basename(__FILE__)} -h | --help
+  Usage:
+    #{File.basename(__FILE__)} install [<release>]
+    #{File.basename(__FILE__)} get-configs <env>
+    #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) up [--port <port>]
+    #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) down
+    #{File.basename(__FILE__)} <env> (node|wallet) tail
+    #{File.basename(__FILE__)} config [--set-default] [--bindir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
+    #{File.basename(__FILE__)} -v | --version
+    #{File.basename(__FILE__)} -h | --help
 
-Options:
-  install                 Install cardano-node, cardano-cli, cardano-wallet, cardano-addresses and bech32.
-  <release>               latest | release tag | master | pr num [default: latest]
-  get-configs             Get configs for particular Cardano environment.
-  <env>                   mainnet | preview | preprod etc.
-  up                      Start particular service. If any configs are missing #{File.basename(__FILE__)}
-                          will download them. If any binaries are missing #{File.basename(__FILE__)} will get
-                          ones from latest release.
-  down                    Stop particular service.
-  tail                    Follow logs for particular service.
-  --port <port>           Specify wallet port. [default: 8090]
+  Options:
+    install                 Install cardano-node, cardano-cli, cardano-wallet, cardano-addresses and bech32.
+    <release>               latest | release tag | master | pr num [default: latest]
+    get-configs             Get configs for particular Cardano environment.
+    <env>                   mainnet | preview | preprod etc.
+    up                      Start particular service. If any configs are missing #{File.basename(__FILE__)}
+                            will download them. If any binaries are missing #{File.basename(__FILE__)} will get
+                            ones from latest release.
+    down                    Stop particular service.
+    tail                    Follow logs for particular service.
+    --port <port>           Specify wallet port. [default: 8090]
 
-  config                  Internal config for #{File.basename(__FILE__)}
-  --set-default           Overwrite config with default values.
-  --bindir <path>         Set bin dir.
-  --configdir <path>      Set config dir.
-  --logdir <path>         Set log dir.
-  --statedir <path>       Set state dir.
+    config                  Internal config for #{File.basename(__FILE__)}
+    --set-default           Overwrite config with default values.
+    --bindir <path>         Set bin dir.
+    --configdir <path>      Set config dir.
+    --logdir <path>         Set log dir.
+    --statedir <path>       Set state dir.
 
-  -v --version            Check #{File.basename(__FILE__)} version and versions of
-                          installed binaries if available.
-  -h --help               This help.
+    -v --version            Check #{File.basename(__FILE__)} version and versions of
+                            installed binaries if available.
+    -h --help               This help.
 DOCOPT
 
 def pretty_json(c)
@@ -45,23 +47,23 @@ def pretty_json(c)
 end
 
 def ok
-  STDERR.puts "Ok."
+  warn 'Ok.'
 end
 
 begin
   CardanoUp.configure_default unless CardanoUp.configured?
-  o = Docopt::docopt(doc)
+  o = Docopt.docopt(doc)
 
   # VERSION
   if o['--version'] == true
-    STDERR.puts "#{File.basename(__FILE__)}: #{CardanoUp::VERSION}"
-    STDERR.puts
+    warn "#{File.basename(__FILE__)}: #{CardanoUp::VERSION}"
+    $stderr.puts
     begin
       pretty_json CardanoUp::Install.return_versions
     rescue StandardError => e
-      STDERR.puts "Nothing installed? To fix run:"
-      STDERR.puts " $ #{File.basename(__FILE__)} install"
-      STDERR.puts e
+      warn 'Nothing installed? To fix run:'
+      warn " $ #{File.basename(__FILE__)} install"
+      warn e
     end
     exit 1
   end
@@ -71,31 +73,31 @@ begin
     c = CardanoUp.get_config
     if o['--set-default'] == true
       c = CardanoUp.configure_default
-      STDERR.puts "Configs set to default!"
+      warn 'Configs set to default!'
     end
     if o['--bindir']
       bindir = o['--bindir']
       c = CardanoUp.configure(bindir, nil, nil, nil)
-      STDERR.puts "Installdir updated!"
+      warn 'Installdir updated!'
     end
     if o['--statedir']
       statedir = o['--statedir']
       c = CardanoUp.configure(nil, statedir, nil, nil)
-      STDERR.puts "Statedir updated!"
+      warn 'Statedir updated!'
     end
     if o['--logdir']
       logdir = o['--logdir']
       c = CardanoUp.configure(nil, nil, logdir, nil)
-      STDERR.puts "Logdir updated!"
+      warn 'Logdir updated!'
     end
     if o['--configdir']
       configdir = o['--configdir']
       c = CardanoUp.configure(nil, nil, nil, configdir)
-      STDERR.puts "Configdir updated!"
+      warn 'Configdir updated!'
     end
 
-    STDERR.puts "Your config file is #{CardanoUp.adrestia_bundler_config}:"
-    STDERR.puts
+    warn "Your config file is #{CardanoUp.adrestia_bundler_config}:"
+    $stderr.puts
     pretty_json(c)
     exit
   end
@@ -104,15 +106,15 @@ begin
   if o['install'] == true
     release = o['<release>']
     begin
-      STDERR.print "Installing '#{release}'... "
+      $stderr.print "Installing '#{release}'... "
       versions = CardanoUp::Install.install_bins(release)
       ok
-    rescue CardanoUp::VersionNotSupportedError => err3
-      STDERR.puts(err3.message)
+    rescue CardanoUp::VersionNotSupportedError => e
+      warn(e.message)
       exit 1
     end
-    STDERR.puts "Install dir: #{CardanoUp.get_config['bin_dir']}"
-    STDERR.puts
+    warn "Install dir: #{CardanoUp.get_config['bin_dir']}"
+    $stderr.puts
     pretty_json(versions)
     exit
   end
@@ -122,13 +124,13 @@ begin
     env = o['<env>']
     begin
       configs = CardanoUp::Install.install_configs(env)
-    rescue CardanoUp::EnvNotSupportedError => err2
-      STDERR.puts(err2.message)
+    rescue CardanoUp::EnvNotSupportedError => e
+      warn(e.message)
       exit 1
     end
-    STDERR.puts "Downloaded configs for '#{env}' environment."
-    STDERR.puts "Config dir: #{File.join(CardanoUp.get_config['config_dir'], env)}"
-    STDERR.puts
+    warn "Downloaded configs for '#{env}' environment."
+    warn "Config dir: #{File.join(CardanoUp.get_config['config_dir'], env)}"
+    $stderr.puts
     pretty_json(configs)
     exit
   end
@@ -139,52 +141,50 @@ begin
     port = o['--port']
 
     begin
-      STDERR.print "Configs: "
-      if CardanoUp::Install.configs_exist?(env)
-        ok
-      else
-        STDERR.print "installing configs for #{env}... "
+      $stderr.print 'Configs: '
+      unless CardanoUp::Install.configs_exist?(env)
+        $stderr.print "installing configs for #{env}... "
         CardanoUp::Install.install_configs(env)
-        ok
       end
+      ok
 
-      STDERR.print "Binaries: "
+      $stderr.print 'Binaries: '
       begin
         CardanoUp::Install.return_versions
         ok
       rescue StandardError
-        STDERR.print "installing latest release binaries... "
+        $stderr.print 'installing latest release binaries... '
         CardanoUp::Install.install_bins('latest')
         ok
       end
 
-      STDERR.puts
-      STDERR.puts "Starting..."
-      STDERR.puts
+      $stderr.puts
+      warn 'Starting...'
+      $stderr.puts
       c = CardanoUp::Start.prepare_configuration({ env: env, wallet_port: port })
-    rescue CardanoUp::EnvNotSupportedError => err2
-      STDERR.puts(err2.message)
+    rescue CardanoUp::EnvNotSupportedError => e
+      warn(e.message)
       exit 1
     end
     begin
       if o['node']
         pretty_json CardanoUp::Start.start_node(c)
-        STDERR.puts
-        STDERR.puts "Congratulations! You've just started cardano-node!"
+        $stderr.puts
+        warn "Congratulations! You've just started cardano-node!"
       elsif o['wallet']
         pretty_json CardanoUp::Start.start_wallet(c)
-        STDERR.puts
-        STDERR.puts "Congratulations! You've just started cardano-wallet!"
+        $stderr.puts
+        warn "Congratulations! You've just started cardano-wallet!"
       elsif o['node-wallet']
         pretty_json CardanoUp::Start.start_node_and_wallet(c)
-        STDERR.puts
-        STDERR.puts "Congratulations! You've just started cardano-node and cardano-wallet!"
+        $stderr.puts
+        warn "Congratulations! You've just started cardano-node and cardano-wallet!"
       end
     rescue StandardError => e
-      STDERR.puts "Either you miss configs or binaries... To fix that try running:"
-      STDERR.puts " $ #{File.basename(__FILE__)} get-configs #{env}"
-      STDERR.puts " $ #{File.basename(__FILE__)} install"
-      STDERR.puts e
+      warn 'Either you miss configs or binaries... To fix that try running:'
+      warn " $ #{File.basename(__FILE__)} get-configs #{env}"
+      warn " $ #{File.basename(__FILE__)} install"
+      warn e
       exit 1
     end
   end
@@ -201,9 +201,9 @@ begin
       elsif o['node-wallet']
         CardanoUp::Start.stop_node_and_wallet(env)
       end
-      STDERR.puts "Stopped."
-    rescue CardanoUp::EnvNotSupportedError => err2
-      STDERR.puts(err2.message)
+      warn 'Stopped.'
+    rescue CardanoUp::EnvNotSupportedError => e
+      warn(e.message)
       exit 1
     end
   end
@@ -220,19 +220,17 @@ begin
         log_file = File.join(log_dir, 'wallet.log')
         CardanoUp::Tail.tail(log_file)
       end
-    rescue CardanoUp::EnvNotSupportedError => err2
-      STDERR.puts(err2.message)
+    rescue CardanoUp::EnvNotSupportedError => e
+      warn(e.message)
       exit 1
-    rescue StandardError => err3
-      STDERR.puts "Log file does not seem to exist: #{log_file}"
-      STDERR.puts(err3.message)
+    rescue StandardError => e
+      warn "Log file does not seem to exist: #{log_file}"
+      warn(e.message)
       exit 1
     rescue Interrupt
       exit
     end
   end
-
-
 rescue Docopt::Exit => e
   puts e.message
 end
