@@ -35,3 +35,12 @@ jobs:
 
     - name: 🧪 Run tests
       run: bundle exec rake spec
+
+    - name: 🧪 CLI sanity
+      run: |
+        bin/rebuild
+        cardano-up install latest
+        cardano-up get-configs preprod
+        cardano-up preprod node up
+        cardano-up preprod wallet up
+        cardano-up preprod node-wallet down

@@ -13,7 +13,7 @@ RSpec.describe CardanoUp do
     end
 
     after(:each) do
-      CardanoUp.remove_configuration
+      CardanoUp.remove_cardano_up_config
     end
 
     it 'can configure default' do

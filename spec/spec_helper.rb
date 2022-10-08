@@ -18,6 +18,13 @@ end
 
 TIMEOUT = 60
 
+def set_cardano_up_config
+  CardanoUp.base_dir = Dir.mktmpdir
+  CardanoUp.cardano_up_config = File.join(CardanoUp.base_dir,
+                                          '.cardano-test.json')
+  CardanoUp.configure_default
+end
+
 def eventually(label, &block)
   current_time = Time.now
   timeout_treshold = current_time + TIMEOUT

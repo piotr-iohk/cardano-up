@@ -70,7 +70,7 @@ begin
 
   # CONFIG
   if o['config'] == true
-    c = CardanoUp.get_config
+    c = CardanoUp.config
     if o['--set-default'] == true
       c = CardanoUp.configure_default
       warn 'Configs set to default!'
@@ -113,7 +113,7 @@ begin
       warn(e.message)
       exit 1
     end
-    warn "Install dir: #{CardanoUp.get_config['bin_dir']}"
+    warn "Install dir: #{CardanoUp.config['bin_dir']}"
     $stderr.puts
     pretty_json(versions)
     exit
@@ -129,7 +129,7 @@ begin
       exit 1
     end
     warn "Downloaded configs for '#{env}' environment."
-    warn "Config dir: #{File.join(CardanoUp.get_config['config_dir'], env)}"
+    warn "Config dir: #{File.join(CardanoUp.config['config_dir'], env)}"
     $stderr.puts
     pretty_json(configs)
     exit
@@ -212,7 +212,7 @@ begin
   if o['tail'] == true
     env = o['<env>']
     begin
-      log_dir = File.join(CardanoUp.get_config['log_dir'], env)
+      log_dir = File.join(CardanoUp.config['log_dir'], env)
       if o['node']
         log_file = File.join(log_dir, 'node.log')
         CardanoUp::Tail.tail(log_file)

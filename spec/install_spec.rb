@@ -2,14 +2,11 @@
 
 RSpec.describe CardanoUp::Install do
   before(:all) do
-    CardanoUp.base_dir = Dir.mktmpdir
-    CardanoUp.cardano_up_config = File.join(CardanoUp.base_dir,
-                                            '.cardano-test.json')
-    CardanoUp.configure_default
+    set_cardano_up_config
   end
 
   after(:all) do
-    CardanoUp.remove_configuration
+    CardanoUp.remove_cardano_up_config
   end
 
   it 'can install_configs for environment' do

@@ -1,22 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Integration', :e2e, :integration do
-  before(:each) do
-    CardanoUp.base_dir = Dir.mktmpdir
-    CardanoUp.cardano_up_config = File.join(CardanoUp.base_dir,
-                                            '.cardano-test.json')
-    CardanoUp.configure_default
-
+  before(:all) do
+    set_cardano_up_config
     @env = 'preprod'
     @port = '7788'
-
-    # Get configs and bins and start node and wallet
-    CardanoUp::Install.install_configs(@env)
     CardanoUp::Install.install_bins('latest')
+    CardanoUp::Install.install_configs(@env)
   end
 
   after(:each) do
-    CardanoUp.remove_configuration
+    CardanoUp.clean_config_dir('state_dir')
   end
 
   def assert_node_up(bin_dir, socket_path, protocol_magic)

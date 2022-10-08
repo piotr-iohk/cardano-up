@@ -9,7 +9,7 @@ RSpec.describe CardanoUp::Start do
   end
 
   after(:all) do
-    CardanoUp.remove_configuration
+    CardanoUp.remove_cardano_up_config
   end
 
   it 'raise on prepare_configuration when no port' do

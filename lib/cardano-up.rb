@@ -94,8 +94,13 @@ module CardanoUp
     JSON.parse(File.read(@cardano_up_config))
   end
 
-  # Remove configuration
-  def self.remove_configuration
+  # Remove configuration file
+  def self.remove_cardano_up_config
     FileUtils.rm_f(@cardano_up_config)
+  end
+
+  # dir [String] config dir
+  def self.clean_config_dir(dir)
+    FileUtils.rm_f(config[dir])
   end
 end
