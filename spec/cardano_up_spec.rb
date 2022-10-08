@@ -8,8 +8,8 @@ RSpec.describe CardanoUp do
   describe 'Configuration' do
     before(:all) do
       CardanoUp.base_dir = Dir.mktmpdir
-      CardanoUp.adrestia_bundler_config = File.join(CardanoUp.base_dir,
-                                                    'adrestia-bundler-test.json')
+      CardanoUp.cardano_up_config = File.join(CardanoUp.base_dir,
+                                              '.cardano-test.json')
     end
 
     after(:each) do
@@ -20,7 +20,7 @@ RSpec.describe CardanoUp do
       expect(CardanoUp.configured?).to eq false
       config = CardanoUp.configure_default
       expect(CardanoUp.configured?).to eq true
-      config_got = CardanoUp.get_config
+      config_got = CardanoUp.config
       expect(config).to include('state_dir', 'log_dir', 'bin_dir', 'config_dir')
       expect(config).to eq config_got
     end
@@ -29,7 +29,7 @@ RSpec.describe CardanoUp do
       expect(CardanoUp.configured?).to eq false
       config = CardanoUp.configure('/bins', '/state', '/logs', '/configs')
       expect(CardanoUp.configured?).to eq true
-      config_got = CardanoUp.get_config
+      config_got = CardanoUp.config
       expect(config).to eq({ 'bin_dir' => '/bins', 'state_dir' => '/state',
                              'log_dir' => '/logs', 'config_dir' => '/configs' })
       expect(config).to eq config_got
@@ -37,8 +37,8 @@ RSpec.describe CardanoUp do
 
     it 'raise error when not configured' do
       expect(CardanoUp.configured?).to eq false
-      expect { CardanoUp.get_config }.to raise_error CardanoUp::ConfigNotSetError,
-                                                     /Config not exists/
+      expect { CardanoUp.config }.to raise_error CardanoUp::ConfigNotSetError,
+                                                 /Config not exists/
     end
   end
 end

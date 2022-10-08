@@ -3,8 +3,8 @@
 RSpec.describe CardanoUp::Install do
   before(:all) do
     CardanoUp.base_dir = Dir.mktmpdir
-    CardanoUp.adrestia_bundler_config = File.join(CardanoUp.base_dir,
-                                                  'adrestia-bundler-test.json')
+    CardanoUp.cardano_up_config = File.join(CardanoUp.base_dir,
+                                            '.cardano-test.json')
     CardanoUp.configure_default
   end
 
@@ -12,7 +12,7 @@ RSpec.describe CardanoUp::Install do
     CardanoUp.remove_configuration
   end
 
-  it 'can get_configs for environment' do
+  it 'can install_configs for environment' do
     env = 'preview'
     expect(CardanoUp::Install.configs_exist?(env)).to be false
     CardanoUp::Install.install_configs(env)
@@ -26,7 +26,7 @@ RSpec.describe CardanoUp::Install do
     end.to raise_error CardanoUp::EnvNotSupportedError, /not supported/
   end
 
-  it 'raise on get_configs when not supported environment' do
+  it 'raise on install_configs when not supported environment' do
     env = 'previeww'
     expect do
       CardanoUp::Install.install_configs(env)
@@ -35,7 +35,7 @@ RSpec.describe CardanoUp::Install do
 
   it 'can install_bins from master' do
     release = 'master'
-    c = CardanoUp.get_config
+    c = CardanoUp.config
     bin_dir = c['bin_dir']
     expect(Dir["#{bin_dir}/*"].size).to eq 0
 
@@ -60,8 +60,8 @@ RSpec.describe CardanoUp::Install do
   it 'raise on return_versions when bins not exist' do
     Dir.mktmpdir do |dir|
       CardanoUp.base_dir = dir
-      CardanoUp.adrestia_bundler_config = File.join(dir,
-                                                    'adrestia-bundler-test.json')
+      CardanoUp.cardano_up_config = File.join(dir,
+                                              'adrestia-bundler-test.json')
       CardanoUp.configure_default
       expect do
         CardanoUp::Install.return_versions

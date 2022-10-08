@@ -3,8 +3,8 @@
 RSpec.describe CardanoUp::Start do
   before(:all) do
     CardanoUp.base_dir = Dir.mktmpdir
-    CardanoUp.adrestia_bundler_config = File.join(CardanoUp.base_dir,
-                                                  'adrestia-bundler-test.json')
+    CardanoUp.cardano_up_config = File.join(CardanoUp.base_dir,
+                                            '.cardano-test.json')
     CardanoUp.configure_default
   end
 

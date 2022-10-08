@@ -14,8 +14,8 @@ RSpec.describe CardanoUp::Utils do
     end
   end
 
-  it 'I can get_latest_tag' do
-    tag = CardanoUp::Utils.get_latest_tag
+  it 'I can get latest_tag' do
+    tag = CardanoUp::Utils.latest_tag
     expect(tag).to start_with('v')
   end
 
@@ -38,22 +38,22 @@ RSpec.describe CardanoUp::Utils do
                                                                        /Not supported version/
   end
 
-  it 'I can get_configs_base_url' do
+  it 'I can configs_base_url' do
     CardanoUp::ENVS.each do |env|
-      env_url = CardanoUp::Utils.get_configs_base_url(env)
+      env_url = CardanoUp::Utils.configs_base_url(env)
       expect(env_url).to eq("https://book.world.dev.cardano.org/environments/#{env}/")
     end
   end
 
-  it "I can't get_configs_base_url for config that is not supported" do
+  it "I can't configs_base_url for config that is not supported" do
     expect do
-      CardanoUp::Utils.get_configs_base_url('env')
+      CardanoUp::Utils.configs_base_url('env')
     end.to raise_error CardanoUp::EnvNotSupportedError, /not supported/
   end
 
-  it 'I can get_config_urls' do
+  it 'I can config_urls' do
     CardanoUp::ENVS.each do |env|
-      configs = CardanoUp::Utils.get_config_urls(env)
+      configs = CardanoUp::Utils.config_urls(env)
       expect(configs.size).to eq 5
     end
   end
