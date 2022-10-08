@@ -7,7 +7,7 @@ RSpec.describe 'Integration', :e2e, :integration do
                                             '.cardano-test.json')
     CardanoUp.configure_default
 
-    @env = 'shelley-qa'
+    @env = 'preprod'
     @port = '7788'
 
     # Get configs and bins and start node and wallet
