@@ -262,6 +262,30 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#clean_config_dir-class_method" title="clean_config_dir (class method)">.<strong>clean_config_dir</strong>(dir)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>dir [String] config dir.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#config-class_method" title="config (class method)">.<strong>config</strong>  &#x21d2; Object </a>
     
 
@@ -358,7 +382,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#remove_configuration-class_method" title="remove_configuration (class method)">.<strong>remove_configuration</strong>  &#x21d2; Object </a>
+      <a href="#remove_cardano_up_config-class_method" title="remove_cardano_up_config (class method)">.<strong>remove_cardano_up_config</strong>  &#x21d2; Object </a>
     
 
     
@@ -373,7 +397,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Remove configuration.</p>
+<p>Remove configuration file.</p>
 </div></span>
   
 </li>
@@ -506,6 +530,47 @@
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cardano_up_config='>cardano_up_config=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@cardano_up_config</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="clean_config_dir-class_method">
+  
+    .<strong>clean_config_dir</strong>(dir)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>dir [String] config dir</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+103
+104
+105</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 103</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_clean_config_dir'>clean_config_dir</span><span class='lparen'>(</span><span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span>
+  <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_rm_f'>rm_f</span><span class='lparen'>(</span><span class='id identifier rubyid_config'>config</span><span class='lbracket'>[</span><span class='id identifier rubyid_dir'>dir</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -741,9 +806,9 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="remove_configuration-class_method">
+  <h3 class="signature " id="remove_cardano_up_config-class_method">
   
-    .<strong>remove_configuration</strong>  &#x21d2; <tt>Object</tt> 
+    .<strong>remove_cardano_up_config</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -752,7 +817,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Remove configuration</p>
+<p>Remove configuration file</p>
 
 
   </div>
@@ -773,7 +838,7 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 98</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_remove_configuration'>remove_configuration</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_remove_cardano_up_config'>remove_cardano_up_config</span>
   <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_rm_f'>rm_f</span><span class='lparen'>(</span><span class='ivar'>@cardano_up_config</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -786,7 +851,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Oct  8 18:31:42 2022 by
+  Generated on Sat Oct  8 19:25:12 2022 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.28 (ruby-3.1.2).
 </div>
