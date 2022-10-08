@@ -29,7 +29,10 @@ If any configs are missing cardano-up will download them. If any binaries are mi
 Call `$ cardano-up --help` to explore more options.
 
 ## Documentation
-TODO
+
+| Link | Description  |
+|--|--|
+|  [Ruby API (edge)](https://piotr-iohk.github.io/cardano-up/master/) | cardano-up API doc |
 
 ## How it works
 
@@ -53,7 +56,7 @@ In case of Windows it will attempt to install cardano-node and cardano-wallet as
 
 > :warning: nssm requires administrator permissions to register Windows services, therefore you need to start your cmd as an administrator.
 
-By default cardano-up keeps all files at `$HOME/.cardano-up/` however this can be configured by editing `$HOME/.cardano-up/.cardano-up.json` directly or via `config` sub-command. One can check the contents of this internal config file by calling `$ cardano-up config`. 
+By default cardano-up keeps all files at `$HOME/.cardano-up/` however this can be configured by editing `$HOME/.cardano-up/.cardano-up.json` directly or via `config` sub-command. One can check the contents of this internal config file by calling `$ cardano-up config`.
 
 ## License
 
