@@ -14,13 +14,14 @@ jobs:
       packages: write
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Ruby 2.6
+    - name: '📥 Checkout repository'
+      uses: actions/checkout@v3
+    - name: 💎 Set up Ruby 2.6
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6.x
 
-    - name: Publish to GPR
+    - name: 🚀 Publish to GPR
       run: |
         mkdir -p $HOME/.gem
         touch $HOME/.gem/credentials
@@ -32,7 +33,7 @@ jobs:
         GEM_HOST_API_KEY: "Bearer ${{secrets.GITHUB_TOKEN}}"
         OWNER: ${{ github.repository_owner }}
 
-    - name: Publish to RubyGems
+    - name: 🚀 Publish to RubyGems
       run: |
         mkdir -p $HOME/.gem
         touch $HOME/.gem/credentials
