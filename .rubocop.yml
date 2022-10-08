@@ -1,0 +1,38 @@
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Max: 10
+  MaxOptionalParameters: 10
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - 'lib/cardano-up.rb'
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Lint/OrAssignmentToConstant:
+  Enabled: false

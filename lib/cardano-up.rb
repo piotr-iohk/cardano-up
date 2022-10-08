@@ -17,6 +17,8 @@ require 'cardano-up/install'
 require 'cardano-up/start'
 require 'cardano-up/tail'
 
+# Cardano Up!
+# Lightweight manager for Cardano binaries and configs.
 module CardanoUp
   CONFIGS_BASE_URL = 'https://book.world.dev.cardano.org/environments'
   BINS_BASE_URL = 'https://github.com/input-output-hk/cardano-wallet'
@@ -29,71 +31,71 @@ module CardanoUp
   TESTNET_TOKEN_SERVER = 'https://metadata.cardano-testnet.iohkdev.io'
   # It is recommended to use default value for {base_dir},
   # however it is possible to modify it with {base_dir=}.
-  @@base_dir = File.join(Dir.home, '.cardano-up')
+  @base_dir = File.join(Dir.home, '.cardano-up')
 
-  # It is recommended to use default value for {adrestia_bundler_config},
-  # however it is possible to modify it with {adrestia_bundler_config=}.
-  @@adrestia_bundler_config = File.join(@@base_dir, '.cardano-up.json')
+  # It is recommended to use default value for {cardano_up_config},
+  # however it is possible to modify it with {cardano_up_config=}.
+  @cardano_up_config = File.join(@base_dir, '.cardano-up.json')
 
   def self.base_dir
-    @@base_dir
+    @base_dir
   end
 
   def self.base_dir=(value)
-    @@base_dir = value
-    @@adrestia_bundler_config = File.join(@@base_dir, 'config.json')
-    @@base_dir
+    @base_dir = value
+    @cardano_up_config = File.join(@base_dir, 'config.json')
+    @base_dir
   end
 
-  def self.adrestia_bundler_config
-    @@adrestia_bundler_config
+  def self.cardano_up_config
+    @cardano_up_config
   end
 
-  def self.adrestia_bundler_config=(value)
-    @@adrestia_bundler_config = value
+  def self.cardano_up_config=(value)
+    @cardano_up_config = value
   end
 
   # Check if CardanoUp config exists
   def self.configured?
-    File.exist?(@@adrestia_bundler_config)
+    File.exist?(@cardano_up_config)
   end
 
   # Set default config for CardanoUp
   def self.configure_default
-    configure(File.join(@@base_dir, 'bins'),
-              File.join(@@base_dir, 'state'),
-              File.join(@@base_dir, 'logs'),
-              File.join(@@base_dir, 'configs'))
+    configure(File.join(@base_dir, 'bins'),
+              File.join(@base_dir, 'state'),
+              File.join(@base_dir, 'logs'),
+              File.join(@base_dir, 'configs'))
   end
 
   # Set custom config for CardanoUp
   def self.configure(bin_dir, state_dir, logs_dir, config_dir)
-    FileUtils.mkdir_p(@@base_dir)
+    FileUtils.mkdir_p(@base_dir)
     c = if configured?
-          CardanoUp.get_config
+          CardanoUp.config
         else
-          { 'bin_dir' => File.join(@@base_dir, 'bins'),
-            'state_dir' => File.join(@@base_dir, 'state'),
-            'log_dir' => File.join(@@base_dir, 'state'),
-            'config_dir' => File.join(@@base_dir, 'configs') }
+          { 'bin_dir' => File.join(@base_dir, 'bins'),
+            'state_dir' => File.join(@base_dir, 'state'),
+            'log_dir' => File.join(@base_dir, 'state'),
+            'config_dir' => File.join(@base_dir, 'configs') }
         end
     c['bin_dir'] = bin_dir if bin_dir
     c['state_dir'] = state_dir if state_dir
     c['log_dir'] = logs_dir if logs_dir
     c['config_dir'] = config_dir if config_dir
-    File.write(@@adrestia_bundler_config, JSON.pretty_generate(c))
-    JSON.parse(File.read(@@adrestia_bundler_config))
+    File.write(@cardano_up_config, JSON.pretty_generate(c))
+    JSON.parse(File.read(@cardano_up_config))
   end
 
   # Get config values
-  def self.get_config
+  def self.config
     raise CardanoUp::ConfigNotSetError unless configured?
 
-    JSON.parse(File.read(@@adrestia_bundler_config))
+    JSON.parse(File.read(@cardano_up_config))
   end
 
   # Remove configuration
   def self.remove_configuration
-    FileUtils.rm_f(@@adrestia_bundler_config)
+    FileUtils.rm_f(@cardano_up_config)
   end
 end

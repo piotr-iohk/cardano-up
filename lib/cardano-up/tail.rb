@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module CardanoUp
+  # Tail log file
   module Tail
     def self.tail(file_path)
       File.open(file_path) do |log|

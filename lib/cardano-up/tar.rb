@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module CardanoUp
+  # unpacking archives
   module Tar
     # unzip file to destination directory
     def self.unzip(file, destination)

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 module CardanoUp
+  # Utility methods
   module Utils
-    def self.cmd(cmd, display_result = false)
+    def self.cmd(cmd, display_result: false)
       cmd.gsub(/\s+/, ' ')
       res = `#{cmd}`
       puts cmd if display_result
@@ -16,19 +17,19 @@ module CardanoUp
       File.binwrite(file, resp.body)
     end
 
-    def self.is_win?
+    def self.win?
       RUBY_PLATFORM =~ /cygwin|mswin|mingw|bccwin|wince|emx/
     end
 
-    def self.is_linux?
+    def self.linux?
       RUBY_PLATFORM =~ /linux/
     end
 
-    def self.is_mac?
+    def self.mac?
       RUBY_PLATFORM =~ /darwin/
     end
 
-    def self.get_latest_tag
+    def self.latest_tag
       HTTParty.get("#{CardanoUp::BINS_BASE_URL}/releases/latest",
                    headers: { 'Accept' => 'application/json' })['tag_name']
     end
@@ -44,21 +45,21 @@ module CardanoUp
 
       url = ''
       if release == 'latest' || release =~ /^v20.{2}-.{2}-.{2}/
-        tag = release == 'latest' ? get_latest_tag : release
-        if is_linux?
+        tag = release == 'latest' ? latest_tag : release
+        if linux?
           file = "cardano-wallet-#{tag}-linux64.tar.gz"
-        elsif is_mac?
+        elsif mac?
           file = "cardano-wallet-#{tag}-macos-intel.tar.gz"
-        elsif is_win?
+        elsif win?
           file = "cardano-wallet-#{tag}-win64.zip"
         end
         url = "#{CardanoUp::BINS_BASE_URL}/releases/download/#{tag}/#{file}"
       else
-        if is_linux?
+        if linux?
           os = 'linux.musl.cardano-wallet-linux64'
-        elsif is_mac?
+        elsif mac?
           os = 'macos.intel.cardano-wallet-macos-intel'
-        elsif is_win?
+        elsif win?
           os = 'linux.windows.cardano-wallet-win64'
         end
 
@@ -74,26 +75,21 @@ module CardanoUp
     ##
     # Latest Cardano configs
     # @raise CardanoUp::EnvNotSupportedError
-    def self.get_configs_base_url(env)
-      if CardanoUp::ENVS.include?(env)
-        "#{CardanoUp::CONFIGS_BASE_URL}/#{env}/"
-      else
-        raise CardanoUp::EnvNotSupportedError, env
-      end
+    def self.configs_base_url(env)
+      raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include?(env)
+
+      "#{CardanoUp::CONFIGS_BASE_URL}/#{env}/"
     end
 
     # @raise CardanoUp::EnvNotSupportedError
-    def self.get_config_urls(env)
-      if CardanoUp::ENVS.include?(env)
-        base_url = get_configs_base_url(env)
-        configs = []
-        CardanoUp::CONFIG_FILES.each do |file|
-          configs << "#{base_url}#{file}"
-        end
-      else
-        raise CardanoUp::EnvNotSupportedError, env
-      end
+    def self.config_urls(env)
+      raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include?(env)
 
+      base_url = configs_base_url(env)
+      configs = []
+      CardanoUp::CONFIG_FILES.each do |file|
+        configs << "#{base_url}#{file}"
+      end
       configs
     end
   end

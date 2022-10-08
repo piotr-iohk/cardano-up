@@ -33,7 +33,7 @@ module CardanoUp
       token_metadata_server = env == 'mainnet' ? CardanoUp::MAINNET_TOKEN_SERVER : CardanoUp::TESTNET_TOKEN_SERVER
 
       CardanoUp.configure_default unless CardanoUp.configured?
-      configs = CardanoUp.get_config
+      configs = CardanoUp.config
       bin_dir = configs['bin_dir']
       config_dir = File.join(configs['config_dir'], env)
       log_dir = File.join(configs['log_dir'], env)
@@ -44,7 +44,7 @@ module CardanoUp
         FileUtils.mkdir_p(dir)
       end
 
-      node_socket = if CardanoUp::Utils.is_win?
+      node_socket = if CardanoUp::Utils.win?
                       "\\\\.\\pipe\\cardano-node-#{env}"
                     else
                       File.join(state_dir, 'node.socket')
@@ -72,22 +72,18 @@ module CardanoUp
       bin_dir = configuration[:bin_dir]
       config_dir = configuration[:config_dir]
       log_dir = configuration[:log_dir]
-      state_dir = configuration[:state_dir]
       node_db_dir = configuration[:node_db_dir]
       node_socket = configuration[:node_socket]
-      network = configuration[:network]
 
-      exe = CardanoUp::Utils.is_win? ? '.exe' : ''
+      exe = CardanoUp::Utils.win? ? '.exe' : ''
       version = CardanoUp::Utils.cmd "#{bin_dir}/cardano-node#{exe} version"
 
-      if CardanoUp::Utils.is_win?
+      if CardanoUp::Utils.win?
         # Turn off p2p for Windows
         # TODO: remove after https://github.com/input-output-hk/ouroboros-network/issues/3968 released
         config_win = JSON.parse(File.read("#{config_dir}/config.json"))
         config_win['EnableP2P'] = false
-        File.open("#{config_dir}/config.json", 'w') do |f|
-          f.write(JSON.pretty_generate(config_win))
-        end
+        File.write("#{config_dir}/config.json", JSON.pretty_generate(config_win))
         topology = %({
               "Producers": [
                 {
@@ -97,15 +93,15 @@ module CardanoUp
                 }
               ]
             })
-        File.open("#{config_dir}/topology.json", 'w') do |f|
-          f.write(topology)
-        end
+        File.write("#{config_dir}/topology.json", topology)
 
         # create cardano-node.bat file
-        node_cmd = "#{bin_dir}/cardano-node.exe run --config #{config_dir}/config.json --topology #{config_dir}/topology.json --database-path #{node_db_dir} --socket-path #{node_socket}"
-        File.open("#{bin_dir}/cardano-node.bat", 'w') do |f|
-          f.write(node_cmd)
-        end
+        node_cmd = ["#{bin_dir}/cardano-node.exe run",
+                    "--config #{config_dir}/config.json",
+                    "--topology #{config_dir}/topology.json",
+                    "--database-path #{node_db_dir}",
+                    "--socket-path #{node_socket}"].join(' ')
+        File.write("#{bin_dir}/cardano-node.bat", node_cmd)
         node_service = "cardano-node-#{env}"
         install_node = "nssm install #{node_service} #{bin_dir}/cardano-node.bat"
         log_stdout_node = "nssm set #{node_service} AppStdout #{log_dir}/node.log"
@@ -117,7 +113,11 @@ module CardanoUp
         CardanoUp::Utils.cmd log_stderr_node
         CardanoUp::Utils.cmd start_node
       else
-        node_cmd = "#{bin_dir}/cardano-node run --config #{config_dir}/config.json --topology #{config_dir}/topology.json --database-path #{node_db_dir} --socket-path #{node_socket}"
+        node_cmd = ["#{bin_dir}/cardano-node run",
+                    "--config #{config_dir}/config.json",
+                    "--topology #{config_dir}/topology.json",
+                    "--database-path #{node_db_dir}",
+                    "--socket-path #{node_socket}"].join(' ')
         node_service = "NODE_#{env}"
         CardanoUp::Utils.cmd "screen -dmS #{node_service} -L -Logfile #{log_dir}/node.log #{node_cmd}"
       end
@@ -143,23 +143,24 @@ module CardanoUp
       wallet_port = configuration[:wallet_port]
       token_metadata_server = configuration[:token_metadata_server]
       bin_dir = configuration[:bin_dir]
-      config_dir = configuration[:config_dir]
       log_dir = configuration[:log_dir]
-      state_dir = configuration[:state_dir]
       wallet_db_dir = configuration[:wallet_db_dir]
       node_socket = configuration[:node_socket]
       network = configuration[:network]
 
-      exe = CardanoUp::Utils.is_win? ? '.exe' : ''
+      exe = CardanoUp::Utils.win? ? '.exe' : ''
       version = CardanoUp::Utils.cmd "#{bin_dir}/cardano-wallet#{exe} version"
 
-      if CardanoUp::Utils.is_win?
+      if CardanoUp::Utils.win?
 
         # create cardano-wallet.bat file
-        wallet_cmd = "#{bin_dir}/cardano-wallet.exe serve --port #{wallet_port} --node-socket #{node_socket} #{network} --database #{wallet_db_dir} --token-metadata-server #{token_metadata_server}"
-        File.open("#{bin_dir}/cardano-wallet.bat", 'w') do |f|
-          f.write(wallet_cmd)
-        end
+        wallet_cmd = ["#{bin_dir}/cardano-wallet.exe serve",
+                      "--port #{wallet_port}",
+                      "--node-socket #{node_socket}",
+                      network.to_s,
+                      "--database #{wallet_db_dir}",
+                      "--token-metadata-server #{token_metadata_server}"].join(' ')
+        File.write("#{bin_dir}/cardano-wallet.bat", wallet_cmd)
         wallet_service = "cardano-wallet-#{env}"
         install_wallet = "nssm install #{wallet_service} #{bin_dir}/cardano-wallet.bat"
         log_stdout_wallet = "nssm set #{wallet_service} AppStdout #{log_dir}/wallet.log"
@@ -171,7 +172,12 @@ module CardanoUp
         CardanoUp::Utils.cmd log_stderr_wallet
         CardanoUp::Utils.cmd start_wallet
       else
-        wallet_cmd = "#{bin_dir}/cardano-wallet serve --port #{wallet_port} --node-socket #{node_socket} #{network} --database #{wallet_db_dir} --token-metadata-server #{token_metadata_server}"
+        wallet_cmd = ["#{bin_dir}/cardano-wallet serve",
+                      "--port #{wallet_port}",
+                      "--node-socket #{node_socket}",
+                      network.to_s,
+                      "--database #{wallet_db_dir}",
+                      "--token-metadata-server #{token_metadata_server}"].join(' ')
         wallet_service = "WALLET_#{env}"
         CardanoUp::Utils.cmd "screen -dmS #{wallet_service} -L -Logfile #{log_dir}/wallet.log #{wallet_cmd}"
       end
@@ -202,7 +208,7 @@ module CardanoUp
     def self.stop_node(env)
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
 
-      if CardanoUp::Utils.is_win?
+      if CardanoUp::Utils.win?
         CardanoUp::Utils.cmd "nssm stop cardano-node-#{env}"
         CardanoUp::Utils.cmd "nssm remove cardano-node-#{env} confirm"
       else
@@ -215,7 +221,7 @@ module CardanoUp
     def self.stop_wallet(env)
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
 
-      if CardanoUp::Utils.is_win?
+      if CardanoUp::Utils.win?
         CardanoUp::Utils.cmd "nssm stop cardano-wallet-#{env}"
         CardanoUp::Utils.cmd "nssm remove cardano-wallet-#{env} confirm"
       else
