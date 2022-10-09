@@ -65,7 +65,6 @@ begin
       warn " $ #{File.basename(__FILE__)} install"
       warn e
     end
-    exit 1
   end
 
   # CONFIG
