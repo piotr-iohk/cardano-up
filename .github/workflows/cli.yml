@@ -26,7 +26,11 @@ jobs:
     - name: 🧪 CLI sanity
       run: |
         bin/rebuild
+        cardano-up config
+        cardano-up -h
+        cardano-up -v
         cardano-up install latest
+        cardano-up -v
         cardano-up get-configs preprod
         cardano-up preprod node up
         cardano-up preprod wallet up

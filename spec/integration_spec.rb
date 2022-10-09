@@ -67,6 +67,8 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   it 'I can start_node_and_wallet and then stop_node and stop_wallet' do
+    skip 'flaky'
+
     bin_dir = CardanoUp.config['bin_dir']
     # Start node and wallet
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -84,6 +86,8 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   it 'I can start_node_and_wallet and then stop_wallet and stop_node' do
+    skip 'flaky'
+
     bin_dir = CardanoUp.config['bin_dir']
     # Start node and wallet
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -101,6 +105,8 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   it 'I can start_node and then stop_node' do
+    skip 'flaky'
+
     bin_dir = CardanoUp.config['bin_dir']
     # Start node
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -113,6 +119,8 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   it 'I can start_wallet and start_node then stop_node and stop_wallet' do
+    skip 'flaky'
+
     bin_dir = CardanoUp.config['bin_dir']
     # Start start_wallet start_node
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
@@ -129,6 +137,8 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   it 'I can start_wallet and start_node then stop_wallet and stop_node' do
+    skip 'flaky'
+
     bin_dir = CardanoUp.config['bin_dir']
     # Start start_wallet start_node
     config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })

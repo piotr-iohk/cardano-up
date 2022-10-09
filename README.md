@@ -2,9 +2,6 @@
 <a href="https://badge.fury.io/rb/cardano-up">
   <img src="https://badge.fury.io/rb/cardano-up.svg" alt="Gem Version">
 </a>
-<a href="https://github.com/piotr-iohk/cardano-up/releases">
-  <img src="https://img.shields.io/github/release/piotr-iohk/cardano-up.svg" />
-</a>
 <a href="https://github.com/piotr-iohk/cardano-up/actions?query=workflow%3ATests">
   <img src="https://github.com/piotr-iohk/cardano-up/workflows/Tests/badge.svg" />
 </a>
