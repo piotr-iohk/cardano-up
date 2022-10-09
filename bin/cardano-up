@@ -96,7 +96,7 @@ begin
       warn 'Configdir updated!'
     end
 
-    warn "Your config file is #{CardanoUp.adrestia_bundler_config}:"
+    warn "Your config file is #{CardanoUp.cardano_up_config}:"
     $stderr.puts
     pretty_json(c)
     exit
