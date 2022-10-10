@@ -59,7 +59,7 @@ begin
     warn "#{File.basename(__FILE__)}: #{CardanoUp::VERSION}"
     $stderr.puts
     begin
-      pretty_json CardanoUp::Install.return_versions
+      pretty_json CardanoUp::Bins.return_versions
     rescue StandardError => e
       warn 'Nothing installed? To fix run:'
       warn " $ #{File.basename(__FILE__)} install"
@@ -106,7 +106,7 @@ begin
     release = o['<release>']
     begin
       $stderr.print "Installing '#{release}'... "
-      versions = CardanoUp::Install.install_bins(release)
+      versions = CardanoUp::Bins.install(release)
       ok
     rescue CardanoUp::VersionNotSupportedError => e
       warn(e.message)
@@ -122,7 +122,7 @@ begin
   if o['get-configs'] == true
     env = o['<env>']
     begin
-      configs = CardanoUp::Install.install_configs(env)
+      configs = CardanoUp::Configs.get(env)
     rescue CardanoUp::EnvNotSupportedError => e
       warn(e.message)
       exit 1
@@ -141,19 +141,19 @@ begin
 
     begin
       $stderr.print 'Configs: '
-      unless CardanoUp::Install.configs_exist?(env)
+      unless CardanoUp::Configs.exist?(env)
         $stderr.print "installing configs for #{env}... "
-        CardanoUp::Install.install_configs(env)
+        CardanoUp::Configs.get(env)
       end
       ok
 
       $stderr.print 'Binaries: '
       begin
-        CardanoUp::Install.return_versions
+        CardanoUp::Bins.return_versions
         ok
       rescue StandardError
         $stderr.print 'installing latest release binaries... '
-        CardanoUp::Install.install_bins('latest')
+        CardanoUp::Bins.install('latest')
         ok
       end
 

@@ -5,8 +5,8 @@ RSpec.describe 'Integration', :e2e, :integration do
     set_cardano_up_config
     @env = 'preprod'
     @port = '7788'
-    CardanoUp::Install.install_bins('latest')
-    CardanoUp::Install.install_configs(@env)
+    CardanoUp::Bins.install('latest')
+    CardanoUp::Configs.get(@env)
   end
 
   after(:each) do
