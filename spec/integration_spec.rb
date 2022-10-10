@@ -5,8 +5,8 @@ RSpec.describe 'Integration', :e2e, :integration do
     set_cardano_up_config
     @env = 'preprod'
     @port = '7788'
-    CardanoUp::Install.install_bins('latest')
-    CardanoUp::Install.install_configs(@env)
+    CardanoUp::Bins.install('latest')
+    CardanoUp::Configs.get(@env)
   end
 
   after(:each) do
@@ -51,106 +51,43 @@ RSpec.describe 'Integration', :e2e, :integration do
     end
   end
 
-  it 'I can start_node_and_wallet and then stop_node_and_wallet' do
+  it 'I can do node_up and wallet_up and then node_down and wallet_down' do
     bin_dir = CardanoUp.config['bin_dir']
     # Start node and wallet
-    config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
-    started = CardanoUp::Start.start_node_and_wallet(config)
+    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port })
+    node = CardanoUp::Launcher.node_up(config)
+    wallet = CardanoUp::Launcher.wallet_up(config)
 
-    assert_node_up(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
-    assert_wallet_connected(bin_dir, started[:wallet][:port])
-
-    # Stop node and wallet
-    CardanoUp::Start.stop_node_and_wallet(@env)
-    assert_node_down(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
-    assert_wallet_disconnected(bin_dir, started[:wallet][:port])
-  end
-
-  it 'I can start_node_and_wallet and then stop_node and stop_wallet' do
-    skip 'flaky'
-
-    bin_dir = CardanoUp.config['bin_dir']
-    # Start node and wallet
-    config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
-    started = CardanoUp::Start.start_node_and_wallet(config)
-
-    assert_node_up(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
-    assert_wallet_connected(bin_dir, started[:wallet][:port])
+    assert_node_up(bin_dir, node[:node][:socket_path], node[:node][:protocol_magic])
+    assert_wallet_connected(bin_dir, wallet[:wallet][:port])
 
     # Stop node and wallet
-    CardanoUp::Start.stop_node(@env)
-    assert_node_down(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
-
-    CardanoUp::Start.stop_wallet(@env)
-    assert_wallet_disconnected(bin_dir, started[:wallet][:port])
+    CardanoUp::Launcher.node_down(@env)
+    CardanoUp::Launcher.wallet_down(@env)
+    assert_node_down(bin_dir, node[:node][:socket_path], node[:node][:protocol_magic])
+    assert_wallet_disconnected(bin_dir, wallet[:wallet][:port])
   end
 
-  it 'I can start_node_and_wallet and then stop_wallet and stop_node' do
-    skip 'flaky'
-
-    bin_dir = CardanoUp.config['bin_dir']
-    # Start node and wallet
-    config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
-    started = CardanoUp::Start.start_node_and_wallet(config)
-
-    assert_node_up(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
-    assert_wallet_connected(bin_dir, started[:wallet][:port])
-
-    # Stop node and wallet
-    CardanoUp::Start.stop_wallet(@env)
-    assert_wallet_disconnected(bin_dir, started[:wallet][:port])
-
-    CardanoUp::Start.stop_node(@env)
-    assert_node_down(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
-  end
-
-  it 'I can start_node and then stop_node' do
-    skip 'flaky'
-
+  it 'I can node_up and then node_down' do
     bin_dir = CardanoUp.config['bin_dir']
     # Start node
-    config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
-    started = CardanoUp::Start.start_node(config)
-    assert_node_up(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
+    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port })
+    node = CardanoUp::Launcher.node_up(config)
+    assert_node_up(bin_dir, node[:node][:socket_path], node[:node][:protocol_magic])
 
     # Stop node
-    CardanoUp::Start.stop_node(@env)
-    assert_node_down(bin_dir, started[:node][:socket_path], started[:node][:protocol_magic])
+    CardanoUp::Launcher.node_down(@env)
+    assert_node_down(bin_dir, node[:node][:socket_path], node[:node][:protocol_magic])
   end
 
-  it 'I can start_wallet and start_node then stop_node and stop_wallet' do
-    skip 'flaky'
-
+  it 'I can wallet_up and then wallet_down' do
     bin_dir = CardanoUp.config['bin_dir']
-    # Start start_wallet start_node
-    config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
-    w = CardanoUp::Start.start_wallet(config)
-    n = CardanoUp::Start.start_node(config)
-    assert_node_up(bin_dir, n[:node][:socket_path], n[:node][:protocol_magic])
-    assert_wallet_connected(bin_dir, w[:wallet][:port])
+    # Start wallet
+    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port })
+    wallet = CardanoUp::Launcher.wallet_up(config)
 
-    # stop_node stop_wallet
-    CardanoUp::Start.stop_node(@env)
-    CardanoUp::Start.stop_wallet(@env)
-    assert_node_down(bin_dir, n[:node][:socket_path], n[:node][:protocol_magic])
-    assert_wallet_disconnected(bin_dir, w[:wallet][:port])
-  end
-
-  it 'I can start_wallet and start_node then stop_wallet and stop_node' do
-    skip 'flaky'
-
-    bin_dir = CardanoUp.config['bin_dir']
-    # Start start_wallet start_node
-    config = CardanoUp::Start.prepare_configuration({ env: @env, wallet_port: @port })
-    w = CardanoUp::Start.start_wallet(config)
-    n = CardanoUp::Start.start_node(config)
-    assert_node_up(bin_dir, n[:node][:socket_path], n[:node][:protocol_magic])
-    assert_wallet_connected(bin_dir, w[:wallet][:port])
-
-    # stop_node stop_wallet
-    CardanoUp::Start.stop_wallet(@env)
-    CardanoUp::Start.stop_node(@env)
-    assert_node_down(bin_dir, n[:node][:socket_path], n[:node][:protocol_magic])
-    assert_wallet_disconnected(bin_dir, w[:wallet][:port])
+    # Stop wallet
+    CardanoUp::Launcher.wallet_down(@env)
+    assert_wallet_disconnected(bin_dir, wallet[:wallet][:port])
   end
 end

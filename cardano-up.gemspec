@@ -36,10 +36,10 @@ Gem::Specification.new do |spec|
   spec.executables   = ['cardano-up']
   spec.require_paths = %w[lib bin]
 
-  spec.add_runtime_dependency 'docopt', '0.6.1'
-  spec.add_runtime_dependency 'file-tail', '1.2.0'
-  spec.add_runtime_dependency 'httparty', '0.20.0'
-  spec.add_runtime_dependency 'rubyzip', '2.3.2'
+  spec.add_runtime_dependency 'docopt', '~> 0.6.1'
+  spec.add_runtime_dependency 'file-tail', '~> 1.2.0'
+  spec.add_runtime_dependency 'httparty', '~> 0.18.0'
+  spec.add_runtime_dependency 'rubyzip', '~> 2.3.2'
 
   spec.add_development_dependency 'rake', '~> 12.3'
   spec.add_development_dependency 'rspec', '~> 3.11'

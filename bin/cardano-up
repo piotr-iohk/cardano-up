@@ -59,7 +59,7 @@ begin
     warn "#{File.basename(__FILE__)}: #{CardanoUp::VERSION}"
     $stderr.puts
     begin
-      pretty_json CardanoUp::Install.return_versions
+      pretty_json CardanoUp::Bins.return_versions
     rescue StandardError => e
       warn 'Nothing installed? To fix run:'
       warn " $ #{File.basename(__FILE__)} install"
@@ -106,7 +106,7 @@ begin
     release = o['<release>']
     begin
       $stderr.print "Installing '#{release}'... "
-      versions = CardanoUp::Install.install_bins(release)
+      versions = CardanoUp::Bins.install(release)
       ok
     rescue CardanoUp::VersionNotSupportedError => e
       warn(e.message)
@@ -122,7 +122,7 @@ begin
   if o['get-configs'] == true
     env = o['<env>']
     begin
-      configs = CardanoUp::Install.install_configs(env)
+      configs = CardanoUp::Configs.get(env)
     rescue CardanoUp::EnvNotSupportedError => e
       warn(e.message)
       exit 1
@@ -141,41 +141,43 @@ begin
 
     begin
       $stderr.print 'Configs: '
-      unless CardanoUp::Install.configs_exist?(env)
+      unless CardanoUp::Configs.exist?(env)
         $stderr.print "installing configs for #{env}... "
-        CardanoUp::Install.install_configs(env)
+        CardanoUp::Configs.get(env)
       end
       ok
 
       $stderr.print 'Binaries: '
       begin
-        CardanoUp::Install.return_versions
+        CardanoUp::Bins.return_versions
         ok
       rescue StandardError
         $stderr.print 'installing latest release binaries... '
-        CardanoUp::Install.install_bins('latest')
+        CardanoUp::Bins.install('latest')
         ok
       end
 
       $stderr.puts
       warn 'Starting...'
       $stderr.puts
-      c = CardanoUp::Start.prepare_configuration({ env: env, wallet_port: port })
+      c = CardanoUp::Launcher.setup({ env: env, wallet_port: port })
     rescue CardanoUp::EnvNotSupportedError => e
       warn(e.message)
       exit 1
     end
     begin
       if o['node']
-        pretty_json CardanoUp::Start.start_node(c)
+        pretty_json CardanoUp::Launcher.node_up(c)
         $stderr.puts
         warn "Congratulations! You've just started cardano-node!"
       elsif o['wallet']
-        pretty_json CardanoUp::Start.start_wallet(c)
+        pretty_json CardanoUp::Launcher.wallet_up(c)
         $stderr.puts
         warn "Congratulations! You've just started cardano-wallet!"
       elsif o['node-wallet']
-        pretty_json CardanoUp::Start.start_node_and_wallet(c)
+        n = CardanoUp::Launcher.node_up(c)
+        w = CardanoUp::Launcher.wallet_up(c)
+        pretty_json(n.merge(w))
         $stderr.puts
         warn "Congratulations! You've just started cardano-node and cardano-wallet!"
       end
@@ -194,13 +196,17 @@ begin
 
     begin
       if o['node']
-        CardanoUp::Start.stop_node(env)
+        CardanoUp::Launcher.node_down(env)
+        warn 'Node stopped.'
       elsif o['wallet']
-        CardanoUp::Start.stop_wallet(env)
+        CardanoUp::Launcher.wallet_down(env)
+        warn 'Wallet stopped.'
       elsif o['node-wallet']
-        CardanoUp::Start.stop_node_and_wallet(env)
+        CardanoUp::Launcher.node_down(env)
+        warn 'Node stopped.'
+        CardanoUp::Launcher.wallet_down(env)
+        warn 'Wallet stopped.'
       end
-      warn 'Stopped.'
     rescue CardanoUp::EnvNotSupportedError => e
       warn(e.message)
       exit 1
