@@ -160,22 +160,24 @@ begin
       $stderr.puts
       warn 'Starting...'
       $stderr.puts
-      c = CardanoUp::Start.prepare_configuration({ env: env, wallet_port: port })
+      c = CardanoUp::Launcher.setup({ env: env, wallet_port: port })
     rescue CardanoUp::EnvNotSupportedError => e
       warn(e.message)
       exit 1
     end
     begin
       if o['node']
-        pretty_json CardanoUp::Start.start_node(c)
+        pretty_json CardanoUp::Launcher.node_up(c)
         $stderr.puts
         warn "Congratulations! You've just started cardano-node!"
       elsif o['wallet']
-        pretty_json CardanoUp::Start.start_wallet(c)
+        pretty_json CardanoUp::Launcher.wallet_up(c)
         $stderr.puts
         warn "Congratulations! You've just started cardano-wallet!"
       elsif o['node-wallet']
-        pretty_json CardanoUp::Start.start_node_and_wallet(c)
+        n = CardanoUp::Launcher.node_up(c)
+        w = CardanoUp::Launcher.wallet_up(c)
+        pretty_json(n.merge(w))
         $stderr.puts
         warn "Congratulations! You've just started cardano-node and cardano-wallet!"
       end
@@ -194,13 +196,17 @@ begin
 
     begin
       if o['node']
-        CardanoUp::Start.stop_node(env)
+        CardanoUp::Launcher.node_down(env)
+        warn 'Node stopped.'
       elsif o['wallet']
-        CardanoUp::Start.stop_wallet(env)
+        CardanoUp::Launcher.wallet_down(env)
+        warn 'Wallet stopped.'
       elsif o['node-wallet']
-        CardanoUp::Start.stop_node_and_wallet(env)
+        CardanoUp::Launcher.node_down(env)
+        warn 'Node stopped.'
+        CardanoUp::Launcher.wallet_down(env)
+        warn 'Wallet stopped.'
       end
-      warn 'Stopped.'
     rescue CardanoUp::EnvNotSupportedError => e
       warn(e.message)
       exit 1

@@ -15,7 +15,7 @@ require 'cardano-up/utils'
 require 'cardano-up/tar'
 require 'cardano-up/bins'
 require 'cardano-up/configs'
-require 'cardano-up/start'
+require 'cardano-up/launcher'
 require 'cardano-up/tail'
 
 # Cardano Up!

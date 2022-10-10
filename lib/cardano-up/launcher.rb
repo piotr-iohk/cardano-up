@@ -2,7 +2,7 @@
 
 module CardanoUp
   ##
-  # Start cardano-node and cardano-wallet on your system.
+  # Start/stop cardano-node and cardano-wallet on your system.
   #
   # For Linux and MacOS it will attempt to start separate screen sessions for
   # wallet and node respectively, therefore 'screen' tool is required on your system.
@@ -18,12 +18,12 @@ module CardanoUp
   # @see https://nssm.cc/
   # Nssm can be installed via choco package manager:
   #  choco install nssm
-  module Start
-    # Prepare configuration for wallet and node to be started
+  module Launcher
+    # Create common set of variables for getting node and wallet up
     # @param env [Hash] provide env and wallet_port, e.g. { env: 'mainnet', wallet_port: '8090' }
     # @raise CardanoUp::EnvNotSupportedError
     # @raise CardanoUp::WalletPortError
-    def self.prepare_configuration(opt = { env: 'mainnet', wallet_port: '8090' })
+    def self.setup(opt = { env: 'mainnet', wallet_port: '8090' })
       env = opt[:env]
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
 
@@ -66,8 +66,8 @@ module CardanoUp
       }
     end
 
-    # @param configuration [Hash] output of prepare_configuration
-    def self.start_node(configuration)
+    # @param configuration [Hash] output of setup
+    def self.node_up(configuration)
       env = configuration[:env]
       bin_dir = configuration[:bin_dir]
       config_dir = configuration[:config_dir]
@@ -137,8 +137,8 @@ module CardanoUp
       }
     end
 
-    # @param configuration [Hash] output of prepare_configuration
-    def self.start_wallet(configuration)
+    # @param configuration [Hash] output of setup
+    def self.wallet_up(configuration)
       env = configuration[:env]
       wallet_port = configuration[:wallet_port]
       token_metadata_server = configuration[:token_metadata_server]
@@ -197,15 +197,8 @@ module CardanoUp
       }
     end
 
-    # @param configuration [Hash] output of prepare_configuration
-    def self.start_node_and_wallet(configuration)
-      cn = start_node(configuration)
-      cw = start_wallet(configuration)
-      cn.merge(cw)
-    end
-
     # @raise CardanoUp::EnvNotSupportedError
-    def self.stop_node(env)
+    def self.node_down(env)
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
 
       if CardanoUp::Utils.win?
@@ -218,7 +211,7 @@ module CardanoUp
     end
 
     # @raise CardanoUp::EnvNotSupportedError
-    def self.stop_wallet(env)
+    def self.wallet_down(env)
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
 
       if CardanoUp::Utils.win?
@@ -228,12 +221,6 @@ module CardanoUp
         CardanoUp::Utils.cmd "screen -S WALLET_#{env} -X at '0' stuff '^C'"
         CardanoUp::Utils.cmd "screen -XS WALLET_#{env} quit"
       end
-    end
-
-    # @raise CardanoUp::EnvNotSupportedError
-    def self.stop_node_and_wallet(env)
-      stop_wallet(env)
-      stop_node(env)
     end
 
     ##
