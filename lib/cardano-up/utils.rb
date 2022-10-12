@@ -18,7 +18,7 @@ module CardanoUp
     end
 
     def self.from_json(file)
-      JSON.parse(File.read(file), {:symbolize_names => true})
+      JSON.parse(File.read(file), { symbolize_names: true })
     end
 
     def self.to_json(file, hash)

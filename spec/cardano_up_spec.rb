@@ -30,8 +30,8 @@ RSpec.describe CardanoUp do
       config = CardanoUp.configure('/bins', '/state', '/logs', '/configs')
       expect(CardanoUp.configured?).to eq true
       config_got = CardanoUp.config
-      expect(config).to eq({ :bin_dir => '/bins', :state_dir => '/state',
-                             :log_dir => '/logs', :config_dir => '/configs' })
+      expect(config).to eq({ bin_dir: '/bins', state_dir: '/state',
+                             log_dir: '/logs', config_dir: '/configs' })
       expect(config).to eq config_got
     end
 
