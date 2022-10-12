@@ -34,10 +34,10 @@ module CardanoUp
 
       CardanoUp.configure_default unless CardanoUp.configured?
       configs = CardanoUp.config
-      bin_dir = configs['bin_dir']
-      config_dir = File.join(configs['config_dir'], env)
-      log_dir = File.join(configs['log_dir'], env)
-      state_dir = File.join(configs['state_dir'], env)
+      bin_dir = configs[:bin_dir]
+      config_dir = File.join(configs[:config_dir], env)
+      log_dir = File.join(configs[:log_dir], env)
+      state_dir = File.join(configs[:state_dir], env)
       wallet_db_dir = File.join(state_dir, 'wallet-db')
       node_db_dir = File.join(state_dir, 'node-db')
       [bin_dir, config_dir, log_dir, state_dir, wallet_db_dir, node_db_dir].each do |dir|

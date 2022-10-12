@@ -11,7 +11,7 @@ module CardanoUp
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include?(env)
 
       configs = CardanoUp.config
-      config_dir_env = FileUtils.mkdir_p(File.join(configs['config_dir'], env))
+      config_dir_env = FileUtils.mkdir_p(File.join(configs[:config_dir], env))
       config_files = CardanoUp::CONFIG_FILES
       not_existing = []
       config_files.each do |file|
@@ -30,7 +30,7 @@ module CardanoUp
 
       configs = CardanoUp.config
       config_urls = CardanoUp::Utils.config_urls(env)
-      config_dir_env = FileUtils.mkdir_p(File.join(configs['config_dir'], env))
+      config_dir_env = FileUtils.mkdir_p(File.join(configs[:config_dir], env))
       config_urls.each do |url|
         CardanoUp::Utils.wget(url, File.join(config_dir_env, File.basename(url)))
       end

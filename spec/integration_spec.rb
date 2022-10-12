@@ -10,7 +10,7 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   after(:each) do
-    CardanoUp.clean_config_dir('state_dir')
+    CardanoUp.clean_config_dir(:state_dir)
   end
 
   def assert_node_up(bin_dir, socket_path, protocol_magic)
@@ -52,7 +52,7 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   it 'I can do node_up and wallet_up and then node_down and wallet_down' do
-    bin_dir = CardanoUp.config['bin_dir']
+    bin_dir = CardanoUp.config[:bin_dir]
     # Start node and wallet
     config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port })
     node = CardanoUp::Launcher.node_up(config)
@@ -69,7 +69,7 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   it 'I can node_up and then node_down' do
-    bin_dir = CardanoUp.config['bin_dir']
+    bin_dir = CardanoUp.config[:bin_dir]
     # Start node
     config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port })
     node = CardanoUp::Launcher.node_up(config)
@@ -81,7 +81,7 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   it 'I can wallet_up and then wallet_down' do
-    bin_dir = CardanoUp.config['bin_dir']
+    bin_dir = CardanoUp.config[:bin_dir]
     # Start wallet
     config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port })
     wallet = CardanoUp::Launcher.wallet_up(config)

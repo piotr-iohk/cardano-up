@@ -11,9 +11,10 @@ doc = <<~DOCOPT
   Usage:
     #{File.basename(__FILE__)} install [<release>]
     #{File.basename(__FILE__)} get-configs <env>
-    #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) up [--port <port>]
-    #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) down
-    #{File.basename(__FILE__)} <env> (node|wallet) tail
+    #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) up [--port <port>] [--session <name>]
+    #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) down [--session <name>]
+    #{File.basename(__FILE__)} <env> (node|wallet) tail [--session <name>]
+    #{File.basename(__FILE__)} ls [-a]
     #{File.basename(__FILE__)} config [--set-default] [--bindir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
     #{File.basename(__FILE__)} -v | --version
     #{File.basename(__FILE__)} -h | --help
@@ -28,7 +29,10 @@ doc = <<~DOCOPT
                             ones from latest release.
     down                    Stop particular service.
     tail                    Follow logs for particular service.
-    --port <port>           Specify wallet port. [default: 8090]
+    ls                      List sessions.
+    -p --port <port>        Specify wallet port. [default: 8090]
+    -s --session <name>     Set session name. In single session you can have
+                            at most 1 node and 1 wallet for particular <env>. [default: 0]
 
     config                  Internal config for #{File.basename(__FILE__)}
     --set-default           Overwrite config with default values.
@@ -112,7 +116,7 @@ begin
       warn(e.message)
       exit 1
     end
-    warn "Install dir: #{CardanoUp.config['bin_dir']}"
+    warn "Install dir: #{CardanoUp.config[:bin_dir]}"
     $stderr.puts
     pretty_json(versions)
     exit
@@ -128,7 +132,7 @@ begin
       exit 1
     end
     warn "Downloaded configs for '#{env}' environment."
-    warn "Config dir: #{File.join(CardanoUp.config['config_dir'], env)}"
+    warn "Config dir: #{File.join(CardanoUp.config[:config_dir], env)}"
     $stderr.puts
     pretty_json(configs)
     exit
@@ -217,7 +221,7 @@ begin
   if o['tail'] == true
     env = o['<env>']
     begin
-      log_dir = File.join(CardanoUp.config['log_dir'], env)
+      log_dir = File.join(CardanoUp.config[:log_dir], env)
       if o['node']
         log_file = File.join(log_dir, 'node.log')
         CardanoUp::Tail.tail(log_file)
