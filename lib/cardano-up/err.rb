@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 module CardanoUp
+  # Thrown when there is already a node running in the session
+  class SessionHasNodeError < StandardError
+    def initialize(session_name, network)
+      super("Session '#{session_name}' already has node running on '#{network}'!")
+    end
+  end
+
+  # Thrown when there is already a wallet running in the session
+  class SessionHasWalletError < StandardError
+    def initialize(session_name, network)
+      super("Session '#{session_name}' already has wallet running on '#{network}'!")
+    end
+  end
+
   # Thrown when env is not supported
   class EnvNotSupportedError < StandardError
     def initialize(env)

@@ -49,7 +49,7 @@ module CardanoUp
                     else
                       File.join(state_dir, 'node.socket')
                     end
-      network = env == 'mainnet' ? '--mainnet' : "--testnet #{config_dir}/byron-genesis.json"
+      network = env == 'mainnet' ? '--mainnet' : "--testnet #{File.join(config_dir, 'byron-genesis.json')}"
 
       {
         env: env,
@@ -81,9 +81,9 @@ module CardanoUp
       if CardanoUp::Utils.win?
         # Turn off p2p for Windows
         # TODO: remove after https://github.com/input-output-hk/ouroboros-network/issues/3968 released
-        config_win = JSON.parse(File.read("#{config_dir}/config.json"))
-        config_win['EnableP2P'] = false
-        File.write("#{config_dir}/config.json", JSON.pretty_generate(config_win))
+        config_win = CardanoUp::Utils.from_json("#{config_dir}/config.json")
+        config_win[:EnableP2P] = false
+        CardanoUp::Utils.to_json("#{config_dir}/config.json", config_win)
         topology = %({
               "Producers": [
                 {
@@ -93,12 +93,12 @@ module CardanoUp
                 }
               ]
             })
-        File.write("#{config_dir}/topology.json", topology)
+        CardanoUp::Utils.to_json("#{config_dir}/topology.json", topology)
 
         # create cardano-node.bat file
-        node_cmd = ["#{bin_dir}/cardano-node.exe run",
-                    "--config #{config_dir}/config.json",
-                    "--topology #{config_dir}/topology.json",
+        node_cmd = ["#{File.join(bin_dir, 'cardano-node.exe')} run",
+                    "--config #{File.join(config_dir, 'config.json')}",
+                    "--topology #{File.join(config_dir, 'topology.json')}",
                     "--database-path #{node_db_dir}",
                     "--socket-path #{node_socket}"].join(' ')
         File.write("#{bin_dir}/cardano-node.bat", node_cmd)
@@ -113,19 +113,20 @@ module CardanoUp
         CardanoUp::Utils.cmd log_stderr_node
         CardanoUp::Utils.cmd start_node
       else
-        node_cmd = ["#{bin_dir}/cardano-node run",
-                    "--config #{config_dir}/config.json",
-                    "--topology #{config_dir}/topology.json",
+        node_cmd = ["#{File.join(bin_dir, 'cardano-node')} run",
+                    "--config #{File.join(config_dir, 'config.json')}",
+                    "--topology #{File.join(config_dir, 'topology.json')}",
                     "--database-path #{node_db_dir}",
                     "--socket-path #{node_socket}"].join(' ')
         node_service = "NODE_#{env}"
-        CardanoUp::Utils.cmd "screen -dmS #{node_service} -L -Logfile #{log_dir}/node.log #{node_cmd}"
+        screen_cmd = "screen -dmS #{node_service} -L -Logfile #{log_dir}/node.log #{node_cmd}"
+        CardanoUp::Utils.cmd screen_cmd
       end
 
       {
+        network: env,
         node: {
           service: node_service,
-          network: env,
           version: version,
           log: "#{log_dir}/node.log",
           db_dir: node_db_dir,
@@ -154,7 +155,7 @@ module CardanoUp
       if CardanoUp::Utils.win?
 
         # create cardano-wallet.bat file
-        wallet_cmd = ["#{bin_dir}/cardano-wallet.exe serve",
+        wallet_cmd = ["#{File.join(bin_dir, 'cardano-wallet.exe')} serve",
                       "--port #{wallet_port}",
                       "--node-socket #{node_socket}",
                       network.to_s,
@@ -172,7 +173,7 @@ module CardanoUp
         CardanoUp::Utils.cmd log_stderr_wallet
         CardanoUp::Utils.cmd start_wallet
       else
-        wallet_cmd = ["#{bin_dir}/cardano-wallet serve",
+        wallet_cmd = ["#{File.join(bin_dir, 'cardano-wallet')} serve",
                       "--port #{wallet_port}",
                       "--node-socket #{node_socket}",
                       network.to_s,
@@ -183,9 +184,9 @@ module CardanoUp
       end
 
       {
+        network: env,
         wallet: {
           service: wallet_service,
-          network: env,
           version: version,
           log: "#{log_dir}/wallet.log",
           db_dir: wallet_db_dir,
@@ -226,8 +227,8 @@ module CardanoUp
     ##
     # Get protocol magic from config's byron-genesis.json
     def get_protocol_magic(config)
-      byron_genesis = JSON.parse(File.read(File.join(config, 'byron-genesis.json')))
-      byron_genesis['protocolConsts']['protocolMagic'].to_i
+      byron_genesis = CardanoUp::Utils.from_json(File.join(config, 'byron-genesis.json'))
+      byron_genesis[:protocolConsts][:protocolMagic].to_i
     end
     module_function :get_protocol_magic
     private_class_method :get_protocol_magic

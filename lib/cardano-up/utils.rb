@@ -8,13 +8,21 @@ module CardanoUp
       res = `#{cmd}`
       puts cmd if display_result
       puts res if display_result
-      res.gsub("\n", '')
+      res.gsub("\n", ' ')
     end
 
     def self.wget(url, file = nil)
       file ||= File.basename(url)
       resp = HTTParty.get(url)
       File.binwrite(file, resp.body)
+    end
+
+    def self.from_json(file)
+      JSON.parse(File.read(file), {:symbolize_names => true})
+    end
+
+    def self.to_json(file, hash)
+      File.write(file, JSON.pretty_generate(hash))
     end
 
     def self.win?
