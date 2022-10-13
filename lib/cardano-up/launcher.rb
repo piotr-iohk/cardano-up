@@ -20,15 +20,18 @@ module CardanoUp
   #  choco install nssm
   module Launcher
     # Create common set of variables for getting node and wallet up
-    # @param env [Hash] provide env and wallet_port, e.g. { env: 'mainnet', wallet_port: '8090' }
+    # @param env [Hash] provide env and wallet_port,
+    #  e.g. { env: 'mainnet', wallet_port: '8090', session_name: '0' }
     # @raise CardanoUp::EnvNotSupportedError
     # @raise CardanoUp::WalletPortError
-    def self.setup(opt = { env: 'mainnet', wallet_port: '8090' })
+    def self.setup(opt = { env: 'mainnet', wallet_port: '8090', session_name: '0' })
       env = opt[:env]
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
 
       wallet_port = opt[:wallet_port]
       raise CardanoUp::WalletPortError if wallet_port.nil? || wallet_port.empty?
+
+      session_name = opt[:session_name] || '0'
 
       token_metadata_server = env == 'mainnet' ? CardanoUp::MAINNET_TOKEN_SERVER : CardanoUp::TESTNET_TOKEN_SERVER
 
@@ -36,8 +39,8 @@ module CardanoUp
       configs = CardanoUp.config
       bin_dir = configs[:bin_dir]
       config_dir = File.join(configs[:config_dir], env)
-      log_dir = File.join(configs[:log_dir], env)
-      state_dir = File.join(configs[:state_dir], env)
+      log_dir = File.join(configs[:log_dir], session_name, env)
+      state_dir = File.join(configs[:state_dir], session_name, env)
       wallet_db_dir = File.join(state_dir, 'wallet-db')
       node_db_dir = File.join(state_dir, 'node-db')
       [bin_dir, config_dir, log_dir, state_dir, wallet_db_dir, node_db_dir].each do |dir|
@@ -62,11 +65,14 @@ module CardanoUp
         wallet_db_dir: wallet_db_dir,
         node_db_dir: node_db_dir,
         node_socket: node_socket,
-        network: network
+        network: network,
+        session_name: session_name
       }
     end
 
     # @param configuration [Hash] output of setup
+    # @raise CardanoUp::SessionHasNodeError
+    # @raise CardanoUp::SessionHasWalletError
     def self.node_up(configuration)
       env = configuration[:env]
       bin_dir = configuration[:bin_dir]
@@ -74,6 +80,7 @@ module CardanoUp
       log_dir = configuration[:log_dir]
       node_db_dir = configuration[:node_db_dir]
       node_socket = configuration[:node_socket]
+      session_name = configuration[:session_name]
 
       exe = CardanoUp::Utils.win? ? '.exe' : ''
       cardano_node = "#{File.join(bin_dir, 'cardano-node')}#{exe}"
@@ -84,11 +91,25 @@ module CardanoUp
                   "--database-path #{node_db_dir}",
                   "--socket-path #{node_socket}"].join(' ')
       node_service = if CardanoUp::Utils.win?
-                       "cardano-node-#{env}"
+                        "cardano-node-#{env}-#{session_name}"
                      else
-                       "NODE_#{env}"
+                        "NODE_#{env}_#{session_name}"
                      end
-
+      logfile = File.join(log_dir, 'node.log')
+      service_details = {
+                          network: env,
+                          node: {
+                            service: node_service,
+                            version: version,
+                            log: logfile,
+                            db_dir: node_db_dir,
+                            socket_path: node_socket,
+                            protocol_magic: get_protocol_magic(config_dir),
+                            bin: node_cmd.split.first,
+                            cmd: node_cmd
+                          }
+                        }
+      CardanoUp::Session.create_or_update(session_name, service_details)
       if CardanoUp::Utils.win?
         # Turn off p2p for Windows
         # TODO: remove after https://github.com/input-output-hk/ouroboros-network/issues/3968 released
@@ -109,8 +130,8 @@ module CardanoUp
         # create cardano-node.bat file
         File.write("#{bin_dir}/cardano-node.bat", node_cmd)
         install_node = "nssm install #{node_service} #{bin_dir}/cardano-node.bat"
-        log_stdout_node = "nssm set #{node_service} AppStdout #{log_dir}/node.log"
-        log_stderr_node = "nssm set #{node_service} AppStderr #{log_dir}/node.log"
+        log_stdout_node = "nssm set #{node_service} AppStdout #{logfile}"
+        log_stderr_node = "nssm set #{node_service} AppStderr #{logfile}"
         start_node = "nssm start #{node_service}"
 
         CardanoUp::Utils.cmd install_node
@@ -118,23 +139,10 @@ module CardanoUp
         CardanoUp::Utils.cmd log_stderr_node
         CardanoUp::Utils.cmd start_node
       else
-        screen_cmd = "screen -dmS #{node_service} -L -Logfile #{log_dir}/node.log #{node_cmd}"
+        screen_cmd = "screen -dmS #{node_service} -L -Logfile #{logfile} #{node_cmd}"
         CardanoUp::Utils.cmd screen_cmd
       end
-
-      {
-        network: env,
-        node: {
-          service: node_service,
-          version: version,
-          log: "#{log_dir}/node.log",
-          db_dir: node_db_dir,
-          socket_path: node_socket,
-          protocol_magic: get_protocol_magic(config_dir),
-          bin: node_cmd.split.first,
-          cmd: node_cmd
-        }
-      }
+      service_details
     end
 
     # @param configuration [Hash] output of setup
@@ -147,6 +155,7 @@ module CardanoUp
       wallet_db_dir = configuration[:wallet_db_dir]
       node_socket = configuration[:node_socket]
       network = configuration[:network]
+      session_name = configuration[:session_name]
 
       exe = CardanoUp::Utils.win? ? '.exe' : ''
       cardano_wallet = "#{File.join(bin_dir, 'cardano-wallet')}#{exe}"
@@ -158,17 +167,31 @@ module CardanoUp
                     "--token-metadata-server #{token_metadata_server}"].join(' ')
       version = CardanoUp::Utils.cmd "#{bin_dir}/cardano-wallet#{exe} version"
       wallet_service = if CardanoUp::Utils.win?
-                         "cardano-wallet-#{env}"
-                       else
-                         "WALLET_#{env}"
-                       end
-
+                        "cardano-wallet-#{env}-#{session_name}"
+                     else
+                        "WALLET_#{env}_#{session_name}"
+                      end
+      logfile = File.join(log_dir, 'wallet.log')
+      service_details = {
+                          network: env,
+                          wallet: {
+                            service: wallet_service,
+                            version: version,
+                            log: logfile,
+                            db_dir: wallet_db_dir,
+                            port: wallet_port.to_i,
+                            host: "http://localhost:#{wallet_port}/v2",
+                            bin: wallet_cmd.split.first,
+                            cmd: wallet_cmd
+                          }
+                        }
+      CardanoUp::Session.create_or_update(session_name, service_details)
       if CardanoUp::Utils.win?
         # create cardano-wallet.bat file
         File.write("#{bin_dir}/cardano-wallet.bat", wallet_cmd)
         install_wallet = "nssm install #{wallet_service} #{bin_dir}/cardano-wallet.bat"
-        log_stdout_wallet = "nssm set #{wallet_service} AppStdout #{log_dir}/wallet.log"
-        log_stderr_wallet = "nssm set #{wallet_service} AppStderr #{log_dir}/wallet.log"
+        log_stdout_wallet = "nssm set #{wallet_service} AppStdout #{logfile}"
+        log_stderr_wallet = "nssm set #{wallet_service} AppStderr #{logfile}"
         start_wallet = "nssm start #{wallet_service}"
 
         CardanoUp::Utils.cmd install_wallet
@@ -176,48 +199,38 @@ module CardanoUp
         CardanoUp::Utils.cmd log_stderr_wallet
         CardanoUp::Utils.cmd start_wallet
       else
-        CardanoUp::Utils.cmd "screen -dmS #{wallet_service} -L -Logfile #{log_dir}/wallet.log #{wallet_cmd}"
+        CardanoUp::Utils.cmd "screen -dmS #{wallet_service} -L -Logfile #{logfile} #{wallet_cmd}"
       end
 
-      {
-        network: env,
-        wallet: {
-          service: wallet_service,
-          version: version,
-          log: "#{log_dir}/wallet.log",
-          db_dir: wallet_db_dir,
-          port: wallet_port.to_i,
-          host: "http://localhost:#{wallet_port}/v2",
-          bin: wallet_cmd.split.first,
-          cmd: wallet_cmd
-        }
-      }
+      service_details
     end
 
     # @raise CardanoUp::EnvNotSupportedError
-    def self.node_down(env)
+    def self.node_down(env, session_name = '0')
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
 
       if CardanoUp::Utils.win?
-        CardanoUp::Utils.cmd "nssm stop cardano-node-#{env}"
-        CardanoUp::Utils.cmd "nssm remove cardano-node-#{env} confirm"
+        CardanoUp::Utils.cmd "nssm stop cardano-node-#{env}-#{session_name}"
+        CardanoUp::Utils.cmd "nssm remove cardano-node-#{env}-#{session_name} confirm"
       else
-        CardanoUp::Utils.cmd "screen -S NODE_#{env} -X at '0' stuff '^C'"
-        CardanoUp::Utils.cmd "screen -XS NODE_#{env} quit"
+        CardanoUp::Utils.cmd "screen -S NODE_#{env}_#{session_name} -X at '0' stuff '^C'"
+        CardanoUp::Utils.cmd "screen -XS NODE_#{env}_#{session_name} quit"
       end
+      CardanoUp::Session.remove(session_name, { network: env, service: 'node' })
     end
 
     # @raise CardanoUp::EnvNotSupportedError
-    def self.wallet_down(env)
+    def self.wallet_down(env, session_name = '0')
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
 
       if CardanoUp::Utils.win?
-        CardanoUp::Utils.cmd "nssm stop cardano-wallet-#{env}"
-        CardanoUp::Utils.cmd "nssm remove cardano-wallet-#{env} confirm"
+        CardanoUp::Utils.cmd "nssm stop cardano-wallet-#{env}-#{session_name}"
+        CardanoUp::Utils.cmd "nssm remove cardano-wallet-#{env}-#{session_name} confirm"
       else
-        CardanoUp::Utils.cmd "screen -S WALLET_#{env} -X at '0' stuff '^C'"
-        CardanoUp::Utils.cmd "screen -XS WALLET_#{env} quit"
+        CardanoUp::Utils.cmd "screen -S WALLET_#{env}_#{session_name} -X at '0' stuff '^C'"
+        CardanoUp::Utils.cmd "screen -XS WALLET_#{env}_#{session_name} quit"
       end
+      CardanoUp::Session.remove(session_name, { network: env, service: 'wallet' })
     end
 
     ##

@@ -11,9 +11,11 @@ module CardanoUp
 
     # get session contents
     def self.get(session_name)
+      raise CardanoUp::SessionNotExistsError, session_name unless exists?(session_name)
+
       CardanoUp.configure_default unless CardanoUp.configured?
       session = session_file_path(session_name)
-      CardanoUp::Utils.from_json(session) if exists?(session_name)
+      CardanoUp::Utils.from_json(session)
     end
 
     def self.destroy!(session_name)
@@ -52,17 +54,13 @@ module CardanoUp
         existing_services = get(session_name)
         new_service = { service_network => service_details }
         put_content(session_name, existing_services.merge(new_service))
-      elsif node?(session_name, service_network)
+      else
         # if session has network and node already, you can add only wallet
-        raise CardanoUp::SessionHasNodeError.new(session_name, service_network) if service_details.key?(:node)
-
-        existing_services = get(session_name)
-        updated_network = existing_services[service_network].merge(service_details)
-        existing_services[service_network] = updated_network
-        put_content(session_name, existing_services)
-      elsif wallet?(session_name, service_network)
+        if service_details.key?(:node) && node?(session_name, service_network)
+          raise CardanoUp::SessionHasNodeError.new(session_name, service_network)
+        end
         # if session has network and wallet already, you can add only node
-        if service_details.key?(:wallet)
+        if service_details.key?(:wallet) && wallet?(session_name, service_network)
           raise CardanoUp::SessionHasWalletError.new(session_name,
                                                      service_network)
         end
@@ -75,11 +73,13 @@ module CardanoUp
     end
 
     # remove entry from session
+    # @param [String] session name ({ network: 'preprod', service: 'wallet' })
+    # @param [Hash] service details
     def self.remove(session_name, service_details)
       existing_services = get(session_name)
       service = service_details[:service].to_sym
       network = service_details[:network].to_sym
-      if existing_services[network]
+      if existing_services && existing_services[network]
         existing_services[network].delete(service)
 
         unless existing_services[network].key?(:node) || existing_services[network].key?(:wallet)

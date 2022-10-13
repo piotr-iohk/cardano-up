@@ -8,7 +8,7 @@ module CardanoUp
       res = `#{cmd}`
       puts cmd if display_result
       puts res if display_result
-      res.gsub("\n", ' ')
+      res.gsub("\n", ' ').strip
     end
 
     def self.wget(url, file = nil)

@@ -25,49 +25,42 @@ RSpec.describe CardanoUp::Session do
   it 'create -> update -> remove until session empty' do
     session_name = 'test2'
 
+    expect(CardanoUp::Session.exists?(session_name)).to eq false
+
     session_details1 = { network: 'preprod', node: {} }
     session1 = { preprod: { network: 'preprod', node: {} } }
+    CardanoUp::Session.create_or_update(session_name, session_details1)
+    expect(CardanoUp::Session.get(session_name)).to eq session1
 
     session_details2 = { network: 'preprod', wallet: {} }
     session2 = { preprod: { network: 'preprod', node: {}, wallet: {} } }
+    CardanoUp::Session.create_or_update(session_name, session_details2)
+    expect(CardanoUp::Session.get(session_name)).to eq session2
 
     session_details3 = { network: 'mainnet', wallet: {}, node: {} }
     session3 = { preprod: { network: 'preprod', node: {}, wallet: {} },
                  mainnet: { network: 'mainnet', node: {}, wallet: {} } }
-
-    session_rem4 = { network: 'mainnet', service: 'node' }
-    session4 = { preprod: { network: 'preprod', node: {}, wallet: {} },
-                 mainnet: { network: 'mainnet', wallet: {} } }
-
-    session_rem5 = { network: 'mainnet', service: 'wallet' }
-    session5 = { preprod: { network: 'preprod', node: {}, wallet: {} } }
-
-    session_rem6 = { network: 'preprod', service: 'wallet' }
-    session6 = { preprod: { network: 'preprod', node: {} } }
-
-    session_rem7 = { network: 'preprod', service: 'node' }
-
-    expect(CardanoUp::Session.exists?(session_name)).to eq false
-
-    CardanoUp::Session.create_or_update(session_name, session_details1)
-    expect(CardanoUp::Session.get(session_name)).to eq session1
-
-    CardanoUp::Session.create_or_update(session_name, session_details2)
-    expect(CardanoUp::Session.get(session_name)).to eq session2
-
     CardanoUp::Session.create_or_update(session_name, session_details3)
     expect(CardanoUp::Session.get(session_name)).to eq session3
     expect(CardanoUp::Session.exists?(session_name)).to eq true
 
+    session_rem4 = { network: 'mainnet', service: 'node' }
+    session4 = { preprod: { network: 'preprod', node: {}, wallet: {} },
+                 mainnet: { network: 'mainnet', wallet: {} } }
     CardanoUp::Session.remove(session_name, session_rem4)
     expect(CardanoUp::Session.get(session_name)).to eq session4
 
+    session_rem5 = { network: 'mainnet', service: 'wallet' }
+    session5 = { preprod: { network: 'preprod', node: {}, wallet: {} } }
     CardanoUp::Session.remove(session_name, session_rem5)
     expect(CardanoUp::Session.get(session_name)).to eq session5
 
+    session_rem6 = { network: 'preprod', service: 'wallet' }
+    session6 = { preprod: { network: 'preprod', node: {} } }
     CardanoUp::Session.remove(session_name, session_rem6)
     expect(CardanoUp::Session.get(session_name)).to eq session6
 
+    session_rem7 = { network: 'preprod', service: 'node' }
     CardanoUp::Session.remove(session_name, session_rem7)
     expect(CardanoUp::Session.exists?(session_name)).to eq false
   end
@@ -88,7 +81,7 @@ RSpec.describe CardanoUp::Session do
     end.to raise_error ArgumentError, /:network/
   end
 
-  it 'raises SessionHasNodeError' do
+  it 'raises SessionHasNodeError 1 (node) + node' do
     session_name = 'test2'
 
     session_details1 = { network: 'preprod', node: {} }
@@ -104,11 +97,28 @@ RSpec.describe CardanoUp::Session do
     end.to raise_error CardanoUp::SessionHasNodeError, /has node running/
   end
 
-  it 'raises SessionHasWalletError' do
+  it 'raises SessionHasNodeError 3 (node, wallet) + node' do
     session_name = 'test2'
 
-    session_details1 = { network: 'preprod', wallet: {} }
-    session1 = { preprod: { network: 'preprod', wallet: {} } }
+    session_details1 = { network: 'preprod', node: {}, wallet:{} }
+    session1 = { preprod: { network: 'preprod', node: {}, wallet:{} } }
+
+    expect(CardanoUp::Session.exists?(session_name)).to eq false
+
+    CardanoUp::Session.create_or_update(session_name, session_details1)
+    expect(CardanoUp::Session.get(session_name)).to eq session1
+
+    expect do
+      another_node = { network: 'preprod', node: {} }
+      CardanoUp::Session.create_or_update(session_name, session_details1)
+    end.to raise_error CardanoUp::SessionHasNodeError, /has node running/
+  end
+
+  it 'raises SessionHasNodeError 3 (node, wallet) + node, wallet' do
+    session_name = 'test2'
+
+    session_details1 = { network: 'preprod', node: {}, wallet:{} }
+    session1 = { preprod: { network: 'preprod', node: {}, wallet:{} } }
 
     expect(CardanoUp::Session.exists?(session_name)).to eq false
 
@@ -117,6 +127,40 @@ RSpec.describe CardanoUp::Session do
 
     expect do
       CardanoUp::Session.create_or_update(session_name, session_details1)
+    end.to raise_error CardanoUp::SessionHasNodeError, /has node running/
+  end
+
+  it 'raises SessionHasWalletError 1 (wallet) + wallet' do
+    session_name = 'test2'
+
+    session_details1 = { network: 'preprod', wallet: {}, node:{} }
+    session1 = { preprod: { network: 'preprod', wallet: {}, node:{} } }
+
+    expect(CardanoUp::Session.exists?(session_name)).to eq false
+
+    CardanoUp::Session.create_or_update(session_name, session_details1)
+    expect(CardanoUp::Session.get(session_name)).to eq session1
+
+    expect do
+      another_wallet = { network: 'preprod', wallet: {}}
+      CardanoUp::Session.create_or_update(session_name, another_wallet)
+    end.to raise_error CardanoUp::SessionHasWalletError, /has wallet running/
+  end
+
+  it 'raises SessionHasWalletError 2 (node, wallet) + wallet' do
+    session_name = 'test2'
+
+    session_details1 = { network: 'preprod', wallet: {}, node:{} }
+    session1 = { preprod: { network: 'preprod', wallet: {}, node:{} } }
+
+    expect(CardanoUp::Session.exists?(session_name)).to eq false
+
+    CardanoUp::Session.create_or_update(session_name, session_details1)
+    expect(CardanoUp::Session.get(session_name)).to eq session1
+
+    expect do
+      another_wallet = { network: 'preprod', wallet: {}}
+      CardanoUp::Session.create_or_update(session_name, another_wallet)
     end.to raise_error CardanoUp::SessionHasWalletError, /has wallet running/
   end
 
