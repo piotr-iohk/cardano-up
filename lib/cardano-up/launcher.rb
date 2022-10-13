@@ -91,24 +91,24 @@ module CardanoUp
                   "--database-path #{node_db_dir}",
                   "--socket-path #{node_socket}"].join(' ')
       node_service = if CardanoUp::Utils.win?
-                        "cardano-node-#{env}-#{session_name}"
+                       "cardano-node-#{env}-#{session_name}"
                      else
-                        "NODE_#{env}_#{session_name}"
+                       "NODE_#{env}_#{session_name}"
                      end
       logfile = File.join(log_dir, 'node.log')
       service_details = {
-                          network: env,
-                          node: {
-                            service: node_service,
-                            version: version,
-                            log: logfile,
-                            db_dir: node_db_dir,
-                            socket_path: node_socket,
-                            protocol_magic: get_protocol_magic(config_dir),
-                            bin: node_cmd.split.first,
-                            cmd: node_cmd
-                          }
-                        }
+        network: env,
+        node: {
+          service: node_service,
+          version: version,
+          log: logfile,
+          db_dir: node_db_dir,
+          socket_path: node_socket,
+          protocol_magic: get_protocol_magic(config_dir),
+          bin: node_cmd.split.first,
+          cmd: node_cmd
+        }
+      }
       CardanoUp::Session.create_or_update(session_name, service_details)
       if CardanoUp::Utils.win?
         # Turn off p2p for Windows
@@ -167,24 +167,24 @@ module CardanoUp
                     "--token-metadata-server #{token_metadata_server}"].join(' ')
       version = CardanoUp::Utils.cmd "#{bin_dir}/cardano-wallet#{exe} version"
       wallet_service = if CardanoUp::Utils.win?
-                        "cardano-wallet-#{env}-#{session_name}"
-                     else
-                        "WALLET_#{env}_#{session_name}"
-                      end
+                         "cardano-wallet-#{env}-#{session_name}"
+                       else
+                         "WALLET_#{env}_#{session_name}"
+                       end
       logfile = File.join(log_dir, 'wallet.log')
       service_details = {
-                          network: env,
-                          wallet: {
-                            service: wallet_service,
-                            version: version,
-                            log: logfile,
-                            db_dir: wallet_db_dir,
-                            port: wallet_port.to_i,
-                            host: "http://localhost:#{wallet_port}/v2",
-                            bin: wallet_cmd.split.first,
-                            cmd: wallet_cmd
-                          }
-                        }
+        network: env,
+        wallet: {
+          service: wallet_service,
+          version: version,
+          log: logfile,
+          db_dir: wallet_db_dir,
+          port: wallet_port.to_i,
+          host: "http://localhost:#{wallet_port}/v2",
+          bin: wallet_cmd.split.first,
+          cmd: wallet_cmd
+        }
+      }
       CardanoUp::Session.create_or_update(session_name, service_details)
       if CardanoUp::Utils.win?
         # create cardano-wallet.bat file

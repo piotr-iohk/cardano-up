@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module CardanoUp
-
   # Thrown when session not exists
   class SessionNotExistsError < StandardError
     def initialize(session_name)
       super("Session '#{session_name}' does not exist!")
     end
   end
+
   # Thrown when there is already a node running in the session
   class SessionHasNodeError < StandardError
     def initialize(session_name, network)

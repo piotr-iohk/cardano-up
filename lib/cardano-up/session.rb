@@ -59,6 +59,7 @@ module CardanoUp
         if service_details.key?(:node) && node?(session_name, service_network)
           raise CardanoUp::SessionHasNodeError.new(session_name, service_network)
         end
+
         # if session has network and wallet already, you can add only node
         if service_details.key?(:wallet) && wallet?(session_name, service_network)
           raise CardanoUp::SessionHasWalletError.new(session_name,

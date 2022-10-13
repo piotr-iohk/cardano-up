@@ -204,7 +204,7 @@ Examples:
       $stderr.puts
       warn 'Starting...'
       $stderr.puts
-      c = CardanoUp::Launcher.setup({ env: env, wallet_port: port, session_name: session_name})
+      c = CardanoUp::Launcher.setup({ env: env, wallet_port: port, session_name: session_name })
     rescue CardanoUp::EnvNotSupportedError => e
       warn(e.message)
       exit 1
@@ -307,14 +307,14 @@ Examples:
       sessions = CardanoUp::Session.get(session_name)
     rescue CardanoUp::SessionNotExistsError => e
       warn e
-      warn "To list active sessions call: "
+      warn 'To list active sessions call: '
       warn "  $ #{File.basename(__FILE__)} ls"
       exit 1
     end
     # unless sessions
     unless sessions[env.to_sym]
       warn "Nothing is running on '#{env}' in session '#{session_name}'."
-      warn "To list active sessions call: "
+      warn 'To list active sessions call: '
       warn "  $ #{File.basename(__FILE__)} ls"
       exit 1
     end
@@ -346,30 +346,27 @@ Examples:
   if o['ls']
     sessions = CardanoUp::Session.list_all
 
-    def list_extended(s)
-      s.map do |s|
+    def list_extended(sessions)
+      sessions.map do |s|
         session_name = File.basename(s)[/.session-(.+).json/, 1]
         s_det = CardanoUp::Session.get(session_name)
         warn "  #{session_name}:"
-        s_det.keys.each do |k|
-          warn "    #{k}:"
-          s_det[k].keys.each do |s|
-            if s != :network
-              warn "       #{s} (#{s_det[k][s][:service]})"
-            end
+        s_det.each_key do |env|
+          warn "    #{env}:"
+          s_det[env].each_key do |service|
+            warn "       #{service} (#{s_det[env][service][:service]})" if service != :network
           end
         end
       end
     end
 
     if sessions.empty?
-      warn "No active sessions."
+      warn 'No active sessions.'
     else
-      warn "Sessions:"
+      warn 'Sessions:'
       list_extended(sessions)
     end
   end
-
 rescue Docopt::Exit => e
   puts e.message
 end

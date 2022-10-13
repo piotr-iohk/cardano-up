@@ -100,8 +100,8 @@ RSpec.describe CardanoUp::Session do
   it 'raises SessionHasNodeError 3 (node, wallet) + node' do
     session_name = 'test2'
 
-    session_details1 = { network: 'preprod', node: {}, wallet:{} }
-    session1 = { preprod: { network: 'preprod', node: {}, wallet:{} } }
+    session_details1 = { network: 'preprod', node: {}, wallet: {} }
+    session1 = { preprod: { network: 'preprod', node: {}, wallet: {} } }
 
     expect(CardanoUp::Session.exists?(session_name)).to eq false
 
@@ -110,15 +110,15 @@ RSpec.describe CardanoUp::Session do
 
     expect do
       another_node = { network: 'preprod', node: {} }
-      CardanoUp::Session.create_or_update(session_name, session_details1)
+      CardanoUp::Session.create_or_update(session_name, another_node)
     end.to raise_error CardanoUp::SessionHasNodeError, /has node running/
   end
 
   it 'raises SessionHasNodeError 3 (node, wallet) + node, wallet' do
     session_name = 'test2'
 
-    session_details1 = { network: 'preprod', node: {}, wallet:{} }
-    session1 = { preprod: { network: 'preprod', node: {}, wallet:{} } }
+    session_details1 = { network: 'preprod', node: {}, wallet: {} }
+    session1 = { preprod: { network: 'preprod', node: {}, wallet: {} } }
 
     expect(CardanoUp::Session.exists?(session_name)).to eq false
 
@@ -133,8 +133,8 @@ RSpec.describe CardanoUp::Session do
   it 'raises SessionHasWalletError 1 (wallet) + wallet' do
     session_name = 'test2'
 
-    session_details1 = { network: 'preprod', wallet: {}, node:{} }
-    session1 = { preprod: { network: 'preprod', wallet: {}, node:{} } }
+    session_details1 = { network: 'preprod', wallet: {}, node: {} }
+    session1 = { preprod: { network: 'preprod', wallet: {}, node: {} } }
 
     expect(CardanoUp::Session.exists?(session_name)).to eq false
 
@@ -142,7 +142,7 @@ RSpec.describe CardanoUp::Session do
     expect(CardanoUp::Session.get(session_name)).to eq session1
 
     expect do
-      another_wallet = { network: 'preprod', wallet: {}}
+      another_wallet = { network: 'preprod', wallet: {} }
       CardanoUp::Session.create_or_update(session_name, another_wallet)
     end.to raise_error CardanoUp::SessionHasWalletError, /has wallet running/
   end
@@ -150,8 +150,8 @@ RSpec.describe CardanoUp::Session do
   it 'raises SessionHasWalletError 2 (node, wallet) + wallet' do
     session_name = 'test2'
 
-    session_details1 = { network: 'preprod', wallet: {}, node:{} }
-    session1 = { preprod: { network: 'preprod', wallet: {}, node:{} } }
+    session_details1 = { network: 'preprod', wallet: {}, node: {} }
+    session1 = { preprod: { network: 'preprod', wallet: {}, node: {} } }
 
     expect(CardanoUp::Session.exists?(session_name)).to eq false
 
@@ -159,7 +159,7 @@ RSpec.describe CardanoUp::Session do
     expect(CardanoUp::Session.get(session_name)).to eq session1
 
     expect do
-      another_wallet = { network: 'preprod', wallet: {}}
+      another_wallet = { network: 'preprod', wallet: {} }
       CardanoUp::Session.create_or_update(session_name, another_wallet)
     end.to raise_error CardanoUp::SessionHasWalletError, /has wallet running/
   end
