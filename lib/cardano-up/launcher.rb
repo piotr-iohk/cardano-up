@@ -117,14 +117,14 @@ module CardanoUp
         config_win[:EnableP2P] = false
         CardanoUp::Utils.to_json("#{config_dir}/config.json", config_win)
         topology = {
-              Producers: [
-                {
-                  addr: "#{env}-node.world.dev.cardano.org",
-                  port: 30002,
-                  valency: 2
-                }
-              ]
+          Producers: [
+            {
+              addr: "#{env}-node.world.dev.cardano.org",
+              port: 30_002,
+              valency: 2
             }
+          ]
+        }
         CardanoUp::Utils.to_json("#{config_dir}/topology.json", topology)
 
         # create cardano-node.bat file
