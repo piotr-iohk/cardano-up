@@ -29,21 +29,26 @@ This Ruby gem provides easy way for:
 
 It only takes a single command to start node and wallet on your system. Say, on `mainnet`?
 
-    $ cardano-up mainnet node-wallet up
+    $ cardano-up mainnet up
 
 That's it! 🎉
 
 If any configs are missing cardano-up will download them. If any binaries are missing cardano-up will get ones from latest release.
 
-Call `$ cardano-up --help` to explore more options.
+To explore more options call:
+
+		$ cardano-up --help
+		$ cardano-up --examples
 
 ## Documentation
 
 | Link | Description  |
 |--|--|
+|  [Usage examples](https://github.com/piotr-iohk/cardano-up/wiki/Usage-Examples) | Also available in `$ cardano-up --examples` |
 |  [Ruby API (edge)](https://piotr-iohk.github.io/cardano-up/master/) | cardano-up API doc |
 
 ## How it works
+By default cardano-up keeps all files at `$HOME/.cardano-up/` however this can be configured by editing `$HOME/.cardano-up/.cardano-up.json` directly or via `config` sub-command. One can check the contents of this internal config file by calling `$ cardano-up config`.
 
 **Configurations** for the networks are downloaded from [Cardano Book](https://book.world.dev.cardano.org/environments.html).
 
@@ -65,8 +70,8 @@ In case of Windows it will attempt to install cardano-node and cardano-wallet as
 
 > :warning: nssm requires administrator permissions to register Windows services, therefore you need to start your cmd as an administrator.
 
-By default cardano-up keeps all files at `$HOME/.cardano-up/` however this can be configured by editing `$HOME/.cardano-up/.cardano-up.json` directly or via `config` sub-command. One can check the contents of this internal config file by calling `$ cardano-up config`.
+There is also basic **session management** in cardano-up. In a single session you can have at most 1 node and 1 wallet for particular network. Because of the sessions you can quickly check details of your running components (like where are the log or database files or what ports are used) and you have some basic tools to monitor them (via `tail` and `ping` subcommands).
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](https://github.com/piotr-iohk/cardano-up/blob/master/LICENSE.txt).

@@ -71,30 +71,67 @@ begin
 
   # EXAMPLES
   if o['--examples'] == true
-    warn %(
-Examples:
-  Start node and wallet on mainnet:
+    warn %(Usage examples:
+
+INTERNAL CONFIG:
+------------------------------
+Check internal config file contents:
+
+    $ #{File.basename(__FILE__)} config
+
+BINARIES AND NETWORK CONFIGS:
+------------------------------
+Get latest release binaries and verify versions:
+
+    $ #{File.basename(__FILE__)} install latest
+    $ #{File.basename(__FILE__)} -v
+
+Get configuration for 'preview' network:
+
+    $ #{File.basename(__FILE__)} get-configs preview
+
+SERVICE MANAGEMENT:
+------------------------------
+> Note: If you have no configs for particular env 'up'
+        subcommand will download them on the fly. If no binaries,
+        latest release will be installed, otherwise it will use
+        what is in the 'bin_dir'.
+
+Start node and wallet on mainnet:
+
     $ #{File.basename(__FILE__)} mainnet up
 
-  Start node on preprod:
+Start node on preprod:
+
     $ #{File.basename(__FILE__)} preprod node up
 
-  Check active sessions:
+Check active sessions:
+
     $ #{File.basename(__FILE__)} ls
 
-  Check details of what is running on mainnet:
+Check details of what is running on mainnet and preprod or details of given component:
+
     $ #{File.basename(__FILE__)} mainnet
-
-  Monitor mainnet wallet logs (Ctrl + c to stop):
-    $ #{File.basename(__FILE__)} mainnet wallet tail
-
-  Check details of preprod node:
+    $ #{File.basename(__FILE__)} preprod
+    $ #{File.basename(__FILE__)} mainnet wallet
     $ #{File.basename(__FILE__)} preprod node
 
-  Stop preprod node:
+Check health of node and wallet on mainnet:
+
+    $ #{File.basename(__FILE__)} mainnet node ping
+    $ #{File.basename(__FILE__)} mainnet wallet ping
+
+Monitor mainnet wallet and node logs (Ctrl + c to stop):
+
+    $ #{File.basename(__FILE__)} mainnet node tail
+    $ #{File.basename(__FILE__)} mainnet wallet tail
+
+Stop preprod node:
+
     $ #{File.basename(__FILE__)} preprod node down
 
-  Stop mainnet node and wallet alltogether:
+Stop mainnet node and wallet:
+
     $ #{File.basename(__FILE__)} mainnet down
     )
   end
@@ -317,8 +354,6 @@ Examples:
         CardanoUp::Session.node_or_raise?(session_name, env.to_sym)
         $stderr.print 'Node ping... '
         r, c = CardanoUp::Ping.node(session_name, env)
-        # JSON.parse(r) ? ok : not_ok
-        # pretty_json JSON.parse(r)
         c == 200 ? ok : not_ok
         pretty_json r
       elsif o['wallet']
@@ -333,9 +368,6 @@ Examples:
         warn "  $ #{File.basename(__FILE__)} #{env} node ping -s #{session_name}"
         warn "  $ #{File.basename(__FILE__)} #{env} wallet ping -s #{session_name}"
       end
-    rescue JSON::ParserError
-      warn '⚠️   Node not responding.'
-      exit 1
     rescue Errno::ECONNREFUSED,
            CardanoUp::EnvNotSupportedError => e
       warn "⚠️   #{e}"
