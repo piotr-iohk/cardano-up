@@ -16,7 +16,7 @@ RSpec.configure do |config|
   end
 end
 
-TIMEOUT = 180
+TIMEOUT = 60
 
 def set_cardano_up_config
   CardanoUp.base_dir = Dir.mktmpdir

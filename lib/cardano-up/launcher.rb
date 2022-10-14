@@ -48,7 +48,7 @@ module CardanoUp
       end
 
       node_socket = if CardanoUp::Utils.win?
-                      "\\\\.\\pipe\\cardano-node-#{env}"
+                      "\\\\.\\pipe\\cardano-node-#{env}-#{session_name}"
                     else
                       File.join(state_dir, 'node.socket')
                     end
@@ -116,15 +116,15 @@ module CardanoUp
         config_win = CardanoUp::Utils.from_json("#{config_dir}/config.json")
         config_win[:EnableP2P] = false
         CardanoUp::Utils.to_json("#{config_dir}/config.json", config_win)
-        topology = %({
-              "Producers": [
+        topology = {
+              Producers: [
                 {
-                  "addr": "#{env}-node.world.dev.cardano.org",
-                  "port": 30002,
-                  "valency": 2
+                  addr: "#{env}-node.world.dev.cardano.org",
+                  port: 30002,
+                  valency: 2
                 }
               ]
-            })
+            }
         CardanoUp::Utils.to_json("#{config_dir}/topology.json", topology)
 
         # create cardano-node.bat file
