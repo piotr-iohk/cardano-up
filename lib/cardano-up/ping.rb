@@ -38,7 +38,15 @@ module CardanoUp
       network_arg = env == 'mainnet' ? '--mainnet' : "--testnet-magic #{protocol_magic}"
       exe = CardanoUp::Utils.win? ? '.exe' : ''
       cmd = "#{File.join(bin_dir, 'cardano-cli')}#{exe} query tip #{network_arg}"
-      CardanoUp::Utils.cmd cmd
+      res = CardanoUp::Utils.cmd cmd
+      begin
+        r = JSON.parse(res)
+        c = 200
+      rescue JSON::ParserError
+        r = "Not responding."
+        c = 404
+      end
+      [r, c]
     end
   end
 end

@@ -75,14 +75,17 @@ module CardanoUp
 
     def self.node_or_raise?(session_name, env)
       raise CardanoUp::SessionServiceNotUpError.new(session_name, env, :node) unless node?(session_name, env)
+      true
     end
 
     def self.wallet_or_raise?(session_name, env)
       raise CardanoUp::SessionServiceNotUpError.new(session_name, env, :wallet) unless wallet?(session_name, env)
+      true
     end
 
     def self.network_or_raise?(session_name, env)
       raise CardanoUp::SessionEnvNotUpError.new(session_name, env) unless network?(session_name, env)
+      true
     end
 
     # remove entry from session
@@ -133,13 +136,13 @@ module CardanoUp
     private_class_method :network?
 
     def node?(session_name, env)
-      get(session_name)[env].key?(:node)
+      get(session_name)[env.to_sym].key?(:node)
     end
     module_function :node?
     private_class_method :node?
 
     def wallet?(session_name, env)
-      get(session_name)[env].key?(:wallet)
+      get(session_name)[env.to_sym].key?(:wallet)
     end
     module_function :wallet?
     private_class_method :wallet?

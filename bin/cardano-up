@@ -299,7 +299,8 @@ Examples:
       warn(e.message)
       exit 1
     rescue Interrupt
-      exit
+      # on ctrl + c don't show stack trace
+      $stderr.puts
     end
 
   # PING
@@ -314,10 +315,12 @@ Examples:
 
       if o['node']
         CardanoUp::Session.node_or_raise?(session_name, env.to_sym)
-        r = CardanoUp::Ping.node(session_name, env)
         $stderr.print 'Node ping... '
-        JSON.parse(r) ? ok : not_ok
-        pretty_json JSON.parse(r)
+        r, c = CardanoUp::Ping.node(session_name, env)
+        # JSON.parse(r) ? ok : not_ok
+        # pretty_json JSON.parse(r)
+        c == 200 ? ok : not_ok
+        pretty_json r
       elsif o['wallet']
         CardanoUp::Session.wallet_or_raise?(session_name, env.to_sym)
         url = sessions[env.to_sym][:wallet][:url]
@@ -344,6 +347,10 @@ Examples:
       warn 'To list active sessions call: '
       warn "  $ #{File.basename(__FILE__)} ls"
       exit 1
+    rescue Interrupt
+      # on ctrl + c don't show stack trace
+      $stderr.puts
+      exit
     end
 
   # Session STATUS
