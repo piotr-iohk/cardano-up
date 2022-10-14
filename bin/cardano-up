@@ -71,9 +71,7 @@ begin
 
   # EXAMPLES
   if o['--examples'] == true
-    warn %(Usage examples:
-
-INTERNAL CONFIG:
+    warn %(INTERNAL CONFIG:
 ------------------------------
 Check internal config file contents:
 
@@ -247,11 +245,7 @@ Stop mainnet node and wallet:
       warn 'Starting...'
       $stderr.puts
       c = CardanoUp::Launcher.setup({ env: env, wallet_port: port, session_name: session_name })
-    rescue CardanoUp::EnvNotSupportedError => e
-      warn(e.message)
-      exit 1
-    end
-    begin
+
       if o['node']
         pretty_json CardanoUp::Launcher.node_up(c)
         $stderr.puts
@@ -267,13 +261,16 @@ Stop mainnet node and wallet:
         $stderr.puts
         warn "Congratulations! You've just started cardano-node and cardano-wallet!"
       end
+    rescue CardanoUp::EnvNotSupportedError => e
+      warn "⚠️   #{e}"
+      exit 1
     rescue CardanoUp::SessionHasNodeError => e
       warn "⚠️   #{e}"
       $stderr.puts
       warn "If you'd like to start another node instance after all:"
       warn " $ #{File.basename(__FILE__)} #{env} node up -s <some_name>"
       exit 1
-    rescue CardanoUp::SessionHasWalletError => e
+    rescue CardanoUp::SessionHasWalletError, CardanoUp::WalletPortUsedError => e
       warn "⚠️   #{e}"
       $stderr.puts
       warn "If you'd like to start another wallet instance after all:"

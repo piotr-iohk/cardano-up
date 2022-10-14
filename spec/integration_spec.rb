@@ -78,7 +78,7 @@ RSpec.describe 'Integration', :e2e, :integration do
   it 'I can node_up and then node_down' do
     bin_dir = CardanoUp.config[:bin_dir]
     # Start node
-    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port, session_name: @session  })
+    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port, session_name: @session })
     node = CardanoUp::Launcher.node_up(config)
     expect(CardanoUp::Session.network_or_raise?(@session, @env)).to be true
     expect(CardanoUp::Session.node_or_raise?(@session, @env)).to be true
@@ -95,7 +95,7 @@ RSpec.describe 'Integration', :e2e, :integration do
   it 'I can wallet_up and then wallet_down' do
     bin_dir = CardanoUp.config[:bin_dir]
     # Start wallet
-    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port, session_name: @session  })
+    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port, session_name: @session })
     wallet = CardanoUp::Launcher.wallet_up(config)
     expect(CardanoUp::Session.network_or_raise?(@session, @env)).to be true
     expect(CardanoUp::Session.wallet_or_raise?(@session, @env)).to be true

@@ -57,6 +57,13 @@ module CardanoUp
     end
   end
 
+  # Thrown when wallet port is not set
+  class WalletPortUsedError < StandardError
+    def initialize(port)
+      super("The port #{port} is already in use!")
+    end
+  end
+
   # Thrown when version of bundle to download is not supported
   class VersionNotSupportedError < StandardError
     def initialize(ver)

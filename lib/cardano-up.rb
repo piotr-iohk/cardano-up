@@ -8,6 +8,8 @@ require 'file-tail'
 require 'json'
 require 'zlib'
 require 'zip'
+require 'socket'
+require 'timeout'
 
 require 'cardano-up/version'
 require 'cardano-up/err'

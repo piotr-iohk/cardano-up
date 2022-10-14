@@ -43,7 +43,7 @@ module CardanoUp
         r = JSON.parse(res)
         c = 200
       rescue JSON::ParserError
-        r = "Not responding."
+        r = 'Not responding.'
         c = 404
       end
       [r, c]

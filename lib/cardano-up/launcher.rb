@@ -147,6 +147,10 @@ module CardanoUp
 
     # @param configuration [Hash] output of setup
     def self.wallet_up(configuration)
+      if CardanoUp::Utils.port_used?(configuration[:wallet_port].to_i)
+        raise CardanoUp::WalletPortUsedError, configuration[:wallet_port]
+      end
+
       env = configuration[:env]
       wallet_port = configuration[:wallet_port]
       token_metadata_server = configuration[:token_metadata_server]
@@ -185,6 +189,7 @@ module CardanoUp
           cmd: wallet_cmd
         }
       }
+
       CardanoUp::Session.create_or_update(session_name, service_details)
       if CardanoUp::Utils.win?
         # create cardano-wallet.bat file
