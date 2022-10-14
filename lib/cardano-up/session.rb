@@ -34,8 +34,8 @@ module CardanoUp
     end
 
     # create or update session with details of launched service
-    # @param [String] session name
-    # @param [Hash] service details
+    # @param session_name [String] session name
+    # @param service_details [Hash] service details
     # @raise ArgumentError
     # @raise CardanoUp::SessionHasNodeError
     # @raise CardanoUp::SessionHasWalletError
@@ -73,9 +73,21 @@ module CardanoUp
       end
     end
 
+    def self.node_or_raise?(session_name, env)
+      raise CardanoUp::SessionServiceNotUpError.new(session_name, env, :node) unless node?(session_name, env)
+    end
+
+    def self.wallet_or_raise?(session_name, env)
+      raise CardanoUp::SessionServiceNotUpError.new(session_name, env, :wallet) unless wallet?(session_name, env)
+    end
+
+    def self.network_or_raise?(session_name, env)
+      raise CardanoUp::SessionEnvNotUpError.new(session_name, env) unless network?(session_name, env)
+    end
+
     # remove entry from session
-    # @param [String] session name ({ network: 'preprod', service: 'wallet' })
-    # @param [Hash] service details
+    # @param session_name [String] session name
+    # @param service_details [Hash] service details ({ network: 'preprod', service: 'wallet' })
     def self.remove(session_name, service_details)
       existing_services = get(session_name)
       service = service_details[:service].to_sym

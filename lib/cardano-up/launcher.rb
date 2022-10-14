@@ -180,7 +180,7 @@ module CardanoUp
           log: logfile,
           db_dir: wallet_db_dir,
           port: wallet_port.to_i,
-          host: "http://localhost:#{wallet_port}/v2",
+          url: "http://localhost:#{wallet_port}/v2",
           bin: wallet_cmd.split.first,
           cmd: wallet_cmd
         }

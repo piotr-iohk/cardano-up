@@ -17,6 +17,7 @@ require 'cardano-up/bins'
 require 'cardano-up/configs'
 require 'cardano-up/launcher'
 require 'cardano-up/session'
+require 'cardano-up/ping'
 require 'cardano-up/tail'
 
 # Cardano Up!

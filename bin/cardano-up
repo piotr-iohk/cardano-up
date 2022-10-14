@@ -13,7 +13,7 @@ doc = <<~DOCOPT
     #{File.basename(__FILE__)} get-configs <env>
     #{File.basename(__FILE__)} ls
     #{File.basename(__FILE__)} config [--set-default] [--bindir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
-    #{File.basename(__FILE__)} <env> [(node|wallet)] [(up|down)] [--port <port>] [--session <name>]
+    #{File.basename(__FILE__)} <env> [(node|wallet)] [(up|down|ping)] [--port <port>] [--session <name>]
     #{File.basename(__FILE__)} <env> (node|wallet) tail [--session <name>]
     #{File.basename(__FILE__)} -v | --version
     #{File.basename(__FILE__)} -e | --examples
@@ -29,6 +29,7 @@ doc = <<~DOCOPT
                             ones from latest release.
     down                    Stop particular service.
     tail                    Follow logs for particular service.
+    ping                    Ping service to check its status.
     ls                      List sessions.
     -p --port <port>        Specify wallet port. [default: 8090]
     -s --session <name>     Set session name. In single session you can have
@@ -57,6 +58,10 @@ end
 
 def ok
   warn 'Ok.'
+end
+
+def not_ok
+  warn '⚠️   Not ok.'
 end
 
 begin
@@ -102,7 +107,7 @@ Examples:
     rescue StandardError => e
       warn 'Nothing installed? To fix run:'
       warn " $ #{File.basename(__FILE__)} install"
-      warn e
+      warn "⚠️   #{e}"
     end
   end
 
@@ -241,7 +246,7 @@ Examples:
       warn 'Either you miss configs or binaries... To fix that try running:'
       warn " $ #{File.basename(__FILE__)} get-configs #{env}"
       warn " $ #{File.basename(__FILE__)} install"
-      warn e
+      warn "⚠️   #{e}"
       exit 1
     end
 
@@ -260,7 +265,12 @@ Examples:
       else
         CardanoUp::Launcher.node_down(env, session_name)
         warn 'Node stopped.'
-        CardanoUp::Launcher.wallet_down(env, session_name)
+        begin
+          CardanoUp::Launcher.wallet_down(env, session_name)
+        rescue CardanoUp::SessionNotExistsError
+          # in case node_down kills session (i.e. it was the last service killed)
+          exit
+        end
         warn 'Wallet stopped.'
       end
     rescue CardanoUp::EnvNotSupportedError => e
@@ -292,52 +302,87 @@ Examples:
       exit
     end
 
+  # PING
+  elsif o['ping']
+    begin
+      session_name = o['--session']
+      env = o['<env>']
+      CardanoUp::Configs.exist?(env)
+      sessions = CardanoUp::Session.get(session_name)
+      CardanoUp::Session.network_or_raise?(session_name, env.to_sym)
+      warn "Ping {env: #{env}, session: #{session_name}}:"
+
+      if o['node']
+        CardanoUp::Session.node_or_raise?(session_name, env.to_sym)
+        r = CardanoUp::Ping.node(session_name, env)
+        $stderr.print 'Node ping... '
+        JSON.parse(r) ? ok : not_ok
+        pretty_json JSON.parse(r)
+      elsif o['wallet']
+        CardanoUp::Session.wallet_or_raise?(session_name, env.to_sym)
+        url = sessions[env.to_sym][:wallet][:url]
+        $stderr.print "Wallet ping (url: #{url})... "
+        r, c = CardanoUp::Ping.wallet(session_name, env)
+        c == 200 ? ok : not_ok
+        pretty_json r
+      else
+        warn 'Use: '
+        warn "  $ #{File.basename(__FILE__)} #{env} node ping -s #{session_name}"
+        warn "  $ #{File.basename(__FILE__)} #{env} wallet ping -s #{session_name}"
+      end
+    rescue JSON::ParserError
+      warn '⚠️   Node not responding.'
+      exit 1
+    rescue Errno::ECONNREFUSED,
+           CardanoUp::EnvNotSupportedError => e
+      warn "⚠️   #{e}"
+      exit 1
+    rescue CardanoUp::SessionNotExistsError,
+           CardanoUp::SessionEnvNotUpError,
+           CardanoUp::SessionServiceNotUpError => e
+      warn "⚠️   #{e}"
+      warn 'To list active sessions call: '
+      warn "  $ #{File.basename(__FILE__)} ls"
+      exit 1
+    end
+
   # Session STATUS
   elsif o['<env>']
     session_name = o['--session']
     env = o['<env>']
     begin
       CardanoUp::Configs.exist?(env)
-    rescue CardanoUp::EnvNotSupportedError => e
-      warn e
-      exit 1
-    end
-
-    begin
       sessions = CardanoUp::Session.get(session_name)
-    rescue CardanoUp::SessionNotExistsError => e
-      warn e
-      warn 'To list active sessions call: '
-      warn "  $ #{File.basename(__FILE__)} ls"
-      exit 1
-    end
-    # unless sessions
-    unless sessions[env.to_sym]
-      warn "Nothing is running on '#{env}' in session '#{session_name}'."
-      warn 'To list active sessions call: '
-      warn "  $ #{File.basename(__FILE__)} ls"
-      exit 1
-    end
-    begin
-      node = sessions[env.to_sym][:node]
-      wallet = sessions[env.to_sym][:wallet]
-      m_node = node.nil? ? 'Node is not running.' : node
-      m_wallet = wallet.nil? ? 'Wallet is not running.' : wallet
+      CardanoUp::Session.network_or_raise?(session_name, env.to_sym)
+
       if o['node']
+        CardanoUp::Session.node_or_raise?(session_name, env.to_sym)
         warn "Node details {env: #{env}, session: #{session_name}}:"
+        warn "For health-check: $ #{File.basename(__FILE__)} #{env} node ping -s #{session_name}"
         $stderr.puts
-        pretty_json m_node
+        node = sessions[env.to_sym][:node]
+        pretty_json node
       elsif o['wallet']
+        CardanoUp::Session.wallet_or_raise?(session_name, env.to_sym)
         warn "Wallet details {env: #{env}, session: #{session_name}}:"
+        warn "For health-check: $ #{File.basename(__FILE__)} #{env} wallet ping -s #{session_name}"
         $stderr.puts
-        pretty_json m_wallet
+        wallet = sessions[env.to_sym][:wallet]
+        pretty_json wallet
       else
         warn "Details {env: #{env}, session: #{session_name}}:"
         $stderr.puts
         pretty_json sessions[env.to_sym]
       end
     rescue CardanoUp::EnvNotSupportedError => e
-      warn(e.message)
+      warn "⚠️   #{e}"
+      exit 1
+    rescue CardanoUp::SessionNotExistsError,
+           CardanoUp::SessionEnvNotUpError,
+           CardanoUp::SessionServiceNotUpError => e
+      warn "⚠️   #{e}"
+      warn 'To list active sessions call: '
+      warn "  $ #{File.basename(__FILE__)} ls"
       exit 1
     end
   end
@@ -354,7 +399,10 @@ Examples:
         s_det.each_key do |env|
           warn "    #{env}:"
           s_det[env].each_key do |service|
-            warn "       #{service} (#{s_det[env][service][:service]})" if service != :network
+            warn "       #{service} (#{s_det[env][service][:service]})" if service == :node
+            if service == :wallet
+              warn "       #{service} (#{s_det[env][service][:service]}, port: #{s_det[env][service][:port]})"
+            end
           end
         end
       end
