@@ -1,6 +1,41 @@
 # frozen_string_literal: true
 
 module CardanoUp
+  # Thrown when service not exists in session
+  class SessionServiceNotUpError < StandardError
+    def initialize(session_name, env, service)
+      super("Service '#{service}' is not running on '#{env}' in session '#{session_name}'!")
+    end
+  end
+
+  # Thrown when env not exists in session
+  class SessionEnvNotUpError < StandardError
+    def initialize(session_name, env)
+      super("Nothing is running on '#{env}' in session '#{session_name}'!")
+    end
+  end
+
+  # Thrown when session not exists
+  class SessionNotExistsError < StandardError
+    def initialize(session_name)
+      super("Session '#{session_name}' does not exist!")
+    end
+  end
+
+  # Thrown when there is already a node running in the session
+  class SessionHasNodeError < StandardError
+    def initialize(session_name, network)
+      super("Session '#{session_name}' already has node running on '#{network}'!")
+    end
+  end
+
+  # Thrown when there is already a wallet running in the session
+  class SessionHasWalletError < StandardError
+    def initialize(session_name, network)
+      super("Session '#{session_name}' already has wallet running on '#{network}'!")
+    end
+  end
+
   # Thrown when env is not supported
   class EnvNotSupportedError < StandardError
     def initialize(env)
@@ -19,6 +54,13 @@ module CardanoUp
   class WalletPortError < StandardError
     def initialize
       super('Wallet port is not set!')
+    end
+  end
+
+  # Thrown when wallet port is not set
+  class WalletPortUsedError < StandardError
+    def initialize(port)
+      super("The port #{port} is already in use!")
     end
   end
 

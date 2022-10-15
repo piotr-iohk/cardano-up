@@ -11,16 +11,17 @@ doc = <<~DOCOPT
   Usage:
     #{File.basename(__FILE__)} install [<release>]
     #{File.basename(__FILE__)} get-configs <env>
-    #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) up [--port <port>]
-    #{File.basename(__FILE__)} <env> (node|wallet|node-wallet) down
-    #{File.basename(__FILE__)} <env> (node|wallet) tail
+    #{File.basename(__FILE__)} ls
     #{File.basename(__FILE__)} config [--set-default] [--bindir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
+    #{File.basename(__FILE__)} <env> [(node|wallet)] [(up|down|ping)] [--port <port>] [--session <name>]
+    #{File.basename(__FILE__)} <env> (node|wallet) tail [--session <name>]
     #{File.basename(__FILE__)} -v | --version
+    #{File.basename(__FILE__)} -e | --examples
     #{File.basename(__FILE__)} -h | --help
 
   Options:
     install                 Install cardano-node, cardano-cli, cardano-wallet, cardano-addresses and bech32.
-    <release>               latest | release tag | master | pr num [default: latest]
+    <release>               latest | release tag | master | pr num. [default: latest]
     get-configs             Get configs for particular Cardano environment.
     <env>                   mainnet | preview | preprod etc.
     up                      Start particular service. If any configs are missing #{File.basename(__FILE__)}
@@ -28,7 +29,11 @@ doc = <<~DOCOPT
                             ones from latest release.
     down                    Stop particular service.
     tail                    Follow logs for particular service.
-    --port <port>           Specify wallet port. [default: 8090]
+    ping                    Ping service to check its status.
+    ls                      List sessions.
+    -p --port <port>        Specify wallet port. [default: 8090]
+    -s --session <name>     Set session name. In single session you can have
+                            at most 1 node and 1 wallet for particular <env>. [default: 0]
 
     config                  Internal config for #{File.basename(__FILE__)}
     --set-default           Overwrite config with default values.
@@ -39,21 +44,95 @@ doc = <<~DOCOPT
 
     -v --version            Check #{File.basename(__FILE__)} version and versions of
                             installed binaries if available.
+    -e --examples           Show some usage examples.
     -h --help               This help.
 DOCOPT
 
 def pretty_json(c)
-  puts JSON.pretty_generate(c)
+  if c.is_a?(Hash)
+    puts JSON.pretty_generate(c)
+  else
+    warn c
+  end
 end
 
 def ok
   warn 'Ok.'
 end
 
+def not_ok
+  warn '⚠️   Not ok.'
+end
+
 begin
   CardanoUp.configure_default unless CardanoUp.configured?
   o = Docopt.docopt(doc)
+  # pretty_json o
 
+  # EXAMPLES
+  if o['--examples'] == true
+    warn %(INTERNAL CONFIG:
+------------------------------
+Check internal config file contents:
+
+    $ #{File.basename(__FILE__)} config
+
+BINARIES AND NETWORK CONFIGS:
+------------------------------
+Get latest release binaries and verify versions:
+
+    $ #{File.basename(__FILE__)} install latest
+    $ #{File.basename(__FILE__)} -v
+
+Get configuration for 'preview' network:
+
+    $ #{File.basename(__FILE__)} get-configs preview
+
+SERVICE MANAGEMENT:
+------------------------------
+> Note: If you have no configs for particular env 'up'
+        subcommand will download them on the fly. If no binaries,
+        latest release will be installed, otherwise it will use
+        what is in the 'bin_dir'.
+
+Start node and wallet on mainnet:
+
+    $ #{File.basename(__FILE__)} mainnet up
+
+Start node on preprod:
+
+    $ #{File.basename(__FILE__)} preprod node up
+
+Check active sessions:
+
+    $ #{File.basename(__FILE__)} ls
+
+Check details of what is running on mainnet and preprod or details of given component:
+
+    $ #{File.basename(__FILE__)} mainnet
+    $ #{File.basename(__FILE__)} preprod
+    $ #{File.basename(__FILE__)} mainnet wallet
+    $ #{File.basename(__FILE__)} preprod node
+
+Check health of node and wallet on mainnet:
+
+    $ #{File.basename(__FILE__)} mainnet node ping
+    $ #{File.basename(__FILE__)} mainnet wallet ping
+
+Monitor mainnet wallet and node logs (Ctrl + c to stop):
+
+    $ #{File.basename(__FILE__)} mainnet node tail
+    $ #{File.basename(__FILE__)} mainnet wallet tail
+
+Stop preprod node:
+
+    $ #{File.basename(__FILE__)} preprod node down
+
+Stop mainnet node and wallet:
+
+    $ #{File.basename(__FILE__)} mainnet down
+    )
+  end
   # VERSION
   if o['--version'] == true
     warn "#{File.basename(__FILE__)}: #{CardanoUp::VERSION}"
@@ -63,7 +142,7 @@ begin
     rescue StandardError => e
       warn 'Nothing installed? To fix run:'
       warn " $ #{File.basename(__FILE__)} install"
-      warn e
+      warn "⚠️   #{e}"
     end
   end
 
@@ -103,7 +182,7 @@ begin
 
   # INSTALL
   if o['install'] == true
-    release = o['<release>']
+    release = o['<release>'] || 'latest'
     begin
       $stderr.print "Installing '#{release}'... "
       versions = CardanoUp::Bins.install(release)
@@ -111,8 +190,12 @@ begin
     rescue CardanoUp::VersionNotSupportedError => e
       warn(e.message)
       exit 1
+    rescue Errno::ETXTBSY => e
+      warn("Couldn't unpack binaries, perhaps some file is in use?")
+      warn(e.message)
+      exit 1
     end
-    warn "Install dir: #{CardanoUp.config['bin_dir']}"
+    warn "Install dir: #{CardanoUp.config[:bin_dir]}"
     $stderr.puts
     pretty_json(versions)
     exit
@@ -128,7 +211,7 @@ begin
       exit 1
     end
     warn "Downloaded configs for '#{env}' environment."
-    warn "Config dir: #{File.join(CardanoUp.config['config_dir'], env)}"
+    warn "Config dir: #{File.join(CardanoUp.config[:config_dir], env)}"
     $stderr.puts
     pretty_json(configs)
     exit
@@ -138,6 +221,7 @@ begin
   if o['up'] == true
     env = o['<env>']
     port = o['--port']
+    session_name = o['--session']
 
     begin
       $stderr.print 'Configs: '
@@ -160,12 +244,8 @@ begin
       $stderr.puts
       warn 'Starting...'
       $stderr.puts
-      c = CardanoUp::Launcher.setup({ env: env, wallet_port: port })
-    rescue CardanoUp::EnvNotSupportedError => e
-      warn(e.message)
-      exit 1
-    end
-    begin
+      c = CardanoUp::Launcher.setup({ env: env, wallet_port: port, session_name: session_name })
+
       if o['node']
         pretty_json CardanoUp::Launcher.node_up(c)
         $stderr.puts
@@ -174,50 +254,70 @@ begin
         pretty_json CardanoUp::Launcher.wallet_up(c)
         $stderr.puts
         warn "Congratulations! You've just started cardano-wallet!"
-      elsif o['node-wallet']
+      else
         n = CardanoUp::Launcher.node_up(c)
         w = CardanoUp::Launcher.wallet_up(c)
         pretty_json(n.merge(w))
         $stderr.puts
         warn "Congratulations! You've just started cardano-node and cardano-wallet!"
       end
+    rescue CardanoUp::EnvNotSupportedError => e
+      warn "⚠️   #{e}"
+      exit 1
+    rescue CardanoUp::SessionHasNodeError => e
+      warn "⚠️   #{e}"
+      $stderr.puts
+      warn "If you'd like to start another node instance after all:"
+      warn " $ #{File.basename(__FILE__)} #{env} node up -s <some_name>"
+      exit 1
+    rescue CardanoUp::SessionHasWalletError, CardanoUp::WalletPortUsedError => e
+      warn "⚠️   #{e}"
+      $stderr.puts
+      warn "If you'd like to start another wallet instance after all:"
+      warn " $ #{File.basename(__FILE__)} #{env} wallet up -s <some_name> --port <different_port>"
+      exit 1
     rescue StandardError => e
       warn 'Either you miss configs or binaries... To fix that try running:'
       warn " $ #{File.basename(__FILE__)} get-configs #{env}"
       warn " $ #{File.basename(__FILE__)} install"
-      warn e
+      warn "⚠️   #{e}"
       exit 1
     end
-  end
 
-  # STOP
-  if o['down'] == true
+  # DOWN
+  elsif o['down'] == true
     env = o['<env>']
-
+    session_name = o['--session']
+    warn "Stopping service on '#{env}' in session '#{session_name}'..."
     begin
       if o['node']
-        CardanoUp::Launcher.node_down(env)
+        CardanoUp::Launcher.node_down(env, session_name)
         warn 'Node stopped.'
       elsif o['wallet']
-        CardanoUp::Launcher.wallet_down(env)
+        CardanoUp::Launcher.wallet_down(env, session_name)
         warn 'Wallet stopped.'
-      elsif o['node-wallet']
-        CardanoUp::Launcher.node_down(env)
+      else
+        CardanoUp::Launcher.node_down(env, session_name)
         warn 'Node stopped.'
-        CardanoUp::Launcher.wallet_down(env)
+        begin
+          CardanoUp::Launcher.wallet_down(env, session_name)
+        rescue CardanoUp::SessionNotExistsError
+          # in case node_down kills session (i.e. it was the last service killed)
+          exit
+        end
         warn 'Wallet stopped.'
       end
-    rescue CardanoUp::EnvNotSupportedError => e
-      warn(e.message)
+    rescue CardanoUp::EnvNotSupportedError, CardanoUp::SessionNotExistsError => e
+      warn "⚠️   #{e}"
       exit 1
     end
-  end
 
   # TAIL
-  if o['tail'] == true
+  elsif o['tail'] == true
     env = o['<env>']
+    session_name = o['--session']
     begin
-      log_dir = File.join(CardanoUp.config['log_dir'], env)
+      log_dir = File.join(CardanoUp.config[:log_dir], session_name, env)
       if o['node']
         log_file = File.join(log_dir, 'node.log')
         CardanoUp::Tail.tail(log_file)
@@ -233,7 +333,122 @@ begin
       warn(e.message)
       exit 1
     rescue Interrupt
+      # on ctrl + c don't show stack trace
+      $stderr.puts
+    end
+
+  # PING
+  elsif o['ping']
+    begin
+      session_name = o['--session']
+      env = o['<env>']
+      CardanoUp::Configs.exist?(env)
+      sessions = CardanoUp::Session.get(session_name)
+      CardanoUp::Session.network_or_raise?(session_name, env.to_sym)
+      warn "Ping {env: #{env}, session: #{session_name}}:"
+
+      if o['node']
+        CardanoUp::Session.node_or_raise?(session_name, env.to_sym)
+        $stderr.print 'Node ping... '
+        r, c = CardanoUp::Ping.node(session_name, env)
+        c == 200 ? ok : not_ok
+        pretty_json r
+      elsif o['wallet']
+        CardanoUp::Session.wallet_or_raise?(session_name, env.to_sym)
+        url = sessions[env.to_sym][:wallet][:url]
+        $stderr.print "Wallet ping (url: #{url})... "
+        r, c = CardanoUp::Ping.wallet(session_name, env)
+        c == 200 ? ok : not_ok
+        pretty_json r
+      else
+        warn 'Use: '
+        warn "  $ #{File.basename(__FILE__)} #{env} node ping -s #{session_name}"
+        warn "  $ #{File.basename(__FILE__)} #{env} wallet ping -s #{session_name}"
+      end
+    rescue Errno::ECONNREFUSED,
+           CardanoUp::EnvNotSupportedError => e
+      warn "⚠️   #{e}"
+      exit 1
+    rescue CardanoUp::SessionNotExistsError,
+           CardanoUp::SessionEnvNotUpError,
+           CardanoUp::SessionServiceNotUpError => e
+      warn "⚠️   #{e}"
+      warn 'To list active sessions call: '
+      warn "  $ #{File.basename(__FILE__)} ls"
+      exit 1
+    rescue Interrupt
+      # on ctrl + c don't show stack trace
+      $stderr.puts
       exit
+    end
+
+  # Session STATUS
+  elsif o['<env>']
+    session_name = o['--session']
+    env = o['<env>']
+    begin
+      CardanoUp::Configs.exist?(env)
+      sessions = CardanoUp::Session.get(session_name)
+      CardanoUp::Session.network_or_raise?(session_name, env.to_sym)
+
+      if o['node']
+        CardanoUp::Session.node_or_raise?(session_name, env.to_sym)
+        warn "Node details {env: #{env}, session: #{session_name}}:"
+        warn "For health-check: $ #{File.basename(__FILE__)} #{env} node ping -s #{session_name}"
+        $stderr.puts
+        node = sessions[env.to_sym][:node]
+        pretty_json node
+      elsif o['wallet']
+        CardanoUp::Session.wallet_or_raise?(session_name, env.to_sym)
+        warn "Wallet details {env: #{env}, session: #{session_name}}:"
+        warn "For health-check: $ #{File.basename(__FILE__)} #{env} wallet ping -s #{session_name}"
+        $stderr.puts
+        wallet = sessions[env.to_sym][:wallet]
+        pretty_json wallet
+      else
+        warn "Details {env: #{env}, session: #{session_name}}:"
+        $stderr.puts
+        pretty_json sessions[env.to_sym]
+      end
+    rescue CardanoUp::EnvNotSupportedError => e
+      warn "⚠️   #{e}"
+      exit 1
+    rescue CardanoUp::SessionNotExistsError,
+           CardanoUp::SessionEnvNotUpError,
+           CardanoUp::SessionServiceNotUpError => e
+      warn "⚠️   #{e}"
+      warn 'To list active sessions call: '
+      warn "  $ #{File.basename(__FILE__)} ls"
+      exit 1
+    end
+  end
+
+  # LS
+  if o['ls']
+    sessions = CardanoUp::Session.list_all
+
+    def list_extended(sessions)
+      sessions.map do |s|
+        session_name = File.basename(s)[/.session-(.+).json/, 1]
+        s_det = CardanoUp::Session.get(session_name)
+        warn "  #{session_name}:"
+        s_det.each_key do |env|
+          warn "    #{env}:"
+          s_det[env].each_key do |service|
+            warn "       #{service} (#{s_det[env][service][:service]})" if service == :node
+            if service == :wallet
+              warn "       #{service} (#{s_det[env][service][:service]}, port: #{s_det[env][service][:port]})"
+            end
+          end
+        end
+      end
+    end
+
+    if sessions.empty?
+      warn 'No active sessions.'
+    else
+      warn 'Sessions:'
+      list_extended(sessions)
     end
   end
 rescue Docopt::Exit => e

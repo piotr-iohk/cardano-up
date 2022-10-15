@@ -10,7 +10,7 @@ module CardanoUp
       CardanoUp.configure_default unless CardanoUp.configured?
       configs = CardanoUp.config
       url = CardanoUp::Utils.get_binary_url(release)
-      bin_dir_env = FileUtils.mkdir_p(configs['bin_dir']).first
+      bin_dir_env = FileUtils.mkdir_p(configs[:bin_dir]).first
       file_to_unpack = File.join(bin_dir_env, 'binary-dist')
       CardanoUp::Utils.wget(url, file_to_unpack)
 
@@ -21,7 +21,7 @@ module CardanoUp
     # Return versions of installed components
     # @raise CardanoUp::ConfigNotSetError
     def self.return_versions(bin_dir = nil)
-      bindir = bin_dir.nil? ? CardanoUp.config['bin_dir'] : bin_dir
+      bindir = bin_dir.nil? ? CardanoUp.config[:bin_dir] : bin_dir
       exe = CardanoUp::Utils.win? ? '.exe' : ''
       cn = CardanoUp::Utils.cmd "#{bindir}/cardano-node#{exe} version"
       cli = CardanoUp::Utils.cmd "#{bindir}/cardano-cli#{exe} version"

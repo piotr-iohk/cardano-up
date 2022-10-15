@@ -5,12 +5,13 @@ RSpec.describe 'Integration', :e2e, :integration do
     set_cardano_up_config
     @env = 'preprod'
     @port = '7788'
+    @session = 'i'
     CardanoUp::Bins.install('latest')
     CardanoUp::Configs.get(@env)
   end
 
   after(:each) do
-    CardanoUp.clean_config_dir('state_dir')
+    CardanoUp.clean_config_dir(:state_dir)
   end
 
   def assert_node_up(bin_dir, socket_path, protocol_magic)
@@ -52,42 +53,56 @@ RSpec.describe 'Integration', :e2e, :integration do
   end
 
   it 'I can do node_up and wallet_up and then node_down and wallet_down' do
-    bin_dir = CardanoUp.config['bin_dir']
+    bin_dir = CardanoUp.config[:bin_dir]
     # Start node and wallet
-    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port })
+    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port, session_name: @session })
     node = CardanoUp::Launcher.node_up(config)
     wallet = CardanoUp::Launcher.wallet_up(config)
+    expect(CardanoUp::Session.network_or_raise?(@session, @env)).to be true
+    expect(CardanoUp::Session.node_or_raise?(@session, @env)).to be true
+    expect(CardanoUp::Session.wallet_or_raise?(@session, @env)).to be true
 
     assert_node_up(bin_dir, node[:node][:socket_path], node[:node][:protocol_magic])
     assert_wallet_connected(bin_dir, wallet[:wallet][:port])
+    expect(CardanoUp::Ping.wallet(@session, @env).last).to eq 200
+    expect(CardanoUp::Ping.node(@session, @env).last).to eq 200
 
     # Stop node and wallet
-    CardanoUp::Launcher.node_down(@env)
-    CardanoUp::Launcher.wallet_down(@env)
+    CardanoUp::Launcher.node_down(@env, @session)
+    CardanoUp::Launcher.wallet_down(@env, @session)
     assert_node_down(bin_dir, node[:node][:socket_path], node[:node][:protocol_magic])
     assert_wallet_disconnected(bin_dir, wallet[:wallet][:port])
+    expect(CardanoUp::Session.exists?(@session)).to be false
   end
 
   it 'I can node_up and then node_down' do
-    bin_dir = CardanoUp.config['bin_dir']
+    bin_dir = CardanoUp.config[:bin_dir]
     # Start node
-    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port })
+    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port, session_name: @session })
     node = CardanoUp::Launcher.node_up(config)
+    expect(CardanoUp::Session.network_or_raise?(@session, @env)).to be true
+    expect(CardanoUp::Session.node_or_raise?(@session, @env)).to be true
+
     assert_node_up(bin_dir, node[:node][:socket_path], node[:node][:protocol_magic])
+    expect(CardanoUp::Ping.node(@session, @env).last).to eq 200
 
     # Stop node
-    CardanoUp::Launcher.node_down(@env)
+    CardanoUp::Launcher.node_down(@env, @session)
     assert_node_down(bin_dir, node[:node][:socket_path], node[:node][:protocol_magic])
+    expect(CardanoUp::Session.exists?(@session)).to be false
   end
 
   it 'I can wallet_up and then wallet_down' do
-    bin_dir = CardanoUp.config['bin_dir']
+    bin_dir = CardanoUp.config[:bin_dir]
     # Start wallet
-    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port })
+    config = CardanoUp::Launcher.setup({ env: @env, wallet_port: @port, session_name: @session })
     wallet = CardanoUp::Launcher.wallet_up(config)
+    expect(CardanoUp::Session.network_or_raise?(@session, @env)).to be true
+    expect(CardanoUp::Session.wallet_or_raise?(@session, @env)).to be true
 
     # Stop wallet
-    CardanoUp::Launcher.wallet_down(@env)
+    CardanoUp::Launcher.wallet_down(@env, @session)
     assert_wallet_disconnected(bin_dir, wallet[:wallet][:port])
+    expect(CardanoUp::Session.exists?(@session)).to be false
   end
 end

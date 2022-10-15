@@ -34,4 +34,13 @@ jobs:
         cardano-up get-configs preprod
         cardano-up preprod node up
         cardano-up preprod wallet up
-        cardano-up preprod node-wallet down
+        cardano-up mainnet up --port 8091
+        cardano-up ls
+        cardano-up mainnet
+        cardano-up preprod node
+        cardano-up preprod wallet
+        cardano-up preprod node ping
+        cardano-up preprod wallet ping
+        cardano-up preprod down
+        cardano-up mainnet wallet down
+        cardano-up mainnet node down

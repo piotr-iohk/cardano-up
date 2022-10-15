@@ -8,6 +8,8 @@ require 'file-tail'
 require 'json'
 require 'zlib'
 require 'zip'
+require 'socket'
+require 'timeout'
 
 require 'cardano-up/version'
 require 'cardano-up/err'
@@ -16,6 +18,8 @@ require 'cardano-up/tar'
 require 'cardano-up/bins'
 require 'cardano-up/configs'
 require 'cardano-up/launcher'
+require 'cardano-up/session'
+require 'cardano-up/ping'
 require 'cardano-up/tail'
 
 # Cardano Up!
@@ -75,24 +79,24 @@ module CardanoUp
     c = if configured?
           CardanoUp.config
         else
-          { 'bin_dir' => File.join(@base_dir, 'bins'),
-            'state_dir' => File.join(@base_dir, 'state'),
-            'log_dir' => File.join(@base_dir, 'state'),
-            'config_dir' => File.join(@base_dir, 'configs') }
+          { bin_dir: File.join(@base_dir, 'bins'),
+            state_dir: File.join(@base_dir, 'state'),
+            log_dir: File.join(@base_dir, 'state'),
+            config_dir: File.join(@base_dir, 'configs') }
         end
-    c['bin_dir'] = bin_dir if bin_dir
-    c['state_dir'] = state_dir if state_dir
-    c['log_dir'] = logs_dir if logs_dir
-    c['config_dir'] = config_dir if config_dir
-    File.write(@cardano_up_config, JSON.pretty_generate(c))
-    JSON.parse(File.read(@cardano_up_config))
+    c[:bin_dir] = bin_dir if bin_dir
+    c[:state_dir] = state_dir if state_dir
+    c[:log_dir] = logs_dir if logs_dir
+    c[:config_dir] = config_dir if config_dir
+    CardanoUp::Utils.to_json(@cardano_up_config, c)
+    CardanoUp::Utils.from_json(@cardano_up_config)
   end
 
   # Get config values
   def self.config
     raise CardanoUp::ConfigNotSetError unless configured?
 
-    JSON.parse(File.read(@cardano_up_config))
+    CardanoUp::Utils.from_json(@cardano_up_config)
   end
 
   # Remove configuration file

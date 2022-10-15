@@ -12,7 +12,7 @@ RSpec.describe CardanoUp::Bins do
   it 'can install bins from master' do
     release = 'master'
     c = CardanoUp.config
-    bin_dir = c['bin_dir']
+    bin_dir = c[:bin_dir]
     expect(Dir["#{bin_dir}/*"].size).to eq 0
 
     bins = CardanoUp::Bins.install(release)
