@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Module: CardanoUp::Launcher
+  
+    &mdash; Documentation for cardano-up (0.1.2)
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "CardanoUp::Launcher";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (L)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span>
+     &raquo; 
+    <span class="title">Launcher</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Module: CardanoUp::Launcher
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/cardano-up/launcher.rb</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Start/stop cardano-node and cardano-wallet on your system.</p>
+
+<p>For Linux and MacOS it will attempt to start separate screen sessions for wallet and node respectively, therefore ‘screen’ tool is required on your system. If screen is not present you can install it using your package manager for instance:</p>
+
+<pre class="code ruby"><code class="ruby"># MacOS:
+brew install screen
+# Linux:
+sudo apt-get install screen
+</code></pre>
+
+<p>For Windows it will attepmt to install cardano-node and cardano-wallet as Windows services using ‘nssm’ tool. Nssm can be installed via choco package manager:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_choco'>choco</span> <span class='id identifier rubyid_install'>install</span> <span class='id identifier rubyid_nssm'>nssm</span>
+</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://www.gnu.org/software/screen/" target="_parent" title="https://www.gnu.org/software/screen/">https://www.gnu.org/software/screen/</a></li>
+    
+      <li><a href="https://nssm.cc/" target="_parent" title="https://nssm.cc/">https://nssm.cc/</a></li>
+    
+  </ul>
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#node_down-class_method" title="node_down (class method)">.<strong>node_down</strong>(env, session_name = &#39;0&#39;)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#node_up-class_method" title="node_up (class method)">.<strong>node_up</strong>(configuration)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#setup-class_method" title="setup (class method)">.<strong>setup</strong>(opt = { env: &#39;mainnet&#39;, wallet_port: &#39;8090&#39;, session_name: &#39;0&#39; })  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Create common set of variables for getting node and wallet up.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#wallet_down-class_method" title="wallet_down (class method)">.<strong>wallet_down</strong>(env, session_name = &#39;0&#39;)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#wallet_up-class_method" title="wallet_up (class method)">.<strong>wallet_up</strong>(configuration)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="node_down-class_method">
+  
+    .<strong>node_down</strong>(env, session_name = &#39;0&#39;)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::EnvNotSupportedError</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 214</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_node_down'>node_down</span><span class='lparen'>(</span><span class='id identifier rubyid_env'>env</span><span class='comma'>,</span> <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="EnvNotSupportedError.html" title="CardanoUp::EnvNotSupportedError (class)">EnvNotSupportedError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span> <span class='kw'>unless</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CardanoUp.html#ENVS-constant" title="CardanoUp::ENVS (constant)">ENVS</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_env'>env</span>
+
+  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm stop cardano-node-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm remove cardano-node-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_content'> confirm</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>else</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>screen -S NODE_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_content'> -X at &#39;0&#39; stuff &#39;^C&#39;</span><span class='tstring_end'>&quot;</span></span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>screen -XS NODE_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_content'> quit</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Session.html" title="CardanoUp::Session (module)">Session</a></span></span><span class='period'>.</span><span class='id identifier rubyid_remove'><span class='object_link'><a href="Session.html#remove-class_method" title="CardanoUp::Session.remove (method)">remove</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_session_name'>session_name</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='label'>network:</span> <span class='id identifier rubyid_env'>env</span><span class='comma'>,</span> <span class='label'>service:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>node</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="node_up-class_method">
+  
+    .<strong>node_up</strong>(configuration)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>configuration</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>output of setup</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::SessionHasNodeError</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::SessionHasWalletError</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 76</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_node_up'>node_up</span><span class='lparen'>(</span><span class='id identifier rubyid_configuration'>configuration</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_env'>env</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:env</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_bin_dir'>bin_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:bin_dir</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_config_dir'>config_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:config_dir</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_log_dir'>log_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:log_dir</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_node_db_dir'>node_db_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:node_db_dir</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_node_socket'>node_socket</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:node_socket</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:session_name</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_exe'>exe</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.exe</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_cardano_node'>cardano_node</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>cardano-node</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_exe'>exe</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_version'>version</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_cardano_node'>cardano_node</span><span class='embexpr_end'>}</span><span class='tstring_content'> version</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_node_cmd'>node_cmd</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_cardano_node'>cardano_node</span><span class='embexpr_end'>}</span><span class='tstring_content'> run</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+              <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--config </span><span class='embexpr_beg'>#{</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>config.json</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+              <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--topology </span><span class='embexpr_beg'>#{</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>topology.json</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+              <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--database-path </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_db_dir'>node_db_dir</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+              <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--socket-path </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_socket'>node_socket</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_node_service'>node_service</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
+                   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cardano-node-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+                 <span class='kw'>else</span>
+                   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>NODE_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+                 <span class='kw'>end</span>
+  <span class='id identifier rubyid_logfile'>logfile</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_log_dir'>log_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>node.log</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_service_details'>service_details</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='label'>network:</span> <span class='id identifier rubyid_env'>env</span><span class='comma'>,</span>
+    <span class='label'>node:</span> <span class='lbrace'>{</span>
+      <span class='label'>service:</span> <span class='id identifier rubyid_node_service'>node_service</span><span class='comma'>,</span>
+      <span class='label'>version:</span> <span class='id identifier rubyid_version'>version</span><span class='comma'>,</span>
+      <span class='label'>log:</span> <span class='id identifier rubyid_logfile'>logfile</span><span class='comma'>,</span>
+      <span class='label'>db_dir:</span> <span class='id identifier rubyid_node_db_dir'>node_db_dir</span><span class='comma'>,</span>
+      <span class='label'>socket_path:</span> <span class='id identifier rubyid_node_socket'>node_socket</span><span class='comma'>,</span>
+      <span class='label'>protocol_magic:</span> <span class='id identifier rubyid_get_protocol_magic'>get_protocol_magic</span><span class='lparen'>(</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='rparen'>)</span><span class='comma'>,</span>
+      <span class='label'>bin:</span> <span class='id identifier rubyid_node_cmd'>node_cmd</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='comma'>,</span>
+      <span class='label'>cmd:</span> <span class='id identifier rubyid_node_cmd'>node_cmd</span>
+    <span class='rbrace'>}</span>
+  <span class='rbrace'>}</span>
+  <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Session.html" title="CardanoUp::Session (module)">Session</a></span></span><span class='period'>.</span><span class='id identifier rubyid_create_or_update'><span class='object_link'><a href="Session.html#create_or_update-class_method" title="CardanoUp::Session.create_or_update (method)">create_or_update</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_session_name'>session_name</span><span class='comma'>,</span> <span class='id identifier rubyid_service_details'>service_details</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
+    <span class='comment'># Turn off p2p for Windows
+</span>    <span class='comment'># TODO: remove after https://github.com/input-output-hk/ouroboros-network/issues/3968 released
+</span>    <span class='id identifier rubyid_config_win'>config_win</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_from_json'><span class='object_link'><a href="Utils.html#from_json-class_method" title="CardanoUp::Utils.from_json (method)">from_json</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/config.json</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_config_win'>config_win</span><span class='lbracket'>[</span><span class='symbol'>:EnableP2P</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_to_json'><span class='object_link'><a href="Utils.html#to_json-class_method" title="CardanoUp::Utils.to_json (method)">to_json</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/config.json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_config_win'>config_win</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_topology'>topology</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+      <span class='label'>Producers:</span> <span class='lbracket'>[</span>
+        <span class='lbrace'>{</span>
+          <span class='label'>addr:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-node.world.dev.cardano.org</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+          <span class='label'>port:</span> <span class='int'>30_002</span><span class='comma'>,</span>
+          <span class='label'>valency:</span> <span class='int'>2</span>
+        <span class='rbrace'>}</span>
+      <span class='rbracket'>]</span>
+    <span class='rbrace'>}</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_to_json'><span class='object_link'><a href="Utils.html#to_json-class_method" title="CardanoUp::Utils.to_json (method)">to_json</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/topology.json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_topology'>topology</span><span class='rparen'>)</span>
+
+    <span class='comment'># create cardano-node.bat file
+</span>    <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/cardano-node.bat</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_node_cmd'>node_cmd</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_install_node'>install_node</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm install </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_service'>node_service</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/cardano-node.bat</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_log_stdout_node'>log_stdout_node</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm set </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_service'>node_service</span><span class='embexpr_end'>}</span><span class='tstring_content'> AppStdout </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_logfile'>logfile</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_log_stderr_node'>log_stderr_node</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm set </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_service'>node_service</span><span class='embexpr_end'>}</span><span class='tstring_content'> AppStderr </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_logfile'>logfile</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_start_node'>start_node</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm start </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_service'>node_service</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='id identifier rubyid_install_node'>install_node</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='id identifier rubyid_log_stdout_node'>log_stdout_node</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='id identifier rubyid_log_stderr_node'>log_stderr_node</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='id identifier rubyid_start_node'>start_node</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_screen_cmd'>screen_cmd</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>screen -dmS </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_service'>node_service</span><span class='embexpr_end'>}</span><span class='tstring_content'> -L -Logfile </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_logfile'>logfile</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_cmd'>node_cmd</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='id identifier rubyid_screen_cmd'>screen_cmd</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_service_details'>service_details</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="setup-class_method">
+  
+    .<strong>setup</strong>(opt = { env: &#39;mainnet&#39;, wallet_port: &#39;8090&#39;, session_name: &#39;0&#39; })  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Create common set of variables for getting node and wallet up</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>env</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>provide env and wallet_port, e.g. { env: ‘mainnet’, wallet_port: ‘8090’, session_name: ‘0’ }</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::EnvNotSupportedError</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::WalletPortError</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 27</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_setup'>setup</span><span class='lparen'>(</span><span class='id identifier rubyid_opt'>opt</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>env:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>mainnet</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>wallet_port:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>8090</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>session_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_env'>env</span> <span class='op'>=</span> <span class='id identifier rubyid_opt'>opt</span><span class='lbracket'>[</span><span class='symbol'>:env</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="EnvNotSupportedError.html" title="CardanoUp::EnvNotSupportedError (class)">EnvNotSupportedError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span> <span class='kw'>unless</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CardanoUp.html#ENVS-constant" title="CardanoUp::ENVS (constant)">ENVS</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_env'>env</span>
+
+  <span class='id identifier rubyid_wallet_port'>wallet_port</span> <span class='op'>=</span> <span class='id identifier rubyid_opt'>opt</span><span class='lbracket'>[</span><span class='symbol'>:wallet_port</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="WalletPortError.html" title="CardanoUp::WalletPortError (class)">WalletPortError</a></span></span> <span class='kw'>if</span> <span class='id identifier rubyid_wallet_port'>wallet_port</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_wallet_port'>wallet_port</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+
+  <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='id identifier rubyid_opt'>opt</span><span class='lbracket'>[</span><span class='symbol'>:session_name</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span>
+
+  <span class='id identifier rubyid_token_metadata_server'>token_metadata_server</span> <span class='op'>=</span> <span class='id identifier rubyid_env'>env</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>mainnet</span><span class='tstring_end'>&#39;</span></span> <span class='op'>?</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CardanoUp.html#MAINNET_TOKEN_SERVER-constant" title="CardanoUp::MAINNET_TOKEN_SERVER (constant)">MAINNET_TOKEN_SERVER</a></span></span> <span class='op'>:</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CardanoUp.html#TESTNET_TOKEN_SERVER-constant" title="CardanoUp::TESTNET_TOKEN_SERVER (constant)">TESTNET_TOKEN_SERVER</a></span></span>
+
+  <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='period'>.</span><span class='id identifier rubyid_configure_default'><span class='object_link'><a href="../CardanoUp.html#configure_default-class_method" title="CardanoUp.configure_default (method)">configure_default</a></span></span> <span class='kw'>unless</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='period'>.</span><span class='id identifier rubyid_configured?'><span class='object_link'><a href="../CardanoUp.html#configured%3F-class_method" title="CardanoUp.configured? (method)">configured?</a></span></span>
+  <span class='id identifier rubyid_configs'>configs</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='period'>.</span><span class='id identifier rubyid_config'><span class='object_link'><a href="../CardanoUp.html#config-class_method" title="CardanoUp.config (method)">config</a></span></span>
+  <span class='id identifier rubyid_bin_dir'>bin_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_configs'>configs</span><span class='lbracket'>[</span><span class='symbol'>:bin_dir</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_config_dir'>config_dir</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_configs'>configs</span><span class='lbracket'>[</span><span class='symbol'>:config_dir</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_log_dir'>log_dir</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_configs'>configs</span><span class='lbracket'>[</span><span class='symbol'>:log_dir</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session_name'>session_name</span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_state_dir'>state_dir</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_configs'>configs</span><span class='lbracket'>[</span><span class='symbol'>:state_dir</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_session_name'>session_name</span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_wallet_db_dir'>wallet_db_dir</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_state_dir'>state_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>wallet-db</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_node_db_dir'>node_db_dir</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_state_dir'>state_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>node-db</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='lbracket'>[</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='comma'>,</span> <span class='id identifier rubyid_config_dir'>config_dir</span><span class='comma'>,</span> <span class='id identifier rubyid_log_dir'>log_dir</span><span class='comma'>,</span> <span class='id identifier rubyid_state_dir'>state_dir</span><span class='comma'>,</span> <span class='id identifier rubyid_wallet_db_dir'>wallet_db_dir</span><span class='comma'>,</span> <span class='id identifier rubyid_node_db_dir'>node_db_dir</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_dir'>dir</span><span class='op'>|</span>
+    <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_mkdir_p'>mkdir_p</span><span class='lparen'>(</span><span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_node_socket'>node_socket</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
+                  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\\\\.\\pipe\\cardano-node-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+                <span class='kw'>else</span>
+                  <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_state_dir'>state_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>node.socket</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+                <span class='kw'>end</span>
+  <span class='id identifier rubyid_network'>network</span> <span class='op'>=</span> <span class='id identifier rubyid_env'>env</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>mainnet</span><span class='tstring_end'>&#39;</span></span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>--mainnet</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--testnet </span><span class='embexpr_beg'>#{</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>byron-genesis.json</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='lbrace'>{</span>
+    <span class='label'>env:</span> <span class='id identifier rubyid_env'>env</span><span class='comma'>,</span>
+    <span class='label'>wallet_port:</span> <span class='id identifier rubyid_wallet_port'>wallet_port</span><span class='comma'>,</span>
+    <span class='label'>token_metadata_server:</span> <span class='id identifier rubyid_token_metadata_server'>token_metadata_server</span><span class='comma'>,</span>
+    <span class='label'>bin_dir:</span> <span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='comma'>,</span>
+    <span class='label'>config_dir:</span> <span class='id identifier rubyid_config_dir'>config_dir</span><span class='comma'>,</span>
+    <span class='label'>log_dir:</span> <span class='id identifier rubyid_log_dir'>log_dir</span><span class='comma'>,</span>
+    <span class='label'>state_dir:</span> <span class='id identifier rubyid_state_dir'>state_dir</span><span class='comma'>,</span>
+    <span class='label'>wallet_db_dir:</span> <span class='id identifier rubyid_wallet_db_dir'>wallet_db_dir</span><span class='comma'>,</span>
+    <span class='label'>node_db_dir:</span> <span class='id identifier rubyid_node_db_dir'>node_db_dir</span><span class='comma'>,</span>
+    <span class='label'>node_socket:</span> <span class='id identifier rubyid_node_socket'>node_socket</span><span class='comma'>,</span>
+    <span class='label'>network:</span> <span class='id identifier rubyid_network'>network</span><span class='comma'>,</span>
+    <span class='label'>session_name:</span> <span class='id identifier rubyid_session_name'>session_name</span>
+  <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="wallet_down-class_method">
+  
+    .<strong>wallet_down</strong>(env, session_name = &#39;0&#39;)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::EnvNotSupportedError</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 228</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_wallet_down'>wallet_down</span><span class='lparen'>(</span><span class='id identifier rubyid_env'>env</span><span class='comma'>,</span> <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="EnvNotSupportedError.html" title="CardanoUp::EnvNotSupportedError (class)">EnvNotSupportedError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span> <span class='kw'>unless</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CardanoUp.html#ENVS-constant" title="CardanoUp::ENVS (constant)">ENVS</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_env'>env</span>
+
+  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm stop cardano-wallet-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm remove cardano-wallet-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_content'> confirm</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>else</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>screen -S WALLET_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_content'> -X at &#39;0&#39; stuff &#39;^C&#39;</span><span class='tstring_end'>&quot;</span></span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>screen -XS WALLET_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_content'> quit</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Session.html" title="CardanoUp::Session (module)">Session</a></span></span><span class='period'>.</span><span class='id identifier rubyid_remove'><span class='object_link'><a href="Session.html#remove-class_method" title="CardanoUp::Session.remove (method)">remove</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_session_name'>session_name</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='label'>network:</span> <span class='id identifier rubyid_env'>env</span><span class='comma'>,</span> <span class='label'>service:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>wallet</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="wallet_up-class_method">
+  
+    .<strong>wallet_up</strong>(configuration)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>configuration</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>output of setup</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 149</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_wallet_up'>wallet_up</span><span class='lparen'>(</span><span class='id identifier rubyid_configuration'>configuration</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_port_used?'><span class='object_link'><a href="Utils.html#port_used%3F-class_method" title="CardanoUp::Utils.port_used? (method)">port_used?</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:wallet_port</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="WalletPortUsedError.html" title="CardanoUp::WalletPortUsedError (class)">WalletPortUsedError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:wallet_port</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_env'>env</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:env</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_wallet_port'>wallet_port</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:wallet_port</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_token_metadata_server'>token_metadata_server</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:token_metadata_server</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_bin_dir'>bin_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:bin_dir</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_log_dir'>log_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:log_dir</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_wallet_db_dir'>wallet_db_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:wallet_db_dir</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_node_socket'>node_socket</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:node_socket</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_network'>network</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:network</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:session_name</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_exe'>exe</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.exe</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_cardano_wallet'>cardano_wallet</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>cardano-wallet</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_exe'>exe</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_wallet_cmd'>wallet_cmd</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_cardano_wallet'>cardano_wallet</span><span class='embexpr_end'>}</span><span class='tstring_content'> serve</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--port </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_wallet_port'>wallet_port</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--node-socket </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_socket'>node_socket</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                <span class='id identifier rubyid_network'>network</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--database </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_wallet_db_dir'>wallet_db_dir</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--token-metadata-server </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_token_metadata_server'>token_metadata_server</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_version'>version</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/cardano-wallet</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_exe'>exe</span><span class='embexpr_end'>}</span><span class='tstring_content'> version</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_wallet_service'>wallet_service</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
+                     <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cardano-wallet-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+                   <span class='kw'>else</span>
+                     <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WALLET_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+                   <span class='kw'>end</span>
+  <span class='id identifier rubyid_logfile'>logfile</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_log_dir'>log_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>wallet.log</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_service_details'>service_details</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='label'>network:</span> <span class='id identifier rubyid_env'>env</span><span class='comma'>,</span>
+    <span class='label'>wallet:</span> <span class='lbrace'>{</span>
+      <span class='label'>service:</span> <span class='id identifier rubyid_wallet_service'>wallet_service</span><span class='comma'>,</span>
+      <span class='label'>version:</span> <span class='id identifier rubyid_version'>version</span><span class='comma'>,</span>
+      <span class='label'>log:</span> <span class='id identifier rubyid_logfile'>logfile</span><span class='comma'>,</span>
+      <span class='label'>db_dir:</span> <span class='id identifier rubyid_wallet_db_dir'>wallet_db_dir</span><span class='comma'>,</span>
+      <span class='label'>port:</span> <span class='id identifier rubyid_wallet_port'>wallet_port</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span>
+      <span class='label'>url:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://localhost:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_wallet_port'>wallet_port</span><span class='embexpr_end'>}</span><span class='tstring_content'>/v2</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+      <span class='label'>bin:</span> <span class='id identifier rubyid_wallet_cmd'>wallet_cmd</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='comma'>,</span>
+      <span class='label'>cmd:</span> <span class='id identifier rubyid_wallet_cmd'>wallet_cmd</span>
+    <span class='rbrace'>}</span>
+  <span class='rbrace'>}</span>
+
+  <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Session.html" title="CardanoUp::Session (module)">Session</a></span></span><span class='period'>.</span><span class='id identifier rubyid_create_or_update'><span class='object_link'><a href="Session.html#create_or_update-class_method" title="CardanoUp::Session.create_or_update (method)">create_or_update</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_session_name'>session_name</span><span class='comma'>,</span> <span class='id identifier rubyid_service_details'>service_details</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
+    <span class='comment'># create cardano-wallet.bat file
+</span>    <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/cardano-wallet.bat</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_wallet_cmd'>wallet_cmd</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_install_wallet'>install_wallet</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm install </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_wallet_service'>wallet_service</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/cardano-wallet.bat</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_log_stdout_wallet'>log_stdout_wallet</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm set </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_wallet_service'>wallet_service</span><span class='embexpr_end'>}</span><span class='tstring_content'> AppStdout </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_logfile'>logfile</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_log_stderr_wallet'>log_stderr_wallet</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm set </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_wallet_service'>wallet_service</span><span class='embexpr_end'>}</span><span class='tstring_content'> AppStderr </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_logfile'>logfile</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_start_wallet'>start_wallet</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm start </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_wallet_service'>wallet_service</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='id identifier rubyid_install_wallet'>install_wallet</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='id identifier rubyid_log_stdout_wallet'>log_stdout_wallet</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='id identifier rubyid_log_stderr_wallet'>log_stderr_wallet</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='id identifier rubyid_start_wallet'>start_wallet</span>
+  <span class='kw'>else</span>
+    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>screen -dmS </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_wallet_service'>wallet_service</span><span class='embexpr_end'>}</span><span class='tstring_content'> -L -Logfile </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_logfile'>logfile</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_wallet_cmd'>wallet_cmd</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_service_details'>service_details</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Sat Oct 15 08:37:42 2022 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.28 (ruby-3.1.2).
+</div>
+
+    </div>
+  </body>
+</html>

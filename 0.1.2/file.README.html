@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation for cardano-up (0.1.2)
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-Cardano+Up-21">Cardano Up!</h1>
+<a href="https://badge.fury.io/rb/cardano-up">
+  <img src="https://badge.fury.io/rb/cardano-up.svg" alt="Gem Version">
+</a><a href="https://github.com/piotr-iohk/cardano-up/actions?query=workflow%3ATests">
+  <img src="https://github.com/piotr-iohk/cardano-up/workflows/Tests/badge.svg" />
+</a><a href="https://github.com/piotr-iohk/cardano-up/actions?query=workflow%3ADocs">
+  <img src="https://github.com/piotr-iohk/cardano-up/workflows/Docs/badge.svg" />
+</a><a href="https://github.com/piotr-iohk/cardano-up/actions?query=workflow%3ARubocop">
+  <img src="https://github.com/piotr-iohk/cardano-up/workflows/Rubocop/badge.svg" />
+</a>
+<h2 id="label-Overview">Overview</h2>
+
+<p>This Ruby gem provides easy way for:  - getting <code>cardano-node</code>, <code>cardano-cli</code>, <code>cardano-wallet</code>, <code>cardano-addresses</code> and <code>bech32</code> tools onto your system (Linux, MacOS or Windows).  - getting configuration for any Cardano public environment.  - starting, managing and monitoring cardano-node and cardano-wallet services.</p>
+
+<p>&lt;img src=“cardano-up.gif” /&gt;</p>
+
+<h2 id="label-Installation">Installation</h2>
+
+<pre class="code ruby"><code class="ruby">$ gem install cardano-up
+</code></pre>
+
+<h2 id="label-Usage">Usage</h2>
+
+<p>It only takes a single command to start node and wallet on your system. Say, on <code>mainnet</code>?</p>
+
+<pre class="code ruby"><code class="ruby">$ cardano-up mainnet up
+</code></pre>
+
+<p>That’s it! 🎉</p>
+
+<p>If any configs are missing cardano-up will download them. If any binaries are missing cardano-up will get ones from latest release.</p>
+
+<p>To explore more options call:</p>
+
+<pre class="code ruby"><code class="ruby">	$ cardano-up --help
+	$ cardano-up --examples
+</code></pre>
+
+<h2 id="label-Documentation">Documentation</h2>
+
+<table role="table">
+<thead>
+<tr>
+<th>Link</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[Usage examples](https://github.com/piotr-iohk/cardano-up/wiki/Usage-Examples)</td>
+<td>Also available in `$ cardano-up --examples`</td>
+</tr>
+<tr>
+<td>[Ruby API (edge)](https://piotr-iohk.github.io/cardano-up/master/)</td>
+<td>cardano-up API doc</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="label-How+it+works">How it works</h2>
+
+<p>By default cardano-up keeps all files at <code>$HOME/.cardano-up/</code> however this can be configured by editing <code>$HOME/.cardano-up/.cardano-up.json</code> directly or via <code>config</code> sub-command. One can check the contents of this internal config file by calling <code>$ cardano-up config</code>.</p>
+
+<p><strong>Configurations</strong> for the networks are downloaded from <a href="https://book.world.dev.cardano.org/environments.html">Cardano Book</a>.</p>
+
+<p><strong>Binaries</strong> come from <a href="https://github.com/input-output-hk/cardano-wallet">cardano-wallet</a> which actually provides <code>cardano-node</code>, <code>cardano-cli</code>, <code>cardano-wallet</code>, <code>cardano-addresses</code> and <code>bech32</code> tools in each of its release bundles. This ensures that all components are compatible and work smoothly together. You can get any public release of the cardano-wallet bundle as well as <code>master</code> version and even any of the PRs that are currently being worked on.</p>
+
+<p><strong>Starting</strong> <code>cardano-node</code> and <code>cardano-wallet</code>, cardano-up attempts to launch separate href="https://www.gnu.org/software/screen/"></a> sessions for wallet and node respectively. If screen is not present on your system you can install it using package manager, e.g.:</p>
+
+<p>MacOS:</p>
+
+<pre class="code ruby"><code class="ruby">$ brew install screen
+</code></pre>
+
+<p>Linux:</p>
+
+<pre class="code ruby"><code class="ruby">$ sudo apt-get install screen
+</code></pre>
+
+<p>In case of Windows it will attempt to install cardano-node and cardano-wallet as Windows services using href="https://nssm.cc/"></a> tool. Nssm can be installed via choco package manager:</p>
+
+<pre class="code ruby"><code class="ruby">$ choco install nssm
+</code></pre>
+
+<blockquote>
+<p>:warning: nssm requires administrator permissions to register Windows services, therefore you need to start your cmd as an administrator.</p>
+</blockquote>
+
+<p>There is also basic <strong>session management</strong> in cardano-up. In a single session you can have at most 1 node and 1 wallet for particular network. Because of the sessions you can quickly check details of your running components (like where are the log or database files or what ports are used) and you have some basic tools to monitor them (via <code>tail</code> and <code>ping</code> subcommands).</p>
+
+<h2 id="label-License">License</h2>
+
+<p>The gem is available as open source under the terms of the <a href="https://github.com/piotr-iohk/cardano-up/blob/master/LICENSE.txt">MIT License</a>.</p>
+</div></div>
+
+      <div id="footer">
+  Generated on Sat Oct 15 08:37:42 2022 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.28 (ruby-3.1.2).
+</div>
+
+    </div>
+  </body>
+</html>
