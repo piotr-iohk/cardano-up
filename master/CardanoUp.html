@@ -79,7 +79,7 @@
   <dl>
     <dt>Defined in:</dt>
     <dd>lib/cardano-up.rb<span class="defines">,<br />
-  lib/cardano-up/err.rb,<br /> lib/cardano-up/tar.rb,<br /> lib/cardano-up/bins.rb,<br /> lib/cardano-up/tail.rb,<br /> lib/cardano-up/utils.rb,<br /> lib/cardano-up/configs.rb,<br /> lib/cardano-up/version.rb,<br /> lib/cardano-up/launcher.rb</span>
+  lib/cardano-up/err.rb,<br /> lib/cardano-up/tar.rb,<br /> lib/cardano-up/bins.rb,<br /> lib/cardano-up/ping.rb,<br /> lib/cardano-up/tail.rb,<br /> lib/cardano-up/utils.rb,<br /> lib/cardano-up/configs.rb,<br /> lib/cardano-up/session.rb,<br /> lib/cardano-up/version.rb,<br /> lib/cardano-up/launcher.rb</span>
 </dd>
   </dl>
   
@@ -100,11 +100,11 @@
 <p class="children">
   
     
-      <strong class="modules">Modules:</strong> <span class='object_link'><a href="CardanoUp/Bins.html" title="CardanoUp::Bins (module)">Bins</a></span>, <span class='object_link'><a href="CardanoUp/Configs.html" title="CardanoUp::Configs (module)">Configs</a></span>, <span class='object_link'><a href="CardanoUp/Launcher.html" title="CardanoUp::Launcher (module)">Launcher</a></span>, <span class='object_link'><a href="CardanoUp/Tail.html" title="CardanoUp::Tail (module)">Tail</a></span>, <span class='object_link'><a href="CardanoUp/Tar.html" title="CardanoUp::Tar (module)">Tar</a></span>, <span class='object_link'><a href="CardanoUp/Utils.html" title="CardanoUp::Utils (module)">Utils</a></span>
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="CardanoUp/Bins.html" title="CardanoUp::Bins (module)">Bins</a></span>, <span class='object_link'><a href="CardanoUp/Configs.html" title="CardanoUp::Configs (module)">Configs</a></span>, <span class='object_link'><a href="CardanoUp/Launcher.html" title="CardanoUp::Launcher (module)">Launcher</a></span>, <span class='object_link'><a href="CardanoUp/Ping.html" title="CardanoUp::Ping (module)">Ping</a></span>, <span class='object_link'><a href="CardanoUp/Session.html" title="CardanoUp::Session (module)">Session</a></span>, <span class='object_link'><a href="CardanoUp/Tail.html" title="CardanoUp::Tail (module)">Tail</a></span>, <span class='object_link'><a href="CardanoUp/Tar.html" title="CardanoUp::Tar (module)">Tar</a></span>, <span class='object_link'><a href="CardanoUp/Utils.html" title="CardanoUp::Utils (module)">Utils</a></span>
     
   
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="CardanoUp/ConfigNotSetError.html" title="CardanoUp::ConfigNotSetError (class)">ConfigNotSetError</a></span>, <span class='object_link'><a href="CardanoUp/EnvNotSupportedError.html" title="CardanoUp::EnvNotSupportedError (class)">EnvNotSupportedError</a></span>, <span class='object_link'><a href="CardanoUp/VersionNotSupportedError.html" title="CardanoUp::VersionNotSupportedError (class)">VersionNotSupportedError</a></span>, <span class='object_link'><a href="CardanoUp/WalletPortError.html" title="CardanoUp::WalletPortError (class)">WalletPortError</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="CardanoUp/ConfigNotSetError.html" title="CardanoUp::ConfigNotSetError (class)">ConfigNotSetError</a></span>, <span class='object_link'><a href="CardanoUp/EnvNotSupportedError.html" title="CardanoUp::EnvNotSupportedError (class)">EnvNotSupportedError</a></span>, <span class='object_link'><a href="CardanoUp/SessionEnvNotUpError.html" title="CardanoUp::SessionEnvNotUpError (class)">SessionEnvNotUpError</a></span>, <span class='object_link'><a href="CardanoUp/SessionHasNodeError.html" title="CardanoUp::SessionHasNodeError (class)">SessionHasNodeError</a></span>, <span class='object_link'><a href="CardanoUp/SessionHasWalletError.html" title="CardanoUp::SessionHasWalletError (class)">SessionHasWalletError</a></span>, <span class='object_link'><a href="CardanoUp/SessionNotExistsError.html" title="CardanoUp::SessionNotExistsError (class)">SessionNotExistsError</a></span>, <span class='object_link'><a href="CardanoUp/SessionServiceNotUpError.html" title="CardanoUp::SessionServiceNotUpError (class)">SessionServiceNotUpError</a></span>, <span class='object_link'><a href="CardanoUp/VersionNotSupportedError.html" title="CardanoUp::VersionNotSupportedError (class)">VersionNotSupportedError</a></span>, <span class='object_link'><a href="CardanoUp/WalletPortError.html" title="CardanoUp::WalletPortError (class)">WalletPortError</a></span>, <span class='object_link'><a href="CardanoUp/WalletPortUsedError.html" title="CardanoUp::WalletPortUsedError (class)">WalletPortUsedError</a></span>
     
   
 </p>
@@ -427,12 +427,12 @@
       <pre class="lines">
 
 
-41
-42
-43</pre>
+45
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_base_dir'>base_dir</span>
   <span class='ivar'>@base_dir</span>
@@ -457,14 +457,14 @@
       <pre class="lines">
 
 
-45
-46
-47
-48
-49</pre>
+49
+50
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_base_dir='>base_dir=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@base_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
@@ -491,12 +491,12 @@
       <pre class="lines">
 
 
-51
-52
-53</pre>
+55
+56
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cardano_up_config'>cardano_up_config</span>
   <span class='ivar'>@cardano_up_config</span>
@@ -521,12 +521,12 @@
       <pre class="lines">
 
 
-55
-56
-57</pre>
+59
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cardano_up_config='>cardano_up_config=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@cardano_up_config</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
@@ -562,12 +562,12 @@
       <pre class="lines">
 
 
-104
-105
-106</pre>
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 104</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 108</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_clean_config_dir'>clean_config_dir</span><span class='lparen'>(</span><span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span>
   <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_rm_f'>rm_f</span><span class='lparen'>(</span><span class='id identifier rubyid_config'>config</span><span class='lbracket'>[</span><span class='id identifier rubyid_dir'>dir</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -616,19 +616,19 @@
       <pre class="lines">
 
 
-92
-93
-94
-95
-96</pre>
+96
+97
+98
+99
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 92</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_config'>config</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="CardanoUp/ConfigNotSetError.html" title="CardanoUp::ConfigNotSetError (class)">ConfigNotSetError</a></span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_configured?'>configured?</span>
 
-  <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='ivar'>@cardano_up_config</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="CardanoUp/Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_from_json'><span class='object_link'><a href="CardanoUp/Utils.html#from_json-class_method" title="CardanoUp::Utils.from_json (method)">from_json</a></span></span><span class='lparen'>(</span><span class='ivar'>@cardano_up_config</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -661,10 +661,6 @@
       <pre class="lines">
 
 
-73
-74
-75
-76
 77
 78
 79
@@ -677,27 +673,31 @@
 86
 87
 88
-89</pre>
+89
+90
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_configure'>configure</span><span class='lparen'>(</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='comma'>,</span> <span class='id identifier rubyid_state_dir'>state_dir</span><span class='comma'>,</span> <span class='id identifier rubyid_logs_dir'>logs_dir</span><span class='comma'>,</span> <span class='id identifier rubyid_config_dir'>config_dir</span><span class='rparen'>)</span>
   <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_mkdir_p'>mkdir_p</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_c'>c</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_configured?'>configured?</span>
         <span class='const'><span class='object_link'><a href="" title="CardanoUp (module)">CardanoUp</a></span></span><span class='period'>.</span><span class='id identifier rubyid_config'><span class='object_link'><a href="#config-class_method" title="CardanoUp.config (method)">config</a></span></span>
       <span class='kw'>else</span>
-        <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bin_dir</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bins</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
-          <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>state_dir</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>state</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
-          <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>log_dir</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>state</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
-          <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>config_dir</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>configs</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+        <span class='lbrace'>{</span> <span class='label'>bin_dir:</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bins</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+          <span class='label'>state_dir:</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>state</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+          <span class='label'>log_dir:</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>state</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+          <span class='label'>config_dir:</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>configs</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='rbrace'>}</span>
       <span class='kw'>end</span>
-  <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bin_dir</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_bin_dir'>bin_dir</span> <span class='kw'>if</span> <span class='id identifier rubyid_bin_dir'>bin_dir</span>
-  <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>state_dir</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_state_dir'>state_dir</span> <span class='kw'>if</span> <span class='id identifier rubyid_state_dir'>state_dir</span>
-  <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>log_dir</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_logs_dir'>logs_dir</span> <span class='kw'>if</span> <span class='id identifier rubyid_logs_dir'>logs_dir</span>
-  <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>config_dir</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_config_dir'>config_dir</span> <span class='kw'>if</span> <span class='id identifier rubyid_config_dir'>config_dir</span>
-  <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='ivar'>@cardano_up_config</span><span class='comma'>,</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_pretty_generate'>pretty_generate</span><span class='lparen'>(</span><span class='id identifier rubyid_c'>c</span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='ivar'>@cardano_up_config</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='symbol'>:bin_dir</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_bin_dir'>bin_dir</span> <span class='kw'>if</span> <span class='id identifier rubyid_bin_dir'>bin_dir</span>
+  <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='symbol'>:state_dir</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_state_dir'>state_dir</span> <span class='kw'>if</span> <span class='id identifier rubyid_state_dir'>state_dir</span>
+  <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='symbol'>:log_dir</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_logs_dir'>logs_dir</span> <span class='kw'>if</span> <span class='id identifier rubyid_logs_dir'>logs_dir</span>
+  <span class='id identifier rubyid_c'>c</span><span class='lbracket'>[</span><span class='symbol'>:config_dir</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_config_dir'>config_dir</span> <span class='kw'>if</span> <span class='id identifier rubyid_config_dir'>config_dir</span>
+  <span class='const'><span class='object_link'><a href="" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="CardanoUp/Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_to_json'><span class='object_link'><a href="CardanoUp/Utils.html#to_json-class_method" title="CardanoUp::Utils.to_json (method)">to_json</a></span></span><span class='lparen'>(</span><span class='ivar'>@cardano_up_config</span><span class='comma'>,</span> <span class='id identifier rubyid_c'>c</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="CardanoUp/Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_from_json'><span class='object_link'><a href="CardanoUp/Utils.html#from_json-class_method" title="CardanoUp::Utils.from_json (method)">from_json</a></span></span><span class='lparen'>(</span><span class='ivar'>@cardano_up_config</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -730,15 +730,15 @@
       <pre class="lines">
 
 
-65
-66
-67
-68
 69
-70</pre>
+70
+71
+72
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 69</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_configure_default'>configure_default</span>
   <span class='id identifier rubyid_configure'>configure</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='ivar'>@base_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bins</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
@@ -790,12 +790,12 @@
       <pre class="lines">
 
 
-60
-61
-62</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_configured?'>configured?</span>
   <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_exist?'>exist?</span><span class='lparen'>(</span><span class='ivar'>@cardano_up_config</span><span class='rparen'>)</span>
@@ -831,12 +831,12 @@
       <pre class="lines">
 
 
-99
-100
-101</pre>
+103
+104
+105</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_remove_cardano_up_config'>remove_cardano_up_config</span>
   <span class='const'>FileUtils</span><span class='period'>.</span><span class='id identifier rubyid_rm_f'>rm_f</span><span class='lparen'>(</span><span class='ivar'>@cardano_up_config</span><span class='rparen'>)</span>
@@ -851,7 +851,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Oct 10 20:23:20 2022 by
+  Generated on Sat Oct 15 08:32:05 2022 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.28 (ruby-3.1.2).
 </div>

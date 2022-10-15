@@ -83,14 +83,18 @@
 
 <p>It only takes a single command to start node and wallet on your system. Say, on <code>mainnet</code>?</p>
 
-<pre class="code ruby"><code class="ruby">$ cardano-up mainnet node-wallet up
+<pre class="code ruby"><code class="ruby">$ cardano-up mainnet up
 </code></pre>
 
 <p>That’s it! 🎉</p>
 
 <p>If any configs are missing cardano-up will download them. If any binaries are missing cardano-up will get ones from latest release.</p>
 
-<p>Call <code>$ cardano-up --help</code> to explore more options.</p>
+<p>To explore more options call:</p>
+
+<pre class="code ruby"><code class="ruby">	$ cardano-up --help
+	$ cardano-up --examples
+</code></pre>
 
 <h2 id="label-Documentation">Documentation</h2>
 
@@ -103,6 +107,10 @@
 </thead>
 <tbody>
 <tr>
+<td>[Usage examples](https://github.com/piotr-iohk/cardano-up/wiki/Usage-Examples)</td>
+<td>Also available in `$ cardano-up --examples`</td>
+</tr>
+<tr>
 <td>[Ruby API (edge)](https://piotr-iohk.github.io/cardano-up/master/)</td>
 <td>cardano-up API doc</td>
 </tr>
@@ -110,6 +118,8 @@
 </table>
 
 <h2 id="label-How+it+works">How it works</h2>
+
+<p>By default cardano-up keeps all files at <code>$HOME/.cardano-up/</code> however this can be configured by editing <code>$HOME/.cardano-up/.cardano-up.json</code> directly or via <code>config</code> sub-command. One can check the contents of this internal config file by calling <code>$ cardano-up config</code>.</p>
 
 <p><strong>Configurations</strong> for the networks are downloaded from <a href="https://book.world.dev.cardano.org/environments.html">Cardano Book</a>.</p>
 
@@ -136,15 +146,15 @@
 <p>:warning: nssm requires administrator permissions to register Windows services, therefore you need to start your cmd as an administrator.</p>
 </blockquote>
 
-<p>By default cardano-up keeps all files at <code>$HOME/.cardano-up/</code> however this can be configured by editing <code>$HOME/.cardano-up/.cardano-up.json</code> directly or via <code>config</code> sub-command. One can check the contents of this internal config file by calling <code>$ cardano-up config</code>.</p>
+<p>There is also basic <strong>session management</strong> in cardano-up. In a single session you can have at most 1 node and 1 wallet for particular network. Because of the sessions you can quickly check details of your running components (like where are the log or database files or what ports are used) and you have some basic tools to monitor them (via <code>tail</code> and <code>ping</code> subcommands).</p>
 
 <h2 id="label-License">License</h2>
 
-<p>The gem is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
+<p>The gem is available as open source under the terms of the <a href="https://github.com/piotr-iohk/cardano-up/blob/master/LICENSE.txt">MIT License</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Mon Oct 10 20:23:20 2022 by
+  Generated on Sat Oct 15 08:32:05 2022 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.28 (ruby-3.1.2).
 </div>
