@@ -288,7 +288,7 @@ Stop mainnet node and wallet:
   elsif o['down'] == true
     env = o['<env>']
     session_name = o['--session']
-
+    warn "Stopping service on '#{env}' in session '#{session_name}'..."
     begin
       if o['node']
         CardanoUp::Launcher.node_down(env, session_name)
@@ -307,8 +307,8 @@ Stop mainnet node and wallet:
         end
         warn 'Wallet stopped.'
       end
-    rescue CardanoUp::EnvNotSupportedError => e
-      warn(e.message)
+    rescue CardanoUp::EnvNotSupportedError, CardanoUp::SessionNotExistsError => e
+      warn "⚠️   #{e}"
       exit 1
     end
 
