@@ -76,7 +76,21 @@
 
 <h2 id="label-Installation">Installation</h2>
 
+<h4 id="label-Rubygem-3A">Rubygem:</h4>
+
 <pre class="code ruby"><code class="ruby">$ gem install cardano-up
+$ cardano-up --help
+</code></pre>
+
+<h4 id="label-Nix-3A">Nix:</h4>
+
+<pre class="code ruby"><code class="ruby">$ nix develop github:piotr-iohk/cardano-up?dir=nix
+$ cardano-up --help
+</code></pre>
+
+<p>or run directly</p>
+
+<pre class="code ruby"><code class="ruby">$ nix run github:piotr-iohk/cardano-up?dir=nix -- --help
 </code></pre>
 
 <h2 id="label-Usage">Usage</h2>
@@ -154,7 +168,7 @@
 </div></div>
 
       <div id="footer">
-  Generated on Tue Oct 18 13:29:33 2022 by
+  Generated on Tue Oct 18 13:41:15 2022 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.28 (ruby-3.1.2).
 </div>
