@@ -23,7 +23,19 @@ This Ruby gem provides easy way for:
 
 ## Installation
 
+#### Rubygem:
+
     $ gem install cardano-up
+    $ cardano-up --help
+
+#### Nix:
+
+    $ nix develop github:piotr-iohk/cardano-up?dir=nix
+    $ cardano-up --help
+
+or run directly
+
+    $ nix run github:piotr-iohk/cardano-up?dir=nix -- --help
 
 ## Usage
 

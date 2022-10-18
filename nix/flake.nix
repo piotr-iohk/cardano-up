@@ -28,5 +28,4 @@
           };
         defaultApp = app;
       });
-      /* packages.x86_64-linux.default = 'bin/rebuild'; */
 }
