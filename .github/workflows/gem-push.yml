@@ -16,10 +16,8 @@ jobs:
     steps:
     - name: '📥 Checkout repository'
       uses: actions/checkout@v3
-    - name: 💎 Set up Ruby 2.6
-      uses: actions/setup-ruby@v1
-      with:
-        ruby-version: 2.6.x
+    - name: 💎 Set up Ruby
+      uses: ruby/setup-ruby@v1.127.0
 
     # - name: 🚀 Publish to GPR
     #   run: |
