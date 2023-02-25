@@ -1,4 +1,13 @@
-## [0.1.2] - 2022-??-??
+## [0.1.3] - 2023-02-25
+
+## Added
+ - check if `screen` tool is present on the system before starting node or wallet on Linux/MacOs (#4, #5)
+
+## Removed
+ - ability to install version from `master` or specific PR in `cardano-wallet` repository (#5)
+
+
+## [0.1.2] - 2022-10-15
 
 ### Added
 
