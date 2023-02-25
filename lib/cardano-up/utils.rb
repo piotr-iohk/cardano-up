@@ -61,40 +61,21 @@ module CardanoUp
 
     ##
     # Latest binary url for latest release or particular tag, from master or pr num.
-    # @param release [String] - 'latest' | /^v20.{2}-.{2}-.{2}/ | 'master' | '3341'
+    # @param release [String] - 'latest' | /^v20.{2}-.{2}-.{2}/
     # @raise CardanoUp::VersionNotSupportedError
     def self.get_binary_url(release = 'latest')
-      unless release == 'master' || release == 'latest' || release =~ /^v20.{2}-.{2}-.{2}/ || release =~ /^\d+$/
-        raise CardanoUp::VersionNotSupportedError, release
+      raise CardanoUp::VersionNotSupportedError, release unless release == 'latest' || release =~ /^v20.{2}-.{2}-.{2}/
+
+      tag = release == 'latest' ? latest_tag : release
+      if linux?
+        file = "cardano-wallet-#{tag}-linux64.tar.gz"
+      elsif mac?
+        file = "cardano-wallet-#{tag}-macos-intel.tar.gz"
+      elsif win?
+        file = "cardano-wallet-#{tag}-win64.zip"
       end
 
-      url = ''
-      if release == 'latest' || release =~ /^v20.{2}-.{2}-.{2}/
-        tag = release == 'latest' ? latest_tag : release
-        if linux?
-          file = "cardano-wallet-#{tag}-linux64.tar.gz"
-        elsif mac?
-          file = "cardano-wallet-#{tag}-macos-intel.tar.gz"
-        elsif win?
-          file = "cardano-wallet-#{tag}-win64.zip"
-        end
-        url = "#{CardanoUp::BINS_BASE_URL}/releases/download/#{tag}/#{file}"
-      else
-        if linux?
-          os = 'linux.musl.cardano-wallet-linux64'
-        elsif mac?
-          os = 'macos.intel.cardano-wallet-macos-intel'
-        elsif win?
-          os = 'linux.windows.cardano-wallet-win64'
-        end
-
-        url = if release == 'master'
-                "#{CardanoUp::HYDRA_BASE_URL}/#{os}/latest/download-by-type/file/binary-dist"
-              else
-                "#{CardanoUp::HYDRA_BASE_URL}-pr-#{release}/#{os}/latest/download-by-type/file/binary-dist"
-              end
-      end
-      url
+      "#{CardanoUp::BINS_BASE_URL}/releases/download/#{tag}/#{file}"
     end
 
     ##

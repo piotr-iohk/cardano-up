@@ -64,7 +64,7 @@ By default cardano-up keeps all files at `$HOME/.cardano-up/` however this can b
 
 **Configurations** for the networks are downloaded from [Cardano Book](https://book.world.dev.cardano.org/environments.html).
 
-**Binaries** come from [cardano-wallet](https://github.com/input-output-hk/cardano-wallet) which actually provides `cardano-node`, `cardano-cli`, `cardano-wallet`, `cardano-addresses` and `bech32` tools in each of its release bundles. This ensures that all components are compatible and work smoothly together. You can get any public release of the cardano-wallet bundle as well as `master` version and even any of the PRs that are currently being worked on.
+**Binaries** come from [cardano-wallet](https://github.com/input-output-hk/cardano-wallet) which actually provides `cardano-node`, `cardano-cli`, `cardano-wallet`, `cardano-addresses` and `bech32` tools in each of its release bundles. This ensures that all components are compatible and work smoothly together. You can get any public release of the cardano-wallet bundle. 
 
 **Starting** `cardano-node` and `cardano-wallet`,  cardano-up attempts to launch separate [`screen`](https://www.gnu.org/software/screen/) sessions for wallet and node respectively. If screen is not present on your system you can install it using package manager, e.g.:
 

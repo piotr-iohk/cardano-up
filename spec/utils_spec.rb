@@ -25,12 +25,6 @@ RSpec.describe CardanoUp::Utils do
 
     tag = CardanoUp::Utils.get_binary_url('v2022-08-16')
     expect(tag).to include('https://github.com/input-output-hk/cardano-wallet/releases/download')
-
-    tag = CardanoUp::Utils.get_binary_url('master')
-    expect(tag).to include('https://hydra.iohk.io/job/Cardano/cardano-wallet/')
-
-    tag = CardanoUp::Utils.get_binary_url('3045')
-    expect(tag).to include('https://hydra.iohk.io/job/Cardano/cardano-wallet-pr-3045/')
   end
 
   it 'I need get_binary_url with proper param' do

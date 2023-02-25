@@ -27,7 +27,6 @@ require 'cardano-up/tail'
 module CardanoUp
   CONFIGS_BASE_URL = 'https://book.world.dev.cardano.org/environments'
   BINS_BASE_URL = 'https://github.com/input-output-hk/cardano-wallet'
-  HYDRA_BASE_URL = 'https://hydra.iohk.io/job/Cardano/cardano-wallet'
   ENVS = %w[mainnet preview preprod shelley-qa
             staging vasil-qa vasil-dev mixed testnet].freeze
   CONFIG_FILES = ['alonzo-genesis.json', 'byron-genesis.json', 'shelley-genesis.json',

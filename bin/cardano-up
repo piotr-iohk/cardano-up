@@ -21,7 +21,7 @@ doc = <<~DOCOPT
 
   Options:
     install                 Install cardano-node, cardano-cli, cardano-wallet, cardano-addresses and bech32.
-    <release>               latest | release tag | master | pr num. [default: latest]
+    <release>               latest | release tag [default: latest]
     get-configs             Get configs for particular Cardano environment.
     <env>                   mainnet | preview | preprod etc.
     up                      Start particular service. If any configs are missing #{File.basename(__FILE__)}
