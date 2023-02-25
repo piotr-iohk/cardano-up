@@ -286,6 +286,20 @@ sudo apt-get install screen
       
     </li>
   
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::NoScreenError</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 </div><table class="source_code">
@@ -294,24 +308,28 @@ sudo apt-get install screen
       <pre class="lines">
 
 
-214
-215
-216
-217
-218
-219
-220
-221
 222
 223
 224
-225</pre>
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 214</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 222</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_node_down'>node_down</span><span class='lparen'>(</span><span class='id identifier rubyid_env'>env</span><span class='comma'>,</span> <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="EnvNotSupportedError.html" title="CardanoUp::EnvNotSupportedError (class)">EnvNotSupportedError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span> <span class='kw'>unless</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CardanoUp.html#ENVS-constant" title="CardanoUp::ENVS (constant)">ENVS</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_env'>env</span>
+
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="NoScreenError.html" title="CardanoUp::NoScreenError (class)">NoScreenError</a></span></span> <span class='kw'>if</span> <span class='op'>!</span><span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_screen?'><span class='object_link'><a href="Utils.html#screen%3F-class_method" title="CardanoUp::Utils.screen? (method)">screen?</a></span></span>
 
   <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
     <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm stop cardano-node-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
@@ -395,6 +413,20 @@ sudo apt-get install screen
       
     </li>
   
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::NoScreenError</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 </div><table class="source_code">
@@ -403,7 +435,6 @@ sudo apt-get install screen
       <pre class="lines">
 
 
-76
 77
 78
 79
@@ -473,10 +504,13 @@ sudo apt-get install screen
 143
 144
 145
-146</pre>
+146
+147
+148
+149</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_node_up'>node_up</span><span class='lparen'>(</span><span class='id identifier rubyid_configuration'>configuration</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_env'>env</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:env</span><span class='rbracket'>]</span>
@@ -486,6 +520,8 @@ sudo apt-get install screen
   <span class='id identifier rubyid_node_db_dir'>node_db_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:node_db_dir</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_node_socket'>node_socket</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:node_socket</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:session_name</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="NoScreenError.html" title="CardanoUp::NoScreenError (class)">NoScreenError</a></span></span> <span class='kw'>if</span> <span class='op'>!</span><span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_screen?'><span class='object_link'><a href="Utils.html#screen%3F-class_method" title="CardanoUp::Utils.screen? (method)">screen?</a></span></span>
 
   <span class='id identifier rubyid_exe'>exe</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.exe</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
   <span class='id identifier rubyid_cardano_node'>cardano_node</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>cardano-node</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_exe'>exe</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
@@ -765,6 +801,20 @@ sudo apt-get install screen
       
     </li>
   
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::NoScreenError</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 </div><table class="source_code">
@@ -773,24 +823,28 @@ sudo apt-get install screen
       <pre class="lines">
 
 
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239</pre>
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 228</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 239</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_wallet_down'>wallet_down</span><span class='lparen'>(</span><span class='id identifier rubyid_env'>env</span><span class='comma'>,</span> <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="EnvNotSupportedError.html" title="CardanoUp::EnvNotSupportedError (class)">EnvNotSupportedError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span> <span class='kw'>unless</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CardanoUp.html#ENVS-constant" title="CardanoUp::ENVS (constant)">ENVS</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_env'>env</span>
+
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="NoScreenError.html" title="CardanoUp::NoScreenError (class)">NoScreenError</a></span></span> <span class='kw'>if</span> <span class='op'>!</span><span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_screen?'><span class='object_link'><a href="Utils.html#screen%3F-class_method" title="CardanoUp::Utils.screen? (method)">screen?</a></span></span>
 
   <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
     <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_cmd'><span class='object_link'><a href="Utils.html#cmd-class_method" title="CardanoUp::Utils.cmd (method)">cmd</a></span></span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm stop cardano-wallet-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_session_name'>session_name</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
@@ -843,6 +897,38 @@ sudo apt-get install screen
   
 </ul>
 
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::NoScreenError</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>CardanoUp::WalletPortUsedError</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -850,11 +936,6 @@ sudo apt-get install screen
       <pre class="lines">
 
 
-149
-150
-151
-152
-153
 154
 155
 156
@@ -912,15 +993,24 @@ sudo apt-get install screen
 208
 209
 210
-211</pre>
+211
+212
+213
+214
+215
+216
+217
+218</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 149</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 154</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_wallet_up'>wallet_up</span><span class='lparen'>(</span><span class='id identifier rubyid_configuration'>configuration</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_port_used?'><span class='object_link'><a href="Utils.html#port_used%3F-class_method" title="CardanoUp::Utils.port_used? (method)">port_used?</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:wallet_port</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="WalletPortUsedError.html" title="CardanoUp::WalletPortUsedError (class)">WalletPortUsedError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:wallet_port</span><span class='rbracket'>]</span>
   <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="NoScreenError.html" title="CardanoUp::NoScreenError (class)">NoScreenError</a></span></span> <span class='kw'>if</span> <span class='op'>!</span><span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_screen?'><span class='object_link'><a href="Utils.html#screen%3F-class_method" title="CardanoUp::Utils.screen? (method)">screen?</a></span></span>
 
   <span class='id identifier rubyid_env'>env</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:env</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_wallet_port'>wallet_port</span> <span class='op'>=</span> <span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:wallet_port</span><span class='rbracket'>]</span>
@@ -990,9 +1080,9 @@ sudo apt-get install screen
 </div>
 
       <div id="footer">
-  Generated on Tue Oct 18 13:41:15 2022 by
+  Generated on Sat Feb 25 13:07:11 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.28 (ruby-3.1.2).
+  0.9.28 (ruby-3.1.3).
 </div>
 
     </div>
