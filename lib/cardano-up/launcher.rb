@@ -73,6 +73,7 @@ module CardanoUp
     # @param configuration [Hash] output of setup
     # @raise CardanoUp::SessionHasNodeError
     # @raise CardanoUp::SessionHasWalletError
+    # @raise CardanoUp::NoScreenError
     def self.node_up(configuration)
       env = configuration[:env]
       bin_dir = configuration[:bin_dir]
@@ -81,6 +82,8 @@ module CardanoUp
       node_db_dir = configuration[:node_db_dir]
       node_socket = configuration[:node_socket]
       session_name = configuration[:session_name]
+
+      raise CardanoUp::NoScreenError if !CardanoUp::Utils.win? && !CardanoUp::Utils.screen?
 
       exe = CardanoUp::Utils.win? ? '.exe' : ''
       cardano_node = "#{File.join(bin_dir, 'cardano-node')}#{exe}"
@@ -146,10 +149,14 @@ module CardanoUp
     end
 
     # @param configuration [Hash] output of setup
+    # @raise CardanoUp::NoScreenError
+    # @raise CardanoUp::WalletPortUsedError
     def self.wallet_up(configuration)
       if CardanoUp::Utils.port_used?(configuration[:wallet_port].to_i)
         raise CardanoUp::WalletPortUsedError, configuration[:wallet_port]
       end
+
+      raise CardanoUp::NoScreenError if !CardanoUp::Utils.win? && !CardanoUp::Utils.screen?
 
       env = configuration[:env]
       wallet_port = configuration[:wallet_port]
@@ -211,8 +218,11 @@ module CardanoUp
     end
 
     # @raise CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::NoScreenError
     def self.node_down(env, session_name = '0')
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
+
+      raise CardanoUp::NoScreenError if !CardanoUp::Utils.win? && !CardanoUp::Utils.screen?
 
       if CardanoUp::Utils.win?
         CardanoUp::Utils.cmd "nssm stop cardano-node-#{env}-#{session_name}"
@@ -225,8 +235,11 @@ module CardanoUp
     end
 
     # @raise CardanoUp::EnvNotSupportedError
+    # @raise CardanoUp::NoScreenError
     def self.wallet_down(env, session_name = '0')
       raise CardanoUp::EnvNotSupportedError, env unless CardanoUp::ENVS.include? env
+
+      raise CardanoUp::NoScreenError if !CardanoUp::Utils.win? && !CardanoUp::Utils.screen?
 
       if CardanoUp::Utils.win?
         CardanoUp::Utils.cmd "nssm stop cardano-wallet-#{env}-#{session_name}"

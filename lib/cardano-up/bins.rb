@@ -4,7 +4,7 @@ module CardanoUp
   # Installing binaries for Cardano
   module Bins
     # Get cardano-wallet bundle binaries to your computer.
-    # @param release [String] - 'latest' | /^v20.{2}-.{2}-.{2}/ | 'master' | '3341'
+    # @param release [String] - 'latest' | /^v20.{2}-.{2}-.{2}/
     # @raise CardanoUp::VersionNotSupportedError
     def self.install(release)
       CardanoUp.configure_default unless CardanoUp.configured?

@@ -21,7 +21,7 @@ doc = <<~DOCOPT
 
   Options:
     install                 Install cardano-node, cardano-cli, cardano-wallet, cardano-addresses and bech32.
-    <release>               latest | release tag | master | pr num. [default: latest]
+    <release>               latest | release tag [default: latest]
     get-configs             Get configs for particular Cardano environment.
     <env>                   mainnet | preview | preprod etc.
     up                      Start particular service. If any configs are missing #{File.basename(__FILE__)}
@@ -261,7 +261,7 @@ Stop mainnet node and wallet:
         $stderr.puts
         warn "Congratulations! You've just started cardano-node and cardano-wallet!"
       end
-    rescue CardanoUp::EnvNotSupportedError => e
+    rescue CardanoUp::EnvNotSupportedError, CardanoUp::NoScreenError => e
       warn "⚠️   #{e}"
       exit 1
     rescue CardanoUp::SessionHasNodeError => e
@@ -307,7 +307,7 @@ Stop mainnet node and wallet:
         end
         warn 'Wallet stopped.'
       end
-    rescue CardanoUp::EnvNotSupportedError, CardanoUp::SessionNotExistsError => e
+    rescue CardanoUp::EnvNotSupportedError, CardanoUp::SessionNotExistsError, CardanoUp::NoScreenError => e
       warn "⚠️   #{e}"
       exit 1
     end

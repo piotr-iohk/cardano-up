@@ -67,8 +67,15 @@ module CardanoUp
   # Thrown when version of bundle to download is not supported
   class VersionNotSupportedError < StandardError
     def initialize(ver)
-      super(["Not supported version: #{ver}. Supported are: 'latest', 'master',",
-             "tag (e.g. 'v2022-08-16') or pr number ('3045')"].join(' '))
+      super(["Not supported version: #{ver}. Supported are: 'latest' or",
+             "tag (e.g. 'v2022-08-16')"].join(' '))
+    end
+  end
+
+  # Thrown when there is no screen on the system
+  class NoScreenError < StandardError
+    def initialize
+      super('There is no screen tool on the system!')
     end
   end
 end
