@@ -11,6 +11,11 @@ module CardanoUp
       res.gsub("\n", ' ').strip
     end
 
+    # Check if screen command is available
+    def self.screen?
+      cmd('which screen').chomp.length.positive?
+    end
+
     def self.wget(url, file = nil)
       file ||= File.basename(url)
       resp = HTTParty.get(url)

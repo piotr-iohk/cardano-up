@@ -71,4 +71,11 @@ module CardanoUp
              "tag (e.g. 'v2022-08-16')"].join(' '))
     end
   end
+
+  # Thrown when there is no screen on the system
+  class NoScreenError < StandardError
+    def initialize
+      super('There is no screen tool on the system!')
+    end
+  end
 end
