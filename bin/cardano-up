@@ -14,7 +14,7 @@ doc = <<~DOCOPT
     #{File.basename(__FILE__)} ls
     #{File.basename(__FILE__)} config [--set-default] [--bindir <path>] [--configdir <path>] [--logdir <path>] [--statedir <path>]
     #{File.basename(__FILE__)} <env> [(node|wallet)] [(up|down|ping)] [--port <port>] [--session <name>]
-    #{File.basename(__FILE__)} <env> (node|wallet) tail [--session <name>]
+    #{File.basename(__FILE__)} <env> (node|wallet) tail [--lines <num_lines>] [--session <name>]
     #{File.basename(__FILE__)} -v | --version
     #{File.basename(__FILE__)} -e | --examples
     #{File.basename(__FILE__)} -h | --help
@@ -29,6 +29,7 @@ doc = <<~DOCOPT
                             ones from latest release.
     down                    Stop particular service.
     tail                    Follow logs for particular service.
+    -n --lines <num_lines>  Number of lines to show from the end of the log file. [default: 10]
     ping                    Ping service to check its status.
     ls                      List sessions.
     -p --port <port>        Specify wallet port. [default: 8090]
@@ -122,7 +123,7 @@ Check health of node and wallet on mainnet:
 Monitor mainnet wallet and node logs (Ctrl + c to stop):
 
     $ #{File.basename(__FILE__)} mainnet node tail
-    $ #{File.basename(__FILE__)} mainnet wallet tail
+    $ #{File.basename(__FILE__)} mainnet wallet tail -n 100
 
 Stop preprod node:
 
@@ -316,14 +317,15 @@ Stop mainnet node and wallet:
   elsif o['tail'] == true
     env = o['<env>']
     session_name = o['--session']
+    lines = o['--lines'].to_i
     begin
       log_dir = File.join(CardanoUp.config[:log_dir], session_name, env)
       if o['node']
         log_file = File.join(log_dir, 'node.log')
-        CardanoUp::Tail.tail(log_file)
+        CardanoUp::Tail.tail(log_file, lines)
       elsif o['wallet']
         log_file = File.join(log_dir, 'wallet.log')
-        CardanoUp::Tail.tail(log_file)
+        CardanoUp::Tail.tail(log_file, lines)
       end
     rescue CardanoUp::EnvNotSupportedError => e
       warn(e.message)
