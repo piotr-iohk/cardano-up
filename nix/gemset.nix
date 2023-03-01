@@ -5,10 +5,10 @@
     platforms = [];
     source = {
       remotes = ["https://rubygems.org"];
-      sha256 = "13p3d9jw8v5h9msdigwraf3v79ifnrbvd33xnq9l7vi220lxirps";
+      sha256 = "0c25bciax6bdv8fcbyqn6gd2kil65scr82wyjqfwnx0kkk04ffnp";
       type = "gem";
     };
-    version = "0.1.3";
+    version = "0.1.4";
   };
   docopt = {
     groups = ["default"];

@@ -1,3 +1,9 @@
+## [0.1.4] - 2023-03-01
+
+## Added
+ - `--lines` parameter for `tail` subcommand allowing to output last `<num_lines>` instead of default 10, before following the log (#7)
+
+
 ## [0.1.3] - 2023-02-25
 
 ## Added
