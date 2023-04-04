@@ -308,23 +308,23 @@ sudo apt-get install screen
       <pre class="lines">
 
 
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
 233
 234
-235</pre>
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 222</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 233</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_node_down'>node_down</span><span class='lparen'>(</span><span class='id identifier rubyid_env'>env</span><span class='comma'>,</span> <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="EnvNotSupportedError.html" title="CardanoUp::EnvNotSupportedError (class)">EnvNotSupportedError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span> <span class='kw'>unless</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CardanoUp.html#ENVS-constant" title="CardanoUp::ENVS (constant)">ENVS</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_env'>env</span>
@@ -507,7 +507,18 @@ sudo apt-get install screen
 146
 147
 148
-149</pre>
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 77</span>
@@ -551,23 +562,34 @@ sudo apt-get install screen
     <span class='rbrace'>}</span>
   <span class='rbrace'>}</span>
   <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Session.html" title="CardanoUp::Session (module)">Session</a></span></span><span class='period'>.</span><span class='id identifier rubyid_create_or_update'><span class='object_link'><a href="Session.html#create_or_update-class_method" title="CardanoUp::Session.create_or_update (method)">create_or_update</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_session_name'>session_name</span><span class='comma'>,</span> <span class='id identifier rubyid_service_details'>service_details</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
-    <span class='comment'># Turn off p2p for Windows
-</span>    <span class='comment'># TODO: remove after https://github.com/input-output-hk/ouroboros-network/issues/3968 released
-</span>    <span class='id identifier rubyid_config_win'>config_win</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_from_json'><span class='object_link'><a href="Utils.html#from_json-class_method" title="CardanoUp::Utils.from_json (method)">from_json</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/config.json</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_config_win'>config_win</span><span class='lbracket'>[</span><span class='symbol'>:EnableP2P</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>false</span>
-    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_to_json'><span class='object_link'><a href="Utils.html#to_json-class_method" title="CardanoUp::Utils.to_json (method)">to_json</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/config.json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_config_win'>config_win</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_topology'>topology</span> <span class='op'>=</span> <span class='lbrace'>{</span>
-      <span class='label'>Producers:</span> <span class='lbracket'>[</span>
-        <span class='lbrace'>{</span>
-          <span class='label'>addr:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-node.world.dev.cardano.org</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-          <span class='label'>port:</span> <span class='int'>30_002</span><span class='comma'>,</span>
-          <span class='label'>valency:</span> <span class='int'>2</span>
-        <span class='rbrace'>}</span>
-      <span class='rbracket'>]</span>
-    <span class='rbrace'>}</span>
-    <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_to_json'><span class='object_link'><a href="Utils.html#to_json-class_method" title="CardanoUp::Utils.to_json (method)">to_json</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/topology.json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_topology'>topology</span><span class='rparen'>)</span>
 
+  <span class='comment'># Turn off p2p in config.json and topology.json
+</span>  <span class='id identifier rubyid_config_json'>config_json</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_from_json'><span class='object_link'><a href="Utils.html#from_json-class_method" title="CardanoUp::Utils.from_json (method)">from_json</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/config.json</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_config_json'>config_json</span><span class='lbracket'>[</span><span class='symbol'>:EnableP2P</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_to_json'><span class='object_link'><a href="Utils.html#to_json-class_method" title="CardanoUp::Utils.to_json (method)">to_json</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/config.json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_config_json'>config_json</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_addr'>addr</span> <span class='op'>=</span> <span class='id identifier rubyid_env'>env</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>mainnet</span><span class='tstring_end'>&#39;</span></span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>relays-new.cardano-mainnet.iohk.io</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_env'>env</span><span class='embexpr_end'>}</span><span class='tstring_content'>-node.world.dev.cardano.org</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_port'>port</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id identifier rubyid_env'>env</span>
+         <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>mainnet</span><span class='tstring_end'>&#39;</span></span>
+           <span class='int'>3001</span>
+         <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>preprod</span><span class='tstring_end'>&#39;</span></span>
+           <span class='int'>30_000</span>
+         <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>preview</span><span class='tstring_end'>&#39;</span></span>
+           <span class='int'>30_002</span>
+         <span class='kw'>else</span>
+           <span class='int'>30_000</span>
+         <span class='kw'>end</span>
+  <span class='id identifier rubyid_topology_json'>topology_json</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='label'>Producers:</span> <span class='lbracket'>[</span>
+      <span class='lbrace'>{</span>
+        <span class='label'>addr:</span> <span class='id identifier rubyid_addr'>addr</span><span class='comma'>,</span>
+        <span class='label'>port:</span> <span class='id identifier rubyid_port'>port</span><span class='comma'>,</span>
+        <span class='label'>valency:</span> <span class='int'>2</span>
+      <span class='rbrace'>}</span>
+    <span class='rbracket'>]</span>
+  <span class='rbrace'>}</span>
+  <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_to_json'><span class='object_link'><a href="Utils.html#to_json-class_method" title="CardanoUp::Utils.to_json (method)">to_json</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_config_dir'>config_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/topology.json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_topology_json'>topology_json</span><span class='rparen'>)</span>
+
+  <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_win?'><span class='object_link'><a href="Utils.html#win%3F-class_method" title="CardanoUp::Utils.win? (method)">win?</a></span></span>
     <span class='comment'># create cardano-node.bat file
 </span>    <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/cardano-node.bat</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_node_cmd'>node_cmd</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_install_node'>install_node</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nssm install </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_node_service'>node_service</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_bin_dir'>bin_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/cardano-node.bat</span><span class='tstring_end'>&quot;</span></span>
@@ -823,23 +845,23 @@ sudo apt-get install screen
       <pre class="lines">
 
 
-239
-240
-241
-242
-243
-244
-245
-246
-247
-248
-249
 250
 251
-252</pre>
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 239</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 250</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_wallet_down'>wallet_down</span><span class='lparen'>(</span><span class='id identifier rubyid_env'>env</span><span class='comma'>,</span> <span class='id identifier rubyid_session_name'>session_name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="EnvNotSupportedError.html" title="CardanoUp::EnvNotSupportedError (class)">EnvNotSupportedError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_env'>env</span> <span class='kw'>unless</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CardanoUp.html#ENVS-constant" title="CardanoUp::ENVS (constant)">ENVS</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='id identifier rubyid_env'>env</span>
@@ -936,17 +958,6 @@ sudo apt-get install screen
       <pre class="lines">
 
 
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
 165
 166
 167
@@ -1000,10 +1011,21 @@ sudo apt-get install screen
 215
 216
 217
-218</pre>
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 154</span>
+      <pre class="code"><span class="info file"># File 'lib/cardano-up/launcher.rb', line 165</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_wallet_up'>wallet_up</span><span class='lparen'>(</span><span class='id identifier rubyid_configuration'>configuration</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../CardanoUp.html" title="CardanoUp (module)">CardanoUp</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Utils.html" title="CardanoUp::Utils (module)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_port_used?'><span class='object_link'><a href="Utils.html#port_used%3F-class_method" title="CardanoUp::Utils.port_used? (method)">port_used?</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_configuration'>configuration</span><span class='lbracket'>[</span><span class='symbol'>:wallet_port</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
@@ -1080,7 +1102,7 @@ sudo apt-get install screen
 </div>
 
       <div id="footer">
-  Generated on Wed Mar  1 20:35:07 2023 by
+  Generated on Tue Apr  4 10:13:39 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.28 (ruby-3.1.2).
 </div>
