@@ -36,3 +36,6 @@ Metrics/ModuleLength:
 
 Lint/OrAssignmentToConstant:
   Enabled: false
+
+Lint/DuplicateBranch:
+  Enabled: false
