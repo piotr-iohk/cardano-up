@@ -1,3 +1,8 @@
+## [0.1.5] - 2023-04-04
+
+## Changed
+ - don't use p2p for cardano-node (#8)
+
 ## [0.1.4] - 2023-03-01
 
 ## Added

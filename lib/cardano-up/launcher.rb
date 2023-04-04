@@ -113,23 +113,34 @@ module CardanoUp
         }
       }
       CardanoUp::Session.create_or_update(session_name, service_details)
-      if CardanoUp::Utils.win?
-        # Turn off p2p for Windows
-        # TODO: remove after https://github.com/input-output-hk/ouroboros-network/issues/3968 released
-        config_win = CardanoUp::Utils.from_json("#{config_dir}/config.json")
-        config_win[:EnableP2P] = false
-        CardanoUp::Utils.to_json("#{config_dir}/config.json", config_win)
-        topology = {
-          Producers: [
-            {
-              addr: "#{env}-node.world.dev.cardano.org",
-              port: 30_002,
-              valency: 2
-            }
-          ]
-        }
-        CardanoUp::Utils.to_json("#{config_dir}/topology.json", topology)
 
+      # Turn off p2p in config.json and topology.json
+      config_json = CardanoUp::Utils.from_json("#{config_dir}/config.json")
+      config_json[:EnableP2P] = false
+      CardanoUp::Utils.to_json("#{config_dir}/config.json", config_json)
+      addr = env == 'mainnet' ? 'relays-new.cardano-mainnet.iohk.io' : "#{env}-node.world.dev.cardano.org"
+      port = case env
+             when 'mainnet'
+               3001
+             when 'preprod'
+               30_000
+             when 'preview'
+               30_002
+             else
+               30_000
+             end
+      topology_json = {
+        Producers: [
+          {
+            addr: addr,
+            port: port,
+            valency: 2
+          }
+        ]
+      }
+      CardanoUp::Utils.to_json("#{config_dir}/topology.json", topology_json)
+
+      if CardanoUp::Utils.win?
         # create cardano-node.bat file
         File.write("#{bin_dir}/cardano-node.bat", node_cmd)
         install_node = "nssm install #{node_service} #{bin_dir}/cardano-node.bat"
