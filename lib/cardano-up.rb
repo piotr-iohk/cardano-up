@@ -30,7 +30,7 @@ module CardanoUp
   ENVS = %w[mainnet preview preprod shelley-qa
             staging vasil-qa vasil-dev mixed testnet].freeze
   CONFIG_FILES = ['alonzo-genesis.json', 'byron-genesis.json', 'shelley-genesis.json',
-                  'config.json', 'topology.json'].freeze
+                  'conway-genesis.json', 'config.json', 'topology.json'].freeze
   MAINNET_TOKEN_SERVER = 'https://tokens.cardano.org'
   TESTNET_TOKEN_SERVER = 'https://metadata.cardano-testnet.iohkdev.io'
   # It is recommended to use default value for {base_dir},
